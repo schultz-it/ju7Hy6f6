@@ -1,0 +1,66 @@
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+sensor:
+  - platform: integration
+    unique_id: sh60rs_a2251102546_mppt1_energy
+    source: sensor.sh60rs_a2251102546_mppt1_power
+    name: SH60RS MPPT1 Energy
+    method: left
+    round: 4
+  - platform: integration
+    unique_id: sh60rs_a2251102546_mppt2_energy
+    source: sensor.sh60rs_a2251102546_mppt2_power
+    name: SH60RS MPPT2 Energy
+    method: left
+    round: 4
+  - platform: integration
+    unique_id: sh60rs_a2251102546_mppt3_energy
+    source: sensor.sh60rs_a2251102546_mppt3_power
+    name: SH60RS MPPT3 Energy
+    method: left
+    round: 4
+  - platform: integration
+    unique_id: sh60rs_a2251102546_purchased_energy
+    source: sensor.sh60rs_a2251102546_purchased_power
+    name: Purchased from Grid
+    method: left
+    round: 4
+  - platform: integration
+    unique_id: sh60rs_a2251102546_total_export_active_power
+    source: sensor.sh60rs_a2251102546_total_export_active_power
+    name: Sold to Grid
+    method: left
+    round: 4
+  - platform: integration
+    unique_id: sonoff_100255c289_power
+    source: sensor.sonoff_100255c289_power
+    name: Consumo Lavastoviglie
+    method: left
+    round: 4
+  - platform: integration
+    unique_id: sonoff_100255c8f1_power
+    source: sensor.sonoff_100255c8f1_power
+    name: Consumo Asciugatrice
+    method: left
+    round: 4
+  - platform: integration
+    unique_id: sonoff_100255c2d6_power
+    source: sensor.sonoff_100255c2d6_power
+    name: Consumo Lavatrice
+    method: left
+    round: 4
+  - platform: integration
+    unique_id: sonoff_100255cf16_power
+    source: sensor.sonoff_100255cf16_power
+    name: Consumo PC
+    method: left
+    round: 4

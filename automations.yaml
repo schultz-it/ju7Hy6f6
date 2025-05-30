@@ -1,0 +1,216 @@
+- id: '1748519943163'
+  alias: Avvio Lavastoviglie
+  description: ''
+  triggers:
+  - type: power
+    device_id: 92e82d294d05b30e90de6c5905b6154a
+    entity_id: 03ebd5c9fea14ccfd3e73537468c7c0c
+    domain: sensor
+    trigger: device
+    above: 30
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    data:
+      option: Lavaggio
+    target:
+      entity_id: input_select.stato_lavastoviglie
+  - action: notify.mobile_app_pixel_8_pro
+    metadata: {}
+    data:
+      message: "Lavastoviglie \U0001F37D️: Lavaggio Avviato!"
+  mode: single
+- id: '1748520045982'
+  alias: Fine Lavastoviglie
+  description: ''
+  triggers:
+  - type: power
+    device_id: 92e82d294d05b30e90de6c5905b6154a
+    entity_id: 03ebd5c9fea14ccfd3e73537468c7c0c
+    domain: sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    below: 10
+  conditions: []
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    data:
+      option: Spenta
+    target:
+      entity_id: input_select.stato_lavastoviglie
+  - action: notify.mobile_app_pixel_8_pro
+    metadata: {}
+    data:
+      message: "Lavastoviglie \U0001F37D️: Lavaggio Terminato!"
+  mode: single
+- id: '1748520463968'
+  alias: New automation
+  description: ''
+  triggers:
+  - type: power
+    device_id: f82af24264e8db71c889ea32d253d164
+    entity_id: 763d12525b1f6853bb8fbac8a442d686
+    domain: sensor
+    trigger: device
+    above: 100
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+  conditions: []
+  actions:
+  - action: input_text.set_value
+    metadata: {}
+    data:
+      value: Acceso
+    target:
+      entity_id: input_text.stato_pc
+  - action: notify.mobile_app_pixel_8_pro
+    metadata: {}
+    data:
+      message: "\U0001F468‍\U0001F4BB PC Acceso!"
+  mode: single
+- id: '1748520532376'
+  alias: PC Spento
+  description: ''
+  triggers:
+  - type: power
+    device_id: f82af24264e8db71c889ea32d253d164
+    entity_id: 763d12525b1f6853bb8fbac8a442d686
+    domain: sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+    below: 75
+  conditions: []
+  actions:
+  - action: input_text.set_value
+    metadata: {}
+    data:
+      value: Spento
+    target:
+      entity_id: input_text.stato_pc
+  - action: notify.mobile_app_pixel_8_pro
+    metadata: {}
+    data:
+      message: "\U0001F468‍\U0001F4BB PC Spento!"
+  mode: single
+- id: '1748524784949'
+  alias: Avvio Asciugatrice
+  description: ''
+  triggers:
+  - type: power
+    device_id: 5d70404fbfa49ea2e69475b30f2351f4
+    entity_id: 1b9a54d1fc3b0be1462a300b760eaedf
+    domain: sensor
+    trigger: device
+    above: 50
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - action: notify.mobile_app_pixel_8_pro
+    metadata: {}
+    data:
+      message: "\U0001F32A️Asciugatrice: Avviata!"
+  - action: input_text.set_value
+    metadata: {}
+    data:
+      value: Ciclo Avviato
+    target:
+      entity_id: input_text.stato_asciugatrice
+  mode: single
+- id: '1748524921323'
+  alias: Fine asciugatrice
+  description: ''
+  triggers:
+  - type: power
+    device_id: 5d70404fbfa49ea2e69475b30f2351f4
+    entity_id: 1b9a54d1fc3b0be1462a300b760eaedf
+    domain: sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    below: 10
+  conditions: []
+  actions:
+  - action: notify.mobile_app_pixel_8_pro
+    metadata: {}
+    data:
+      message: "\U0001F32A️Asciugatrice: Ciclo Terminato!"
+  - action: input_text.set_value
+    metadata: {}
+    data:
+      value: Spenta
+    target:
+      entity_id: input_text.stato_asciugatrice
+  mode: single
+- id: '1748525028903'
+  alias: Avvio lavatrice
+  description: ''
+  triggers:
+  - type: power
+    device_id: 7d2e4d7a762b4e071906599ea9744fdc
+    entity_id: 4b335db77c66377bd7195fb4f3a470d5
+    domain: sensor
+    trigger: device
+    above: 30
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - action: notify.mobile_app_pixel_8_pro
+    metadata: {}
+    data:
+      message: "\U0001F4A6Lavatrice: Ciclo Avviato!"
+  - action: input_text.set_value
+    metadata: {}
+    data:
+      value: Ciclo Avviato
+    target:
+      entity_id: input_text.stato_lavatrice
+  mode: single
+- id: '1748525074221'
+  alias: Fine lavatrice
+  description: ''
+  triggers:
+  - type: power
+    device_id: 7d2e4d7a762b4e071906599ea9744fdc
+    entity_id: 4b335db77c66377bd7195fb4f3a470d5
+    domain: sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    below: 15
+  conditions: []
+  actions:
+  - action: notify.mobile_app_pixel_8_pro
+    metadata: {}
+    data:
+      message: "\U0001F4A6Lavatrice: Ciclo Terminato!"
+  - action: input_text.set_value
+    metadata: {}
+    data:
+      value: Spenta
+    target:
+      entity_id: input_text.stato_lavatrice
+  mode: single
