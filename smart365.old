@@ -1,0 +1,210 @@
+# OLD CONFIGURAZIONE MODBUS PER EUROTHERM SMARTCONTROL365
+  
+modbus:
+  name: modbus_smart365
+  type: tcp
+  host: 192.168.178.85
+  port: 502
+  retries: 3
+  timeout: 5
+  
+sensors:
+  - name: temp_esterna_smart365
+    unit_of_measurement: °C
+    slave: 1
+    address: 58
+    scale: 0.1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+    
+  - name: freddo_caldo_smart365
+    slave: 1
+    address: 101
+    data_type: int16
+    scan_interval: 30
+    
+  - name: modalita_smart365
+    slave: 1
+    address: 102
+    data_type: int16
+    scan_interval: 30
+    
+  - name: Air_boost_smart365
+    slave: 1
+    address: 103
+    data_type: int16
+    scan_interval: 30
+    
+    # Sensori per le stanze (da definire per ogni stanza)
+    # STANZA 1 ??
+
+    
+  - name: temp_stanza1
+    unit_of_measurement: °C
+    address: 1205
+    slave: 1
+    scale: 0.1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+
+  - name: umidita_stanza1
+    unit_of_measurement: "%"
+    slave: 1
+    precision: 1
+    address: 1206
+    scan_interval: 30
+    
+  - name: temp_target_stanza1
+    unit_of_measurement: °C
+    scale: 0.1
+    slave: 1
+    address: 1208
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+    
+  - name: mode_stanza1
+    address: 1209
+    slave: 1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+    
+    # STANZA 2 ?? 
+    
+  - name: temp_stanza2
+    unit_of_measurement: °C
+    address: 1605
+    slave: 1
+    scale: 0.1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+
+  - name: umidita_stanza2
+    unit_of_measurement: "%"
+    slave: 1
+    precision: 1
+    address: 1606
+    scan_interval: 30
+    
+  - name: temp_target_stanza2
+    unit_of_measurement: °C
+    scale: 0.1
+    slave: 1
+    address: 1608
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+    
+  - name: mode_stanza2
+    address: 1609
+    slave: 1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+    
+    # STANZA 3 ??
+
+    
+  - name: mode_stanza3
+    address: 2009
+    slave: 1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+
+  - name: temp_stanza3
+    unit_of_measurement: °C
+    address: 2005
+    slave: 1
+    scale: 0.1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+
+  - name: umidita_stanza3
+    unit_of_measurement: "%"
+    slave: 1
+    precision: 1
+    address: 2006
+    scan_interval: 30
+    
+  - name: temp_target_stanza3
+    unit_of_measurement: °C
+    scale: 0.1
+    slave: 1
+    address: 2008
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+    
+    # STANZA 4 ??
+
+  - name: mode_stanza4
+    address: 2409
+    slave: 1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+
+  - name: temp_stanza4
+    unit_of_measurement: °C
+    address: 2405
+    slave: 1
+    scale: 0.1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+
+  - name: umidita_stanza4
+    unit_of_measurement: "%"
+    slave: 1
+    precision: 1
+    address: 2406
+    scan_interval: 30
+    
+  - name: temp_target_stanza4
+    unit_of_measurement: °C
+    scale: 0.1
+    slave: 1
+    address: 2408
+    precision: 1
+    data_type: int16
+    scan_interval: 30 
+    
+    # STANZA 5 ??
+
+  - name: mode_stanza5
+    address: 2809
+    slave: 1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+
+  - name: temp_stanza5
+    unit_of_measurement: °C
+    address: 2805
+    slave: 1
+    scale: 0.1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+
+  - name: umidita_stanza5
+    unit_of_measurement: "%"
+    slave: 1
+    precision: 1
+    address: 2806
+    scan_interval: 30
+    
+  - name: temp_target_stanza5
+    unit_of_measurement: °C
+    scale: 0.1
+    slave: 1
+    address: 2808
+    precision: 1
+    data_type: int16
+    scan_interval: 30

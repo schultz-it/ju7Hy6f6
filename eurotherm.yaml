@@ -1,0 +1,69 @@
+name: modbus_smart365
+type: tcp
+host: 192.168.178.85
+port: 599
+
+
+climates:
+  - name: "giu_soggiorno"
+    address: 1205
+    slave: 1
+    scale: 0.1
+    precision: 1
+    data_type: int16
+    target_temp_register: 1210
+    target_temp_write_registers: true
+    hvac_mode_register:
+      address: 1209
+      write_registers: false
+      values:
+        state_off: 0
+        state_auto: 1
+        state_heat: 2
+
+sensors:
+  - name: temp_ext_smart365
+    unit_of_measurement: °C
+    slave: 1
+    address: 58
+    scale: 0.1
+    precision: 1
+    data_type: int16
+    scan_interval: 30
+    
+  - name: freddo_caldo_smart365
+    slave: 1
+    address: 101
+    data_type: int16
+    scan_interval: 30
+    
+  - name: modalita_smart365
+    slave: 1
+    address: 102
+    data_type: int16
+    scan_interval: 30
+    
+  - name: air_boost_smart365
+    slave: 1
+    address: 103
+    data_type: int16
+    scan_interval: 30
+    
+    
+# STANZA 1 SOGGIORNO
+    
+  - name: umid_giu_soggiorno
+    unit_of_measurement: "%"
+    slave: 1
+    precision: 1
+    address: 1206
+    scan_interval: 30
+    
+  - name: temp_target_giu_soggiorno
+    unit_of_measurement: °C
+    scale: 0.1
+    slave: 1
+    address: 1208
+    precision: 1
+    data_type: int16
+    scan_interval: 30

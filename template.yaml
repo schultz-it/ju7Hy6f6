@@ -1,0 +1,20 @@
+- sensor:
+    - name: FV Totale
+      unique_id: fv_totale
+      unit_of_measurement: "kWh"
+      state: >
+        {{
+          (states('sensor.sh60rs_a2251102546_mppt1_energy') | float) +
+          (states('sensor.sh60rs_a2251102546_mppt2_energy') | float) +
+          (states('sensor.sh60rs_a2251102546_mppt3_energy') | float)
+        }}
+
+    - name: Percentuale Autoconsumo
+      unique_id: percentuale_autoconsumo
+      unit_of_measurement: "%"
+      state: >
+        {% set fv = states('sensor.fv_totale') | float %}
+        {% set rete = states('sensor.purchased_from_grid') | float %}
+        {% set tot = fv + rete %}
+        {{ ((fv / tot) * 100) | round(1) if tot > 0 else 0 }}
+

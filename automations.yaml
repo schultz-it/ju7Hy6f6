@@ -214,3 +214,14 @@
     target:
       entity_id: input_text.stato_lavatrice
   mode: single
+- id: '1748607030180'
+  alias: Github 2am Push
+  description: ''
+  triggers:
+  - trigger: time
+    at: 02:00:00
+  conditions: []
+  actions:
+  - action: shell_command.pushupdates_to_github
+    data: {}
+  mode: single
