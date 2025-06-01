@@ -1,11 +1,11 @@
 name: modbus_smart365
 type: tcp
 host: 192.168.178.85
-port: 599
+port: 502
 
 
 climates:
-  - name: "giu_soggiorno"
+  - name: "clima_genitori_badante"
     address: 1205
     slave: 1
     scale: 0.1
