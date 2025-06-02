@@ -1,4 +1,4 @@
-[master a76defd] config files on 31-05-2025 02:00:00
+[master 8576e75] config files on 01-06-2025 02:00:00
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,8 +12,4 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 7 files changed, 345 insertions(+), 2 deletions(-)
- create mode 100644 blueprints/template/homeassistant/inverted_binary_sensor.yaml
- create mode 100644 eurotherm.yaml
- create mode 100644 smart365.old
- create mode 100644 template.yaml
+ 2 files changed, 8 insertions(+), 4 deletions(-)

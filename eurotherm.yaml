@@ -52,14 +52,14 @@ sensors:
     
 # STANZA 1 SOGGIORNO
     
-  - name: umid_giu_soggiorno
+  - name: umid_genitori_badante
     unit_of_measurement: "%"
     slave: 1
     precision: 1
     address: 1206
     scan_interval: 30
     
-  - name: temp_target_giu_soggiorno
+  - name: temp_target_genitori_badante
     unit_of_measurement: °C
     scale: 0.1
     slave: 1
