@@ -173,7 +173,7 @@
     for:
       hours: 0
       minutes: 1
-      seconds: 0
+      seconds: 30
   conditions: []
   actions:
   - action: notify.mobile_app_pixel_8_pro
@@ -198,9 +198,9 @@
     trigger: device
     for:
       hours: 0
-      minutes: 5
+      minutes: 10
       seconds: 0
-    below: 15
+    below: 5
   conditions: []
   actions:
   - action: notify.mobile_app_pixel_8_pro
