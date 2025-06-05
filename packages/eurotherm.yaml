@@ -13,8 +13,8 @@ modbus: # Definizione dell'hub Modbus
     host: 192.168.178.85        # Indirizzo IP del dispositivo Modbus
     port: 502                   # Porta TCP del dispositivo Modbus
     timeout: 10                 # Secondi di attesa per una risposta (default è 3)
-    # delay: 0                  # Ritardo tra i cicli di polling (default è 0). Prova con 0.5 o 1 se ci sono problemi.
-    # retries: 3                # Numero di tentativi in caso di errore (default è 3).
+    # delay: 0                  # Default è 0. Rimosso per usare il default.
+    # retries: 3                # Default è 3. Rimosso per usare il default.
 
 sensor: # Definizione delle entità sensore
   - platform: modbus            # Specifica che questo è un sensore Modbus
@@ -26,6 +26,7 @@ sensor: # Definizione delle entità sensore
     input_type: holding         # Tipo di registro (holding, input, coil, discrete_input)
                                 # Per i registri del tuo manuale, questo dovrebbe essere 'holding'.
     data_type: uint16           # Tipo di dato del registro
+    count: 1                    # Numero di registri da leggere (esplicito per un singolo registro)
     scan_interval: 60           # Frequenza di aggiornamento in secondi
     # scale: 1                  # Fattore di scala (non necessario per un uint16 letto come 0 o 1)
     # precision: 0              # Precisione decimale (non necessaria qui)
@@ -33,4 +34,5 @@ sensor: # Definizione delle entità sensore
 # --- TUTTE LE ALTRE ENTITA' SONO COMMENTATE PER QUESTO TEST ---
 # (Se questo test funziona, potremo aggiungere gli altri sensori e i climate
 #  seguendo questa struttura moderna)
+
 
