@@ -1,37 +1,28 @@
-
 # Loads default set of integrations. Do not remove.
 default_config:
 
-# Load frontend themes from the themes folder
-frontend:
-  themes: !include_dir_merge_named themes
-  
-# Aggiungi questa sezione se non hai già una sezione "homeassistant:"
-# o aggiungi solo la riga "packages:" se la sezione "homeassistant:" esiste già
 homeassistant:
-  packages: !include_dir_named packages # Questa è la riga da aggiungere
-  
+  # Name of the location where Home Assistant is running
+  name: "BruFi Home Assistant"
+  # Location required to calculate the time the sun rises and sets
+  latitude: 45
+  longitude: 9
+  # 'metric' for Metric, 'us_customary' for US Customary
+  unit_system: metric
+  # Pick yours from here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: "Europe/Rome"
+  #customize: !include customize.yaml
+  packages: !include_dir_named packages
 template: !include template.yaml
 
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-# Text to speech
-tts:
-  - platform: google_translate
-    #language: 'it'
-    #cache: true
-    #cache_dir: /tmp/tts
-    #time_memory: 300
-    #base_url: http://localhost:8123
-    #service_name: google_say
 
-logger:
-  default: warning
-  logs:
-    homeassistant.components.modbus: debug
-    pymodbus: debug
+# Load frontend themes from the themes folder
+frontend:
+    themes: !include_dir_merge_named themes
     
 sensor:
   - platform: integration
