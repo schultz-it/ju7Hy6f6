@@ -18,3 +18,172 @@
         {% set tot = fv + rete %}
         {{ ((fv / tot) * 100) | round(1) if tot > 0 else 0 }}
 
+#VMC GENITORI BASETYPE
+    - name: "[VMC Genitori] Base Type"
+      unique_id: genitori_basetype_verbal
+      state: >
+        {% set val = states('sensor.genitori_basetype') | int %}
+        {% if val == 1 %}
+          Base without mix control
+        {% elif val == 0 %}
+          Base with mix control
+        {% else %}
+          Unknown ({{ val }})
+          {% endif %}
+          
+# VMC GENITORI FLOW SETPOINT
+    - name: "[VMC Genitori] Flow Set Point"
+      unique_id: genitori_flow_setpoint
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state: >
+        {{ (states('sensor.genitori_flow_setpoint_raw') | float(0)) / 10 }}
+
+# VMC GENITORI FLOW TEMPERATURE
+    - name: "[VMC Genitori] Flow Temperature"
+      unique_id: genitori_flow_temperature
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state: >
+        {{ (states('sensor.genitori_flow_temperature_raw') | float(0)) / 10 }}
+        
+# VMC PIANO 1 BASE TYPE
+    - name: "[VMC Piano 1] Base Type"
+      unique_id: piano1_basetype_verbal
+      state: >
+        {% set val = states('sensor.piano1_base_type_raw') | int %}
+        {% if val == 1 %}
+          Base without mix control
+        {% elif val == 0 %}
+          Base with mix control
+        {% else %}
+          Unknown ({{ val }})
+          {% endif %}
+
+# VMC PIANO 1 FLOW SETPOINT
+    - name: "[VMC Piano 1] Flow Set Point"
+      unique_id: piano1_flow_setpoint
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state: >
+        {{ (states('sensor.piano1_flow_setpoint_raw') | float(0)) / 10 }}
+
+# VMC PIANO 1 FLOW TEMPERATURE
+    - name: "[VMC Piano 1] Flow Temperature"
+      unique_id: piano1_flow_temperature
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state: >
+        {{ (states('sensor.piano1_flow_temperature_raw') | float(0)) / 10 }}
+
+# VMC PIANO 2 BASE TYPE
+    - name: "[VMC Piano 2] Base Type"
+      unique_id: piano2_basetype_verbal
+      state: >
+        {% set val = states('sensor.piano2_base_type_raw') | int %}
+        {% if val == 1 %}
+          Base without mix control
+        {% elif val == 0 %}
+          Base with mix control
+        {% else %}
+          Unknown ({{ val }})
+          {% endif %}
+
+# VMC PIANO 2 FLOW SETPOINT
+    - name: "[VMC Piano 2] Flow Set Point"
+      unique_id: piano2_flow_setpoint
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state: >
+        {{ (states('sensor.piano2_flow_setpoint_raw') | float(0)) / 10 }}
+
+# VMC PIANO 2 FLOW TEMPERATURE
+    - name: "[VMC Piano 2] Flow Temperature"
+      unique_id: piano2_flow_temperature
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state: >
+        {{ (states('sensor.piano2_flow_temperature_raw') | float(0)) / 10 }}
+        
+    - name: "[VMC Genitori - Badante] Sensor Type"
+      unique_id: genitori_badante_sensor_type
+      state: >
+         {% set val = states('sensor.vmc_genitori_badante_sensor_type_raw') | int %}
+         {% if val == 1 %}
+           Temperature only
+         {% elif val == 2 %}
+           Temperature and Humidity
+         {% else %}
+           Unknown ({{ val }})
+         {% endif %}
+
+    - name: "[VMC Genitori - Badante] Sensor Errors"
+      unique_id: genitori_badante_sensor_errors
+      state: >
+         {% set val = states('sensor.vmc_genitori_badante_sensor_errors_raw') | int %}
+         {% set errors = [] %}
+         {% if val == 0 %}
+           No errors
+         {% else %}
+           {% if val & 1 %} {% set _ = errors.append("Disconnected") %} {% endif %}
+           {% if val & 8 %} {% set _ = errors.append("Condensation alarm") %} {% endif %}
+           {% if val & 16 %} {% set _ = errors.append("High humidity, cooling inhibited") %} {% endif %}
+           {% if val & 32 %} {% set _ = errors.append("Temperature measure error") %} {% endif %}
+           {% if val & 64 %} {% set _ = errors.append("Humidity measure error") %} {% endif %}
+           {% if val & 256 %} {% set _ = errors.append("Humidity off the scale") %} {% endif %}
+           {% if val & 512 %} {% set _ = errors.append("Replace batteries") %} {% endif %}
+           {{ errors | join(", ") }}
+         {% endif %}
+
+    - name: "[VMC Genitori - Badante] Temperature"
+      unique_id: genitori_badante_temperature
+      unit_of_measurement: "°C"
+      state: >
+         {% set val = states('sensor.vmc_genitori_badante_temperature_raw') | int %}
+         {% if val > 60000 %}
+           {{ ((val - 65536) / 10) | round(1) }}
+         {% else %}
+           {{ (val / 10) | round(1) }}
+         {% endif %}
+
+    - name: "[VMC Genitori - Badante] Humidity"
+      unique_id: genitori_badante_humidity
+      unit_of_measurement: "%"
+      state: >
+         {{ (states('sensor.vmc_genitori_badante_humidity_raw') | float) | round(1) }}
+
+    - name: "[VMC Genitori - Badante] Dewpoint"
+      unique_id: genitori_badante_dewpoint
+      unit_of_measurement: "°C"
+      state: >
+         {{ (states('sensor.vmc_genitori_badante_dewpoint_raw') | float / 10) | round(1) }}
+
+    - name: "[VMC Genitori - Badante] Target Temperature"
+      unique_id: genitori_badante_target_temp
+      unit_of_measurement: "°C"
+      state: >
+         {{ (states('sensor.vmc_genitori_badante_target_temperature_raw') | float / 10) | round(1) }}
+
+    - name: "[VMC Genitori - Badante] Mode"
+      unique_id: genitori_badante_mode
+      state: >
+         {% set val = states('sensor.vmc_genitori_badante_mode_raw') | int %}
+         {% if val == 0 %}
+           Off
+         {% elif val == 1 %}
+           Automatic
+         {% elif val == 2 %}
+           Manual
+         {% elif val == 3 %}
+           Manual temporary
+         {% elif val == 4 %}
+           Party
+         {% elif val == 5 %}
+           Early bird
+         {% elif val == 6 %}
+           Goodnight
+         {% else %}
+           Unknown ({{ val }})
+         {% endif %}
+
+

@@ -5,7 +5,7 @@ port: 502
 
 
 climates:
-  - name: "clima_genitori_badante"
+  - name: "genitori_badante"
     address: 1205
     slave: 1
     scale: 0.1
@@ -49,21 +49,128 @@ sensors:
     data_type: int16
     scan_interval: 30
     
+    #VMC GENITORI
     
-# STANZA 1 SOGGIORNO
-    
-  - name: umid_genitori_badante
-    unit_of_measurement: "%"
+  - name: genitori_basetype
     slave: 1
-    precision: 1
-    address: 1206
-    scan_interval: 30
+    address: 1144
+    input_type: holding
+    data_type: uint16
     
-  - name: temp_target_genitori_badante
-    unit_of_measurement: °C
-    scale: 0.1
+  - name: "Genitori Flow Setpoint Raw"
+    slave: 1
+    address: 1145
+    input_type: holding
+    data_type: uint16
+
+  - name: "Genitori Flow Temperature Raw"
+    slave: 1
+    address: 1146
+    input_type: holding
+    data_type: uint16
+    
+  - name: "Piano1 Base Type Raw"
+    slave: 1
+    address: 4404
+    input_type: holding
+    data_type: uint16
+    
+  - name: "Piano1 Flow Setpoint Raw"
+    slave: 1
+    address: 4405
+    input_type: holding
+    data_type: uint16
+
+  - name: "Piano1 Flow Temperature Raw"
+    slave: 1
+    address: 4406
+    input_type: holding
+    data_type: uint16
+    
+  - name: "Piano2 Base Type Raw"
+    slave: 1
+    address: 7664
+    input_type: holding
+    data_type: uint16
+
+  - name: "Piano2 Flow Setpoint Raw"
+    slave: 1
+    address: 7665
+    input_type: holding
+    data_type: uint16
+
+  - name: "Piano2 Flow Temperature Raw"
+    slave: 1
+    address: 7666
+    input_type: holding
+    data_type: uint16
+
+
+    
+# [GENITORI] STANZA 1 BADANTE
+    
+  - name: "Badante Room Id Raw"
+    slave: 1
+    address: 1200
+    input_type: holding
+    data_type: uint16
+
+  - name: "Badante Base Id Raw"
+    slave: 1
+    address: 1201
+    input_type: holding
+    data_type: uint16
+
+  - name: "Badante Zone Id Raw"
+    slave: 1
+    address: 1202
+    input_type: holding
+    data_type: uint16
+
+  - name: "Badante Sensor Type Raw"
+    slave: 1
+    address: 1203
+    input_type: holding
+    data_type: uint16
+
+  - name: "Badante Sensor Errors Raw"
+    slave: 1
+    address: 1204
+    input_type: holding
+    data_type: uint16
+
+  - name: "Badante Temperature Raw"
+    slave: 1
+    address: 1205
+    input_type: holding
+    data_type: uint16
+
+  - name: "Badante Humidity Raw"
+    slave: 1
+    address: 1206
+    input_type: holding
+    data_type: uint16
+
+  - name: "Badante Dewpoint Raw"
+    slave: 1
+    address: 1207
+    input_type: holding
+    data_type: uint16
+
+  - name: "Badante Target Temperature Raw"
     slave: 1
     address: 1208
-    precision: 1
-    data_type: int16
-    scan_interval: 30
+    input_type: holding
+    data_type: uint16
+
+  - name: "Badante Mode Raw"
+    slave: 1
+    address: 1209
+    input_type: holding
+    data_type: uint16
+
+  - name: "Badante Manual Temperature Raw"
+    slave: 1
+    address: 1210
+    input_type: holding
+    data_type: uint16
