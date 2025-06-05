@@ -6,11 +6,33 @@ default_config:
 frontend:
   themes: !include_dir_merge_named themes
   
+# Aggiungi questa sezione se non hai già una sezione "homeassistant:"
+# o aggiungi solo la riga "packages:" se la sezione "homeassistant:" esiste già
+homeassistant:
+  packages: !include_dir_named packages # Questa è la riga da aggiungere
+  
 template: !include template.yaml
 
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+
+# Text to speech
+tts:
+  - platform: google_translate
+    #language: 'it'
+    #cache: true
+    #cache_dir: /tmp/tts
+    #time_memory: 300
+    #base_url: http://localhost:8123
+    #service_name: google_say
+
+logger:
+  default: warning
+  logs:
+    homeassistant.components.modbus: debug
+    pymodbus: debug
+    
 sensor:
   - platform: integration
     unique_id: sh60rs_a2251102546_mppt1_energy
@@ -70,6 +92,6 @@ sensor:
 shell_command:
   pushupdates_to_github: /bin/bash pushupdates.sh
   
-  # CONFIGURAZIONE MODBUS PER EUROTHERM SMARTCONTROL365
-modbus: !include eurotherm.yaml
+  # CONFIGURAZIONE MODBUS PER EUROTHERM SMARTCONTROL365 VECCHIA
+#modbus: !include eurotherm.yaml
 

@@ -69,6 +69,8 @@ sensors:
     input_type: holding
     data_type: uint16
     
+      #VMC PIANO 1
+    
   - name: "Piano1 Base Type Raw"
     slave: 1
     address: 4404
@@ -86,6 +88,8 @@ sensors:
     address: 4406
     input_type: holding
     data_type: uint16
+    
+     #VMC PIANO 2
     
   - name: "Piano2 Base Type Raw"
     slave: 1

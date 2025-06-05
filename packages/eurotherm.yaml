@@ -1,0 +1,405 @@
+# Questo è un file di configurazione YAML per Home Assistant
+# per l'integrazione di un sistema Eurotherm tramite Modbus TCP.
+# Configurazione per "Clima Genitori" (ZONE ID 0) e Temperatura Esterna.
+#
+# Basato sul manuale SmartComfort 365 Rev.06.
+
+modbus:
+  - name: "eurotherm_controller"
+    type: tcp
+    host: 192.168.178.85
+    port: 502
+    timeout: 10
+    delay: 1 # Ritardo in secondi tra le transazioni Modbus, 0.2 o 0.5 potrebbe essere sufficiente
+    retries: 5 # Numero di tentativi in caso di errore di comunicazione
+
+    sensors:
+      # --- SYSTEM INFORMATION ---
+      - name: "Eurotherm Temperatura Esterna"
+        unique_id: "eurotherm_temperatura_esterna"
+        slave: 1
+        address: 58 # External temperature used
+        input_type: holding
+        data_type: int16 # Gestisce temperature positive e negative
+        scale: 0.1
+        offset: 0 # Nessun offset necessario con int16 e la logica del manuale
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 300 # Aggiorna ogni 5 minuti
+
+      # --- ZONA 1: "Clima Genitori" (ZONE ID 0) ---
+      # Informazioni sulla Zona 1 (Operative Mode & Zone Mode)
+      - name: "Clima Genitori Modalita Operativa Eurotherm"
+        unique_id: "eurotherm_clima_genitori_modalita_operativa_sensore" # ID Univoco per il sensore
+        slave: 1
+        address: 101 # ZONE ID (0) - Operative mode (0=Cooling, 1=Heating)
+        input_type: holding
+        data_type: uint16
+        scan_interval: 60
+        # Per un input_select o select in HA per controllare questo, vedi la sezione 'select' o 'input_select'
+
+      - name: "Clima Genitori Modalita Zona Eurotherm"
+        unique_id: "eurotherm_clima_genitori_modalita_zona_sensore" # ID Univoco per il sensore
+        slave: 1
+        address: 102 # ZONE ID (0) - Zone mode (0=Home, 1=Off, 2=Away, 3=Holiday(RO))
+        input_type: holding
+        data_type: uint16
+        scan_interval: 60
+        # Per un input_select o select in HA per controllare questo, vedi la sezione 'select' o 'input_select'
+
+      # --- "Base Eurotherm Genitori" (Assunta come MODULE 1 / BASE ID 0) ---
+      # Room ID 0: "[Genitori] Stanza Badante"
+      - name: "[Genitori] Stanza Badante Temperatura Ambiente"
+        unique_id: "eurotherm_genitori_stanza_badante_temp_ambiente"
+        slave: 1
+        address: 1205 # MODULE 1, Room ID 0 - Current temperature
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 30
+      - name: "[Genitori] Stanza Badante Umidita"
+        unique_id: "eurotherm_genitori_stanza_badante_umidita"
+        slave: 1
+        address: 1206 # MODULE 1, Room ID 0 - Current humidity
+        input_type: holding
+        data_type: uint16
+        scale: 1
+        precision: 0
+        unit_of_measurement: "%"
+        device_class: humidity
+        scan_interval: 60
+      - name: "[Genitori] Stanza Badante Temperatura Target Sensore" # Sensore per la lettura del target attuale
+        unique_id: "eurotherm_genitori_stanza_badante_temp_target_sensore"
+        slave: 1
+        address: 1208 # MODULE 1, Room ID 0 - Current target temperature (RO)
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 60
+
+      # Room ID 1: "[Genitori] Bagno Grande"
+      - name: "[Genitori] Bagno Grande Temperatura Ambiente"
+        unique_id: "eurotherm_genitori_bagno_grande_temp_ambiente"
+        slave: 1
+        address: 1605
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 30
+      - name: "[Genitori] Bagno Grande Temperatura Target Sensore"
+        unique_id: "eurotherm_genitori_bagno_grande_temp_target_sensore"
+        slave: 1
+        address: 1608
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 60
+
+      # Room ID 2: "[Genitori] Camera Matrimoniale"
+      - name: "[Genitori] Camera Matrimoniale Temperatura Ambiente"
+        unique_id: "eurotherm_genitori_camera_matrimoniale_temp_ambiente"
+        slave: 1
+        address: 2005
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 30
+      - name: "[Genitori] Camera Matrimoniale Umidita"
+        unique_id: "eurotherm_genitori_camera_matrimoniale_umidita"
+        slave: 1
+        address: 2006
+        input_type: holding
+        data_type: uint16
+        scale: 1
+        precision: 0
+        unit_of_measurement: "%"
+        device_class: humidity
+        scan_interval: 60
+      - name: "[Genitori] Camera Matrimoniale Temperatura Target Sensore"
+        unique_id: "eurotherm_genitori_camera_matrimoniale_temp_target_sensore"
+        slave: 1
+        address: 2008
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 60
+
+      # Room ID 3: "[Genitori] Soggiorno"
+      - name: "[Genitori] Soggiorno Temperatura Ambiente"
+        unique_id: "eurotherm_genitori_soggiorno_temp_ambiente"
+        slave: 1
+        address: 2405
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 30
+      - name: "[Genitori] Soggiorno Umidita"
+        unique_id: "eurotherm_genitori_soggiorno_umidita"
+        slave: 1
+        address: 2406
+        input_type: holding
+        data_type: uint16
+        scale: 1
+        precision: 0
+        unit_of_measurement: "%"
+        device_class: humidity
+        scan_interval: 60
+      - name: "[Genitori] Soggiorno Temperatura Target Sensore"
+        unique_id: "eurotherm_genitori_soggiorno_temp_target_sensore"
+        slave: 1
+        address: 2408
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 60
+
+      # Room ID 4: "[Genitori] Bagno Tondo"
+      - name: "[Genitori] Bagno Tondo Temperatura Ambiente"
+        unique_id: "eurotherm_genitori_bagno_tondo_temp_ambiente"
+        slave: 1
+        address: 2805
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 30
+      - name: "[Genitori] Bagno Tondo Temperatura Target Sensore"
+        unique_id: "eurotherm_genitori_bagno_tondo_temp_target_sensore"
+        slave: 1
+        address: 2808
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 60
+
+      # Room ID 5: "[Genitori] Lavanderia"
+      - name: "[Genitori] Lavanderia Temperatura Ambiente"
+        unique_id: "eurotherm_genitori_lavanderia_temp_ambiente"
+        slave: 1
+        address: 3205
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 30
+      - name: "[Genitori] Lavanderia Umidita"
+        unique_id: "eurotherm_genitori_lavanderia_umidita"
+        slave: 1
+        address: 3206
+        input_type: holding
+        data_type: uint16
+        scale: 1
+        precision: 0
+        unit_of_measurement: "%"
+        device_class: humidity
+        scan_interval: 60
+      - name: "[Genitori] Lavanderia Temperatura Target Sensore"
+        unique_id: "eurotherm_genitori_lavanderia_temp_target_sensore"
+        slave: 1
+        address: 3208
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        scan_interval: 60
+
+      # --- ZONA 2: "Clima Casa" (ZONE ID 1) ---
+      # Sezione commentata per ora, da definire in futuro.
+      # Registri a partire da 230 per info Zona.
+      # MODULE 2 / BASE ID 1 inizia all'indirizzo 4400.
+      # MODULE 3 / BASE ID 2 inizia all'indirizzo 7660, e così via.
+      # - name: "Clima Casa Modalita Operativa Eurotherm"
+      #   unique_id: "eurotherm_clima_casa_modalita_operativa_sensore"
+      #   slave: 1
+      #   address: 231 # ZONE ID (1) - Operative mode
+      #   input_type: holding
+      #   data_type: uint16
+      #   scan_interval: 60
+
+    climate:
+      # --- TERMOSTATI PER ZONA 1: "Clima Genitori" ---
+      # Room ID 0: "[Genitori] Stanza Badante"
+      - name: "[Genitori] Termostato Stanza Badante"
+        unique_id: "eurotherm_genitori_termostato_stanza_badante"
+        slave: 1
+        # Temperatura attuale letta dal sensore definito sopra
+        current_temperature_entity_id: sensor.genitori_stanza_badante_temperatura_ambiente
+        # Temperatura target attuale letta dal sensore definito sopra
+        target_temperature_entity_id: sensor.genitori_stanza_badante_temperatura_target_sensore
+        # Registro per IMPOSTARE la temperatura target (Manuale)
+        target_temp_register: 1210 # MODULE 1, Room ID 0 - Manual temperature (RW)
+        target_temp_register_type: holding
+        # Registro per IMPOSTARE la modalità della stanza
+        hvac_mode_register:
+          address: 1209 # MODULE 1, Room ID 0 - Mode (RW)
+          values:
+            off: 0 # Attenzione: Manuale indica RO per 0=Off. Potrebbe non funzionare.
+            auto: 1 # Automatic
+            heat: 2 # Manual (usiamo 'heat' per rappresentare il controllo manuale attivo)
+        hvac_modes:
+          - "off"
+          - "auto"
+          - "heat" # Rappresenta la modalità Manuale del termostato Eurotherm
+        min_temp: 15
+        max_temp: 30
+        temp_step: 0.1 # Step di impostazione della temperatura
+        precision: 0.1 # Precisione di visualizzazione
+        data_type: int16 # Per i registri di temperatura e target
+        scale: 0.1
+
+      # Room ID 1: "[Genitori] Bagno Grande"
+      - name: "[Genitori] Termostato Bagno Grande"
+        unique_id: "eurotherm_genitori_termostato_bagno_grande"
+        slave: 1
+        current_temperature_entity_id: sensor.genitori_bagno_grande_temperatura_ambiente
+        target_temperature_entity_id: sensor.genitori_bagno_grande_temperatura_target_sensore
+        target_temp_register: 1610 # MODULE 1, Room ID 1 - Manual temperature (RW)
+        target_temp_register_type: holding
+        hvac_mode_register:
+          address: 1609 # MODULE 1, Room ID 1 - Mode (RW)
+          values:
+            off: 0
+            auto: 1
+            heat: 2
+        hvac_modes: ["off", "auto", "heat"]
+        min_temp: 15
+        max_temp: 30
+        temp_step: 0.1
+        precision: 0.1
+        data_type: int16
+        scale: 0.1
+
+      # Room ID 2: "[Genitori] Camera Matrimoniale"
+      - name: "[Genitori] Termostato Camera Matrimoniale"
+        unique_id: "eurotherm_genitori_termostato_camera_matrimoniale"
+        slave: 1
+        current_temperature_entity_id: sensor.genitori_camera_matrimoniale_temperatura_ambiente
+        target_temperature_entity_id: sensor.genitori_camera_matrimoniale_temperatura_target_sensore
+        target_temp_register: 2010 # MODULE 1, Room ID 2 - Manual temperature (RW)
+        target_temp_register_type: holding
+        hvac_mode_register:
+          address: 2009 # MODULE 1, Room ID 2 - Mode (RW)
+          values:
+            off: 0
+            auto: 1
+            heat: 2
+        hvac_modes: ["off", "auto", "heat"]
+        min_temp: 15
+        max_temp: 30
+        temp_step: 0.1
+        precision: 0.1
+        data_type: int16
+        scale: 0.1
+
+      # Room ID 3: "[Genitori] Soggiorno"
+      - name: "[Genitori] Termostato Soggiorno"
+        unique_id: "eurotherm_genitori_termostato_soggiorno"
+        slave: 1
+        current_temperature_entity_id: sensor.genitori_soggiorno_temperatura_ambiente
+        target_temperature_entity_id: sensor.genitori_soggiorno_temperatura_target_sensore
+        target_temp_register: 2410 # MODULE 1, Room ID 3 - Manual temperature (RW)
+        target_temp_register_type: holding
+        hvac_mode_register:
+          address: 2409 # MODULE 1, Room ID 3 - Mode (RW)
+          values:
+            off: 0
+            auto: 1
+            heat: 2
+        hvac_modes: ["off", "auto", "heat"]
+        min_temp: 15
+        max_temp: 30
+        temp_step: 0.1
+        precision: 0.1
+        data_type: int16
+        scale: 0.1
+
+      # Room ID 4: "[Genitori] Bagno Tondo"
+      - name: "[Genitori] Termostato Bagno Tondo"
+        unique_id: "eurotherm_genitori_termostato_bagno_tondo"
+        slave: 1
+        current_temperature_entity_id: sensor.genitori_bagno_tondo_temperatura_ambiente
+        target_temperature_entity_id: sensor.genitori_bagno_tondo_temperatura_target_sensore
+        target_temp_register: 2810 # MODULE 1, Room ID 4 - Manual temperature (RW)
+        target_temp_register_type: holding
+        hvac_mode_register:
+          address: 2809 # MODULE 1, Room ID 4 - Mode (RW)
+          values:
+            off: 0
+            auto: 1
+            heat: 2
+        hvac_modes: ["off", "auto", "heat"]
+        min_temp: 15
+        max_temp: 30
+        temp_step: 0.1
+        precision: 0.1
+        data_type: int16
+        scale: 0.1
+
+      # Room ID 5: "[Genitori] Lavanderia"
+      - name: "[Genitori] Termostato Lavanderia"
+        unique_id: "eurotherm_genitori_termostato_lavanderia"
+        slave: 1
+        current_temperature_entity_id: sensor.genitori_lavanderia_temperatura_ambiente
+        target_temperature_entity_id: sensor.genitori_lavanderia_temperatura_target_sensore
+        target_temp_register: 3210 # MODULE 1, Room ID 5 - Manual temperature (RW)
+        target_temp_register_type: holding
+        hvac_mode_register:
+          address: 3209 # MODULE 1, Room ID 5 - Mode (RW)
+          values:
+            off: 0
+            auto: 1
+            heat: 2
+        hvac_modes: ["off", "auto", "heat"]
+        min_temp: 15
+        max_temp: 30
+        temp_step: 0.1
+        precision: 0.1
+        data_type: int16
+        scale: 0.1
+
+# --- FINE DELLA CONFIGURAZIONE MODBUS ---
+
+# Note sulla configurazione:
+# 1. Salva questo codice come file YAML (es. `eurotherm.yaml`) nella tua cartella `packages` di Home Assistant.
+# 2. Assicurati che `configuration.yaml` carichi i packages (es. `homeassistant: packages: !include_dir_named packages`).
+# 3. Verifica la configurazione in HA (Strumenti per sviluppatori -> YAML) e riavvia.
+# 4. Controlla i log per errori. Se necessario, aumenta il livello di log per modbus:
+# logger:
+#   default: info # o warning
+#   logs:
+#     homeassistant.components.modbus: debug
+#     pymodbus: debug # Per debug a basso livello della comunicazione Modbus
