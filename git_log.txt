@@ -1,4 +1,4 @@
-[master d9fddfb] config files on 05-06-2025 18:47:20
+[master 84ed22e] config files on 05-06-2025 19:43:41
  Committer: root <root@core-ssh.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,4 +12,5 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 4 files changed, 294 insertions(+), 16 deletions(-)
+ 5 files changed, 437 insertions(+), 178 deletions(-)
+ create mode 100644 packages/eurotherm.yaml
