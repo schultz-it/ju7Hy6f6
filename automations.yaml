@@ -10,7 +10,7 @@
     above: 30
     for:
       hours: 0
-      minutes: 1
+      minutes: 5
       seconds: 0
   conditions: []
   actions:
@@ -36,7 +36,7 @@
     trigger: device
     for:
       hours: 0
-      minutes: 5
+      minutes: 15
       seconds: 0
     below: 10
   conditions: []
