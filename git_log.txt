@@ -1,4 +1,4 @@
-[master a57ca3c] config files on 16-06-2025 02:00:00
+[master 826f646] config files on 20-06-2025 02:00:00
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,4 +12,7 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ 4 files changed, 2 insertions(+), 2 deletions(-)
+ delete mode 100644 custom_components/hacs/hacs_frontend/__pycache__/__init__.cpython-312.pyc
+ delete mode 100644 custom_components/hacs/hacs_frontend/__pycache__/version.cpython-312.pyc
+ delete mode 100644 tts/e4dce137b39373cd0d62a3751516172d34fa905d_it-it_315ab84d15_cloud.mp3
