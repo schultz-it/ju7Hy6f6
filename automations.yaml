@@ -51,6 +51,12 @@
     metadata: {}
     data:
       message: "Lavastoviglie \U0001F37D️: Lavaggio Terminato!"
+  - action: notify.send_message
+    metadata: {}
+    data:
+      message: Ciclo Lavastoviglie Completato
+    target:
+      device_id: 1353f8fd4924b8c5d52a9ea7d697031b
   mode: single
 - id: '1748520463968'
   alias: New automation
@@ -159,6 +165,12 @@
       value: Spenta
     target:
       entity_id: input_text.stato_asciugatrice
+  - action: notify.send_message
+    metadata: {}
+    data:
+      message: Ciclo Asciugatrice Completato!
+    target:
+      device_id: 1353f8fd4924b8c5d52a9ea7d697031b
   mode: single
 - id: '1748525028903'
   alias: Avvio lavatrice
@@ -213,6 +225,12 @@
       value: Spenta
     target:
       entity_id: input_text.stato_lavatrice
+  - action: notify.send_message
+    metadata: {}
+    data:
+      message: Ciclo Lavatrice Completato!
+    target:
+      device_id: 1353f8fd4924b8c5d52a9ea7d697031b
   mode: single
 - id: '1748607030180'
   alias: Github 2am Push
