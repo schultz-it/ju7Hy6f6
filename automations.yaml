@@ -37,7 +37,7 @@
     for:
       hours: 0
       minutes: 15
-      seconds: 0
+      seconds: 30
     below: 10
   conditions: []
   actions:
@@ -242,4 +242,41 @@
   actions:
   - action: shell_command.pushupdates_to_github
     data: {}
+  mode: single
+- id: '1751041740195'
+  alias: Frigo aperto
+  description: ''
+  triggers:
+  - type: opened
+    device_id: 4f851f1b5fb52109d876a35a9e34bff1
+    entity_id: 16f805262acfd81731d337cf19a65e06
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - action: notify.send_message
+    metadata: {}
+    data:
+      message: Gloriaaaaaaaa chiudi il frigorifero dannazioneeeeeee
+    target:
+      device_id: 1353f8fd4924b8c5d52a9ea7d697031b
+  mode: single
+- id: '1751054196871'
+  alias: Buonanotte klorietta
+  description: ''
+  triggers:
+  - trigger: time
+    at: '22:39:00'
+  conditions: []
+  actions:
+  - action: notify.send_message
+    metadata: {}
+    data:
+      message: Buonanotte Kloriettaaaaaaaaaaaaaa
+    target:
+      device_id: 1353f8fd4924b8c5d52a9ea7d697031b
   mode: single
