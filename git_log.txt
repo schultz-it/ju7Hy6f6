@@ -1,4 +1,4 @@
-[master 68dc1ad] config files on 01-07-2025 02:00:00
+[master f2594e0] config files on 02-07-2025 02:00:00
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,4 +12,14 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ 12 files changed, 2 insertions(+), 2 deletions(-)
+ delete mode 100644 custom_components/spotifyplus/__pycache__/__init__.cpython-313.pyc
+ delete mode 100644 custom_components/spotifyplus/__pycache__/application_credentials.cpython-313.pyc
+ delete mode 100644 custom_components/spotifyplus/__pycache__/appmessages.cpython-313.pyc
+ delete mode 100644 custom_components/spotifyplus/__pycache__/browse_media.cpython-313.pyc
+ delete mode 100644 custom_components/spotifyplus/__pycache__/config_flow.cpython-313.pyc
+ delete mode 100644 custom_components/spotifyplus/__pycache__/const.cpython-313.pyc
+ delete mode 100644 custom_components/spotifyplus/__pycache__/instancedata_spotifyplus.cpython-313.pyc
+ delete mode 100644 custom_components/spotifyplus/__pycache__/media_player.cpython-313.pyc
+ delete mode 100644 custom_components/spotifyplus/__pycache__/system_health.cpython-313.pyc
+ delete mode 100644 custom_components/spotifyplus/__pycache__/utils.cpython-313.pyc
