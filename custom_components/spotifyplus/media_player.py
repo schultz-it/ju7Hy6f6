@@ -140,6 +140,7 @@ ATTR_SPOTIFYPLUS_PLAYLIST_NAME = "sp_playlist_name"
 ATTR_SPOTIFYPLUS_PLAYLIST_URI = "sp_playlist_uri"
 ATTR_SPOTIFYPLUS_SOURCE_LIST_HIDE = "sp_source_list_hide"
 ATTR_SPOTIFYPLUS_TRACK_IS_EXPLICIT = "sp_track_is_explicit"
+ATTR_SPOTIFYPLUS_TRACK_URI_ORIGIN = "sp_track_uri_origin"
 ATTR_SPOTIFYPLUS_USER_COUNTRY = "sp_user_country"
 ATTR_SPOTIFYPLUS_USER_DISPLAY_NAME = "sp_user_display_name"
 ATTR_SPOTIFYPLUS_USER_EMAIL = "sp_user_email"
@@ -474,6 +475,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
         attributes[ATTR_SPOTIFYPLUS_PLAY_TIME_REMAINING_EST] = None
         attributes[ATTR_SPOTIFYPLUS_PLAYING_TYPE] = ATTRVALUE_UNKNOWN
         attributes[ATTR_SPOTIFYPLUS_TRACK_IS_EXPLICIT] = False
+        attributes[ATTR_SPOTIFYPLUS_TRACK_URI_ORIGIN] = ATTRVALUE_UNKNOWN
         attributes[ATTR_SPOTIFYPLUS_USER_COUNTRY] = ATTRVALUE_UNKNOWN
         attributes[ATTR_SPOTIFYPLUS_USER_DISPLAY_NAME] = ATTRVALUE_UNKNOWN
         attributes[ATTR_SPOTIFYPLUS_USER_EMAIL] = ATTRVALUE_UNKNOWN
@@ -505,6 +507,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
                 if track.Explicit:
                     attributes[ATTR_SPOTIFYPLUS_TRACK_IS_EXPLICIT] = track.Explicit
                 if track.Type == SpotifyMediaTypes.TRACK.value:
+                    attributes[ATTR_SPOTIFYPLUS_TRACK_URI_ORIGIN] = track.UriOrigin
                     if len(track.Artists) > 0:
                         attributes[ATTR_SPOTIFYPLUS_ARTIST_URI] = track.Artists[0].Uri
             if (self._playerState.CurrentlyPlayingType is not None):
@@ -4830,6 +4833,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
     def service_spotify_get_track(
             self, 
             trackId:str=None, 
+            market:str=None, 
             ) -> dict:
         """
         Get Spotify catalog information for a single track identified by its unique Spotify ID.
@@ -4840,6 +4844,14 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
                 Example: `1kWUud3vY5ij5r62zxpTRy`
                 If null, the currently playing track uri id value is used; a Spotify Free or Premium account 
                 is required to correctly read the currently playing context.
+            market (str):
+                An ISO 3166-1 alpha-2 country code. If a country code is specified, only content that 
+                is available in that market will be returned.  If a valid user access token is specified 
+                in the request header, the country associated with the user account will take priority over 
+                this parameter.  
+                Note: If neither market or user country are provided, the content is considered unavailable for the client.  
+                Users can view the country that is associated with their account in the account settings.  
+                Example: `ES`
                 
         Returns:
             A dictionary that contains the following keys:
@@ -4855,11 +4867,12 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
             # trace.
             apiMethodParms = _logsi.EnterMethodParmList(SILevel.Debug, apiMethodName)
             apiMethodParms.AppendKeyValue("trackId", trackId)
+            apiMethodParms.AppendKeyValue("market", market)
             _logsi.LogMethodParmList(SILevel.Verbose, "Spotify Get Track Service", apiMethodParms)
                 
             # request information from Spotify Web API.
             _logsi.LogVerbose(STAppMessages.MSG_SERVICE_QUERY_WEB_API)
-            result = self.data.spotifyClient.GetTrack(trackId)
+            result = self.data.spotifyClient.GetTrack(trackId, market)
 
             # return the (partial) user profile that retrieved the result, as well as the result itself.
             return {
