@@ -1,4 +1,4 @@
-[master 44a21b6] config files on 20-08-2025 02:00:00
+[master 747f7df] config files on 21-08-2025 02:00:00
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,4 +12,45 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ 106 files changed, 2320 insertions(+), 257 deletions(-)
+ create mode 100644 custom_components/sonoff/__pycache__/select.cpython-313.pyc
+ create mode 100644 custom_components/sonoff/select.py
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/__init__.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/alarm_control_panel.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/binary_sensor.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/button.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/camera.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/climate.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/config_flow.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/cover.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/device_tracker.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/fan.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/humidifier.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/light.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/media_player.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/number.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/remote.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/select.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/sensor.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/switch.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/system_health.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/text.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/vacuum.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/__pycache__/water_heater.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/__init__.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/const.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/converters.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/coord_transform.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/coordinator.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/device.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/device_customizes.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/hass_entity.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/hass_entry.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/miio2miot.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/miio2miot_specs.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/miot_local_devices.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/miot_spec.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/templates.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/translation_languages.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/utils.cpython-313.pyc
+ create mode 100644 custom_components/xiaomi_miot/core/__pycache__/xiaomi_cloud.cpython-313.pyc
