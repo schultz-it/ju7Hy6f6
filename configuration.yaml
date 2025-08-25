@@ -5,8 +5,9 @@ homeassistant:
   # Name of the location where Home Assistant is running
   name: "BruFi Home Assistant"
   # Location required to calculate the time the sun rises and sets
-  latitude: 45
-  longitude: 9
+  latitude: 45.665
+  longitude: 9.309
+  elevation: 261
   # 'metric' for Metric, 'us_customary' for US Customary
   unit_system: metric
   # Pick yours from here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -85,4 +86,6 @@ shell_command:
   
   # CONFIGURAZIONE MODBUS PER EUROTHERM SMARTCONTROL365 VECCHIA
 #modbus: !include eurotherm.yaml
+
+# smart_irrigation:
 
