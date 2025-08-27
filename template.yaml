@@ -17,3 +17,12 @@
         {% set rete = states('sensor.purchased_from_grid') | float %}
         {% set tot = fv + rete %}
         {{ ((fv / tot) * 100) | round(1) if tot > 0 else 0 }}
+
+    - name: "Instantaneous power deficit"
+      unique_id: deficit_power_instantaneous
+      unit_of_measurement: W
+      device_class: power
+      state: >
+        {% set consumo = (states('sensor.consumo_istantaneo_totale') | float(0)) %}
+        {% set fv = (states('sensor.produzione_istantanea_fv') | float(0)) %}
+        {{ (consumo - fv) | round(0) }}

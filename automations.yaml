@@ -270,7 +270,7 @@
   description: ''
   triggers:
   - trigger: time
-    at: '22:39:00'
+    at: '22:00:00'
   conditions: []
   actions:
   - action: notify.send_message
@@ -278,5 +278,37 @@
     data:
       message: Buonanotte Kloriettaaaaaaaaaaaaaa
     target:
-      device_id: 1353f8fd4924b8c5d52a9ea7d697031b
+      device_id:
+      - 8dd88861eba1328c9cd07d7022937fa8
   mode: single
+- &id001
+  id: deficit_power_over_6kw
+  alias: Deficit power > 6 kW
+  triggers:
+  - entity_id:
+    - sensor.instantaneous_power_deficit
+    above: 6000
+    for:
+      seconds: 20
+    trigger: numeric_state
+  actions:
+  - variables:
+      consumo: '{{ (states(''sensor.consumo_istantaneo_totale'') | float(0)) }}'
+      fv: '{{ (states(''sensor.produzione_istantanea_fv'') | float(0)) }}'
+      deficit: '{{ (states(''sensor.instantaneous_power_deficit'') | float(0)) }}'
+  - data:
+      title: ⚡ Deficit power alert
+      message: 'Deficit: {{ deficit | round(0) }} W (> 6000 W). Consumption: {{ consumo
+        | round(0) }} W — PV: {{ fv | round(0) }} W.
+
+        '
+    action: persistent_notification.create
+  - data:
+      title: ⚡ Deficit > 6 kW
+      message: 'Deficit {{ deficit | round(0) }} W. Consumption {{ consumo | round(0)
+        }} W, PV {{ fv | round(0) }} W.
+
+        '
+    action: notify.notify
+  mode: single
+- *id001
