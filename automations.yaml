@@ -310,5 +310,46 @@
 
         '
     action: notify.notify
+  - action: notify.send_message
+    metadata: {}
+    data:
+      message: Attenzione! Distacco immediato per superamento potenza, spegni qualcosa
+        o rimani al buio!! Attenzione!! Distacco immediato!
+    target:
+      device_id: 1353f8fd4924b8c5d52a9ea7d697031b
   mode: single
 - *id001
+- id: '1756309707631'
+  alias: 'TV accesa cornice '
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 25cfd7469f060c88f77f8721bd90ce90
+    entity_id: 8c04f8d364294d73fa2b6f0c720f1fa1
+    domain: remote
+    trigger: device
+  conditions: []
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      device_id: e713e0826211997dce803385fc048702
+  mode: single
+- id: '1756309742361'
+  alias: TV spenta cornice
+  description: ''
+  triggers:
+  - type: turned_off
+    device_id: 25cfd7469f060c88f77f8721bd90ce90
+    entity_id: 8c04f8d364294d73fa2b6f0c720f1fa1
+    domain: remote
+    trigger: device
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      device_id: e713e0826211997dce803385fc048702
+  mode: single
