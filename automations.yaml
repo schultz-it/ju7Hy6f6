@@ -353,3 +353,22 @@
     target:
       device_id: e713e0826211997dce803385fc048702
   mode: single
+- id: '1756433731877'
+  alias: Tapparella 8:15
+  description: ''
+  triggers:
+  - trigger: time
+    at: 08:15:00
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  conditions: []
+  actions:
+  - device_id: 889c32d420e3c18a323ebea2ff405ca2
+    domain: cover
+    entity_id: a1d2a179b2d8f2e98f68e8d27d06fa45
+    type: open
+  mode: single
