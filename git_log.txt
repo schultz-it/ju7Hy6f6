@@ -1,4 +1,4 @@
-[master 47ae3a5] config files on 29-08-2025 02:00:00
+[master 946b0d8] config files on 30-08-2025 02:00:00
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,4 +12,8 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 3 files changed, 73 insertions(+), 41 deletions(-)
+ 47 files changed, 204 insertions(+), 16 deletions(-)
+ create mode 100644 custom_components/sonoff/__pycache__/alarm_control_panel.cpython-313.pyc
+ create mode 100644 custom_components/sonoff/__pycache__/media_player.cpython-313.pyc
+ create mode 100644 custom_components/sonoff/alarm_control_panel.py
+ create mode 100644 custom_components/sonoff/media_player.py
