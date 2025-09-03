@@ -1,4 +1,4 @@
-[master 5a9a0e1] config files on 01-09-2025 02:00:00
+[master 4f16bb6] config files on 02-09-2025 02:00:00
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,20 +12,4 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 17 files changed, 3327 insertions(+), 6 deletions(-)
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/__init__.py
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/__init__.cpython-313.pyc
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/api.cpython-313.pyc
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/config_flow.cpython-313.pyc
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/const.cpython-313.pyc
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/coordinator.cpython-313.pyc
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/modbuspayload.cpython-313.pyc
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/api.py
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/config_flow.py
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/const.py
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/coordinator.py
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/manifest.json
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/modbuspayload.py
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/sensor.py
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/translations/en.json
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/translations/pt.json
+ 1 file changed, 18 insertions(+), 102 deletions(-)
