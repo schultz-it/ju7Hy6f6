@@ -6,10 +6,11 @@
       },
       "reauth_confirm": {
         "title": "SpotifyPlus Re-Authentication Required",
-        "description": "The Spotify integration needs to re-authenticate with Spotify for account: {account}"
+        "description": "The SpotifyPlus integration needs to re-authenticate with Spotify for account: {account}"
       }
     },
     "abort": {
+      "already_configured": "Service is already configured for the associated Spotify User ID.  Please modify the existing service entry.",
       "authorize_url_timeout": "Timeout generating authorize URL.",
       "missing_configuration": "The Spotify integration is not configured. Please follow the documentation.",
       "no_url_available": "[%key:common::config_flow::abort::oauth2_no_url_available%]",
@@ -1467,6 +1468,24 @@
         "sort_result": {
           "name": "Sort Result?",
           "description": "True to sort result items by name prior to returning to the caller; otherwise, False to return results in the order that the Spotify Web API returned them."
+        }
+      }
+    },
+    "list_application_credential_mappings": {
+      "name": "List Application Credential Mappings",
+      "description": "List Home Assistant application credential mappings to determine which configuration entitys use which credential.",
+      "fields": {
+        "filter_domain": {
+          "name": "Domain Name Filter",
+          "description": "Limit entries displayed to the specified domain name (e.g. 'spotifyplus', 'spotify', etc)."
+        },
+        "filter_credentials_only": {
+          "name": "Application Credentials Filter?",
+          "description": "True (default) to limit entries displayed to those that have Application Credentials defined; otherwise, False to include all entries."
+        },
+        "list_domain_entities": {
+          "name": "List Domain Entities",
+          "description": "True to list entities that are children of the domain; otherwise, False (default) to exclude domain entity details."
         }
       }
     },
