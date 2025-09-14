@@ -1,4 +1,4 @@
-[master 425712f] config files on 12-09-2025 02:00:00
+[master a77e1b9] config files on 13-09-2025 02:00:01
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,4 +12,35 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ 126 files changed, 3915 insertions(+), 908 deletions(-)
+ delete mode 100644 custom_components/bambu_lab/__pycache__/__init__.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/binary_sensor.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/button.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/camera.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/config_flow.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/const.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/coordinator.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/definitions.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/diagnostics.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/fan.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/image.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/light.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/models.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/number.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/select.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/sensor.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/switch.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/__pycache__/update.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/frontend/__pycache__/__init__.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/pybambu/__pycache__/__init__.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/pybambu/__pycache__/bambu_client.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/pybambu/__pycache__/bambu_cloud.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/pybambu/__pycache__/commands.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/pybambu/__pycache__/const.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/pybambu/__pycache__/const_hms_errors.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/pybambu/__pycache__/const_print_errors.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/pybambu/__pycache__/models.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/pybambu/__pycache__/utils.cpython-313.pyc
+ create mode 100644 custom_components/bambu_lab/pybambu/tests/MOCK-H2S.json
+ delete mode 100644 custom_components/bambu_lab/pybambu/tests/__pycache__/__init__.cpython-313.pyc
+ delete mode 100644 custom_components/bambu_lab/pybambu/tests/__pycache__/test_utils.cpython-313.pyc
