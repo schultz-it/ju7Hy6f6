@@ -17,9 +17,10 @@ from .const import (
     CONF_NAME,
     CONF_PORT,
     CONF_SCAN_INTERVAL,
-    CONF_SLAVE_ID,
+    CONF_DEVICE_ID,
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
+    MAX_SCAN_INTERVAL,
     MIN_SCAN_INTERVAL,
 )
 
@@ -37,15 +38,18 @@ class ABBPowerOneFimerCoordinator(DataUpdateCoordinator):
         self.name = str(config_entry.data.get(CONF_NAME))
         self.host = str(config_entry.data.get(CONF_HOST))
         self.port = int(config_entry.data.get(CONF_PORT))
-        self.slave_id = int(config_entry.data.get(CONF_SLAVE_ID))
+        # Handle backward compatibility: try new key first, fallback to old key
+        self.device_id = int(config_entry.data.get(CONF_DEVICE_ID) or config_entry.data.get("slave_id"))
         self.base_addr = int(config_entry.data.get(CONF_BASE_ADDR))
         self.scan_interval = int(
             config_entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
         )
 
-        # enforce scan_interval lower bound
+        # enforce scan_interval bounds
         if self.scan_interval < MIN_SCAN_INTERVAL:
             self.scan_interval = MIN_SCAN_INTERVAL
+        elif self.scan_interval > MAX_SCAN_INTERVAL:
+            self.scan_interval = MAX_SCAN_INTERVAL
         # set coordinator update interval
         self.update_interval = timedelta(seconds=self.scan_interval)
         _LOGGER.debug(
@@ -69,14 +73,14 @@ class ABBPowerOneFimerCoordinator(DataUpdateCoordinator):
             self.name,
             self.host,
             self.port,
-            self.slave_id,
+            self.device_id,
             self.base_addr,
             self.scan_interval,
         )
 
         _LOGGER.debug(f"Coordinator Config Data: {config_entry.data}")
         _LOGGER.debug(
-            f"Coordinator init - Host: {self.host} Port: {self.port} ID: {self.slave_id} Base Addr.: {self.base_addr} ScanInterval: {self.scan_interval}"
+            f"Coordinator init - Host: {self.host} Port: {self.port} ID: {self.device_id} Base Addr.: {self.base_addr} ScanInterval: {self.scan_interval}"
         )
 
     async def async_update_data(self):

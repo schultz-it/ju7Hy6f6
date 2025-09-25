@@ -4,13 +4,14 @@ https://github.com/alexdelprete/ha-abb-powerone-pvi-sunspec
 """
 
 import asyncio
+import datetime
 import logging
+import time
 from typing import Any
 
 from homeassistant.core import HomeAssistant
 from pymodbus import ExceptionResponse
 from pymodbus.client import AsyncModbusTcpClient
-from pymodbus.constants import Endian
 from pymodbus.exceptions import ConnectionException, ModbusException
 
 from .const import (
@@ -34,20 +35,18 @@ from .const import (
     MAX_BASE_ADDR,
     MAX_PORT,
     MAX_SCAN_INTERVAL,
-    MAX_SLAVE_ID,
+    MAX_DEVICE_ID,
     MIN_BASE_ADDR,
     MIN_PORT,
     MIN_SCAN_INTERVAL,
-    MIN_SLAVE_ID,
-    MIN_TIMEOUT_BUFFER,
+    MIN_DEVICE_ID,
     SUNSPEC_M160_OFFSETS,
     SUNSPEC_MODEL_160_ID,
     TEMP_SCALE_FACTOR_CORRECTION,
     TEMP_THRESHOLD_CELSIUS,
 )
-
-# from pymodbus.payload import BinaryPayloadDecoder
-from .modbuspayload import BinaryPayloadDecoder
+from .pymodbus_constants import Endian
+from .pymodbus_payload import BinaryPayloadDecoder
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -62,7 +61,7 @@ class ConnectionError(Exception):
         message: Human readable error message
         host: The inverter's IP address or hostname
         port: The Modbus TCP port number
-        slave_id: The Modbus slave ID
+        device_id: The Modbus device ID
         timeout: Connection timeout in seconds
 
     """
@@ -72,13 +71,13 @@ class ConnectionError(Exception):
         message: str = "Connection failed",
         host: str | None = None,
         port: int | None = None,
-        slave_id: int | None = None,
-        timeout: int | None = None,
+        device_id: int | None = None,
+        timeout: float | None = None,
     ):
         """Initialize ConnectionError exception."""
         self.host = host
         self.port = port
-        self.slave_id = slave_id
+        self.device_id = device_id
         self.timeout = timeout
         if host and port:
             message = f"{message} (host: {host}, port: {port})"
@@ -163,7 +162,7 @@ class ABBPowerOneFimerAPI:
             name="Inverter 1",
             host="192.168.1.100",
             port=502,
-            slave_id=1,
+            device_id=1,
             base_addr=40000,
             scan_interval=30
         )
@@ -180,7 +179,7 @@ class ABBPowerOneFimerAPI:
         name: str,
         host: str,
         port: int,
-        slave_id: int,
+        device_id: int,
         base_addr: int,
         scan_interval: int,
     ) -> None:
@@ -191,7 +190,7 @@ class ABBPowerOneFimerAPI:
             name: Device name
             host: Device IP address
             port: Modbus TCP port
-            slave_id: Modbus slave ID (1-247)
+            device_id: Modbus device ID (1-247)
             base_addr: Base address for register reads
             scan_interval: Update interval in seconds
 
@@ -202,12 +201,13 @@ class ABBPowerOneFimerAPI:
 
         # Validate and set configuration parameters
         self._port = self._validate_port(int(port))
-        self._slave_id = self._validate_slave_id(int(slave_id))
+        self._device_id = self._validate_device_id(int(device_id))
         self._base_addr = self._validate_base_addr(int(base_addr))
         self._update_interval = self._validate_scan_interval(int(scan_interval))
-        # Ensure ModBus Timeout is 1s less than scan_interval
-        # https://github.com/binsentsu/home-assistant-solaredge-modbus/pull/183
-        self._timeout = self._update_interval - MIN_TIMEOUT_BUFFER
+        # Use a reasonable fixed timeout for Modbus operations
+        # The previous logic (scan_interval - 1) caused excessively long timeouts
+        # that interfered with pymodbus retry mechanism
+        self._timeout = min(5.0, self._update_interval / 2)
         self._client = AsyncModbusTcpClient(
             host=self._host, port=self._port, timeout=self._timeout
         )
@@ -294,24 +294,24 @@ class ABBPowerOneFimerAPI:
             )
         return port
 
-    def _validate_slave_id(self, slave_id: int) -> int:
-        """Validate Modbus slave ID.
+    def _validate_device_id(self, device_id: int) -> int:
+        """Validate Modbus device ID.
 
         Args:
-            slave_id: Slave ID to validate
+            device_id: Device ID to validate
 
         Returns:
-            int: Validated slave ID
+            int: Validated device ID
 
         Raises:
-            ValueError: If slave ID is out of valid range
+            ValueError: If device ID is out of valid range
 
         """
-        if not (MIN_SLAVE_ID <= slave_id <= MAX_SLAVE_ID):
+        if not (MIN_DEVICE_ID <= device_id <= MAX_DEVICE_ID):
             raise ValueError(
-                f"Slave ID must be between {MIN_SLAVE_ID} and {MAX_SLAVE_ID}, got {slave_id}"
+                f"Device ID must be between {MIN_DEVICE_ID} and {MAX_DEVICE_ID}, got {device_id}"
             )
-        return slave_id
+        return device_id
 
     def _validate_base_addr(self, base_addr: int) -> int:
         """Validate base address.
@@ -431,7 +431,7 @@ class ABBPowerOneFimerAPI:
                 "Failed to close connection",
                 host=self._host,
                 port=self._port,
-                slave_id=self._slave_id,
+                device_id=self._device_id,
             ) from connect_error
 
     async def connect(self) -> bool:
@@ -441,31 +441,33 @@ class ABBPowerOneFimerAPI:
             "API Client connecting",
             host=self._host,
             port=self._port,
-            slave_id=self._slave_id,
+            device_id=self._device_id,
             timeout=self._timeout,
         )
         if await self.check_port():
             self._log_debug("connect", "Inverter ready for Modbus TCP connection")
+            start_time = time.time()
             try:
                 async with self._lock:
                     await self._client.connect()
+                connect_duration = time.time() - start_time
+                _LOGGER.debug(f"Connection attempt took {connect_duration:.3f}s")
                 if not self._client.connected:
                     raise ConnectionError(
                         "Failed to establish connection",
                         host=self._host,
                         port=self._port,
-                        slave_id=self._slave_id,
+                        device_id=self._device_id,
                         timeout=self._timeout,
                     )
-                else:
-                    self._log_debug("connect", "Modbus TCP Client connected")
-                    return True
+                self._log_debug("connect", "Modbus TCP Client connected")
+                return True
             except ModbusException as modbus_error:
                 raise ConnectionError(
                     "Modbus connection failed",
                     host=self._host,
                     port=self._port,
-                    slave_id=self._slave_id,
+                    device_id=self._device_id,
                     timeout=self._timeout,
                 ) from modbus_error
         else:
@@ -479,9 +481,17 @@ class ABBPowerOneFimerAPI:
 
         try:
             async with self._lock:
-                return await self._client.read_holding_registers(
-                    address=address, count=count, slave=self._slave_id
+                result = await self._client.read_holding_registers(
+                    address=address, count=count, device_id=self._device_id
                 )  # type: ignore (pylance thinks this is not awaitable)
+            if result.isError():
+                _LOGGER.debug(f"Modbus error response: {result}")
+                raise ModbusException(
+                    f"Device reported error: {result}",
+                    address=address,
+                    operation="read_holding_registers"
+                )
+            return result
         except ConnectionException as connect_error:
             self._log_debug(
                 "read_holding_registers", f"Connection error: {connect_error}"
@@ -490,7 +500,7 @@ class ABBPowerOneFimerAPI:
                 "Connection lost during register read",
                 host=self._host,
                 port=self._port,
-                slave_id=self._slave_id,
+                device_id=self._device_id,
             ) from connect_error
         except ModbusException as modbus_error:
             self._log_debug("read_holding_registers", f"Modbus error: {modbus_error}")
@@ -500,7 +510,7 @@ class ABBPowerOneFimerAPI:
                 register_count=count,
             ) from modbus_error
 
-    def calculate_value(self, value: int | float, sf: int) -> float:
+    def calculate_value(self, value: float, sf: int) -> float:
         """Apply Scale Factor and round the result."""
         return round(value * 10**sf, max(0, -sf))
 
@@ -639,8 +649,6 @@ class ABBPowerOneFimerAPI:
 
     def _mark_connection_healthy(self) -> None:
         """Mark connection as healthy after successful operation."""
-        import datetime
-
         self._connection_healthy = True
         self._last_successful_read = datetime.datetime.now()
 
@@ -684,7 +692,7 @@ class ABBPowerOneFimerAPI:
                 self._log_debug(
                     "async_get_data",
                     "Starting data collection",
-                    slave_id=self._slave_id,
+                    device_id=self._device_id,
                     base_addr=self._base_addr,
                 )
                 # HA way to call a sync function from async function
@@ -696,23 +704,19 @@ class ABBPowerOneFimerAPI:
                     self._mark_connection_healthy()
                     self._log_debug("async_get_data", "Data read successful")
                     return True
-                else:
-                    self._mark_connection_unhealthy()
-                    self._log_debug("async_get_data", "Data read failed")
-                    return False
-            else:
-                self._log_debug(
-                    "async_get_data", "Get Data failed: client not connected"
-                )
+                self._mark_connection_unhealthy()
+                self._log_debug("async_get_data", "Data read failed")
                 return False
+            self._log_debug("async_get_data", "Get Data failed: client not connected")
+            return False
         except ConnectionException as connect_error:
             self._mark_connection_unhealthy()
             self._log_debug("async_get_data", f"Connection error: {connect_error}")
-            raise ConnectionError() from connect_error
+            raise ConnectionError from connect_error
         except ModbusException as modbus_error:
             self._mark_connection_unhealthy()
             self._log_debug("async_get_data", f"Modbus error: {modbus_error}")
-            raise ModbusError() from modbus_error
+            raise ModbusError from modbus_error
 
     async def read_sunspec_modbus(self) -> bool:
         """Read Modbus Data Function."""
@@ -773,21 +777,21 @@ class ABBPowerOneFimerAPI:
                 "read_sunspec_modbus", "Completed with connection error", success=result
             )
             self._log_debug("read_sunspec_modbus", f"Connection error: {connect_error}")
-            raise ConnectionError() from connect_error
+            raise ConnectionError from connect_error
         except ModbusException as modbus_error:
             result = False
             self._log_debug(
                 "read_sunspec_modbus", "Completed with modbus error", success=result
             )
             self._log_debug("read_sunspec_modbus", f"Modbus error: {modbus_error}")
-            raise ModbusError() from modbus_error
+            raise ModbusError from modbus_error
         except Exception as exception_error:
             result = False
             self._log_debug(
                 "read_sunspec_modbus", "Completed with generic error", success=result
             )
             self._log_debug("read_sunspec_modbus", f"Generic error: {exception_error}")
-            raise ExceptionError() from exception_error
+            raise ExceptionError from exception_error
         return result
 
     async def find_sunspec_modbus_m160_offset(self) -> int:
@@ -860,17 +864,17 @@ class ABBPowerOneFimerAPI:
             self._log_debug(
                 "find_sunspec_modbus_m160_offset", f"Connection error: {connect_error}"
             )
-            raise ConnectionError() from connect_error
+            raise ConnectionError from connect_error
         except ModbusException as modbus_error:
             self._log_debug(
                 "find_sunspec_modbus_m160_offset", f"Modbus error: {modbus_error}"
             )
-            raise ModbusError() from modbus_error
+            raise ModbusError from modbus_error
         except Exception as exception_error:
             self._log_debug(
                 "find_sunspec_modbus_m160_offset", f"Generic error: {exception_error}"
             )
-            raise ExceptionError() from exception_error
+            raise ExceptionError from exception_error
         return found_offset
 
     async def read_sunspec_modbus_model_1(self) -> bool:
@@ -886,7 +890,7 @@ class ABBPowerOneFimerAPI:
             self._log_debug(
                 "read_sunspec_modbus_model_1",
                 "Starting Model 1 read",
-                slave_id=self._slave_id,
+                device_id=self._device_id,
                 base_addr=self._base_addr,
             )
             read_model_1_data = await self.read_holding_registers(
@@ -898,28 +902,27 @@ class ABBPowerOneFimerAPI:
                     "read_sunspec_modbus_model_1",
                     f"Received Modbus exception: {read_model_1_data}",
                 )
-                raise ModbusError()
-            else:
-                # No connection errors, we can start scraping registers
-                decoder = BinaryPayloadDecoder.fromRegisters(
-                    read_model_1_data.registers,
-                    byteorder=Endian.BIG,
-                )
+                raise ModbusError
+            # No connection errors, we can start scraping registers
+            decoder = BinaryPayloadDecoder.fromRegisters(
+                read_model_1_data.registers,
+                byteorder=Endian.BIG,
+            )
         except ConnectionException as connect_error:
             self._log_debug(
                 "read_sunspec_modbus_model_1", f"Connection error: {connect_error}"
             )
-            raise ConnectionError() from connect_error
+            raise ConnectionError from connect_error
         except ModbusException as modbus_error:
             self._log_debug(
                 "read_sunspec_modbus_model_1", f"Modbus error: {modbus_error}"
             )
-            raise ModbusError() from modbus_error
+            raise ModbusError from modbus_error
         except Exception as exception_error:
             self._log_debug(
                 "read_sunspec_modbus_model_1", f"Generic error: {exception_error}"
             )
-            raise ExceptionError() from exception_error
+            raise ExceptionError from exception_error
 
         # registers 4 to 43
         comm_manufact = decoder.decode_string(size=32).decode("ascii")
@@ -994,7 +997,7 @@ class ABBPowerOneFimerAPI:
             self._log_debug(
                 "read_sunspec_modbus_model_101_103",
                 "Starting Model 101/103 read",
-                slave_id=self._slave_id,
+                device_id=self._device_id,
                 base_addr=self._base_addr,
             )
             read_model_101_103_data = await self.read_holding_registers(
@@ -1006,29 +1009,28 @@ class ABBPowerOneFimerAPI:
                     "read_sunspec_modbus_model_101_103",
                     f"Received Modbus exception: {read_model_101_103_data}",
                 )
-                raise ModbusError()
-            else:
-                # No connection errors, we can start scraping registers
-                decoder = BinaryPayloadDecoder.fromRegisters(
-                    read_model_101_103_data.registers,
-                    byteorder=Endian.BIG,
-                )
+                raise ModbusError
+            # No connection errors, we can start scraping registers
+            decoder = BinaryPayloadDecoder.fromRegisters(
+                read_model_101_103_data.registers,
+                byteorder=Endian.BIG,
+            )
         except ConnectionException as connect_error:
             self._log_debug(
                 "read_sunspec_modbus_model_101_103",
                 f"Connection error: {connect_error}",
             )
-            raise ConnectionError() from connect_error
+            raise ConnectionError from connect_error
         except ModbusException as modbus_error:
             self._log_debug(
                 "read_sunspec_modbus_model_101_103", f"Modbus error: {modbus_error}"
             )
-            raise ModbusError() from modbus_error
+            raise ModbusError from modbus_error
         except Exception as exception_error:
             self._log_debug(
                 "read_sunspec_modbus_model_101_103", f"Generic error: {exception_error}"
             )
-            raise ExceptionError() from exception_error
+            raise ExceptionError from exception_error
 
         # register 70
         invtype = decoder.decode_16bit_uint()
@@ -1244,7 +1246,7 @@ class ABBPowerOneFimerAPI:
                 "read_sunspec_modbus_model_160",
                 "Starting Model 160 read",
                 model=invmodel,
-                slave_id=self._slave_id,
+                device_id=self._device_id,
                 base_addr=self._base_addr,
                 offset=offset,
             )
@@ -1257,28 +1259,27 @@ class ABBPowerOneFimerAPI:
                     "read_sunspec_modbus_model_160",
                     f"Received Modbus exception: {read_model_160_data}",
                 )
-                raise ModbusError()
-            else:
-                # No connection errors, we can start scraping registers
-                decoder = BinaryPayloadDecoder.fromRegisters(
-                    read_model_160_data.registers,
-                    byteorder=Endian.BIG,
-                )
+                raise ModbusError
+            # No connection errors, we can start scraping registers
+            decoder = BinaryPayloadDecoder.fromRegisters(
+                read_model_160_data.registers,
+                byteorder=Endian.BIG,
+            )
         except ConnectionException as connect_error:
             self._log_debug(
                 "read_sunspec_modbus_model_160", f"Connection error: {connect_error}"
             )
-            raise ConnectionError() from connect_error
+            raise ConnectionError from connect_error
         except ModbusException as modbus_error:
             self._log_debug(
                 "read_sunspec_modbus_model_160", f"Modbus error: {modbus_error}"
             )
-            raise ModbusError() from modbus_error
+            raise ModbusError from modbus_error
         except Exception as exception_error:
             self._log_debug(
                 "read_sunspec_modbus_model_160", f"Generic error: {exception_error}"
             )
-            raise ExceptionError() from exception_error
+            raise ExceptionError from exception_error
 
         # skip registers 122-123
         decoder.skip_bytes(4)

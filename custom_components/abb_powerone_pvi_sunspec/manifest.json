@@ -13,8 +13,8 @@
     "custom_components.abb_powerone_pvi_sunspec"
   ],
   "requirements": [
-    "pymodbus>=3.9.2"
+    "pymodbus>=3.11.1"
   ],
   "single_config_entry": false,
-  "version": "v4.0.0"
+  "version": "v4.1.0"
 }
