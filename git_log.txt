@@ -1,4 +1,4 @@
-[master 0d5e38d] config files on 25-09-2025 02:00:00
+[master b85ba78] config files on 26-09-2025 02:00:00
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,12 +12,4 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 45 files changed, 764 insertions(+), 210 deletions(-)
- delete mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/__init__.cpython-313.pyc
- delete mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/api.cpython-313.pyc
- delete mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/config_flow.cpython-313.pyc
- delete mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/const.cpython-313.pyc
- delete mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/coordinator.cpython-313.pyc
- delete mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/modbuspayload.cpython-313.pyc
- create mode 100644 custom_components/abb_powerone_pvi_sunspec/pymodbus_constants.py
- rename custom_components/abb_powerone_pvi_sunspec/{modbuspayload.py => pymodbus_payload.py} (99%)
+ 1 file changed, 10 insertions(+), 2 deletions(-)
