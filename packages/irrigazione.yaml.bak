@@ -1,0 +1,204 @@
+############################################################
+# PACKAGE: irrigazione.yaml (corretto)
+# Helpers, sensori meteo, automazioni e sequenze IU
+############################################################
+
+input_boolean:
+  irrigazione_master:
+    name: Irrigazione attiva
+    icon: mdi:valve
+
+  force_irrigazione_oggi:
+    name: Forza irrigazione (ignora meteo oggi)
+    icon: mdi:water-check
+
+input_number:
+  soglia_pioggia_mm:
+    name: Soglia pioggia (mm)
+    min: 0
+    max: 20
+    step: 0.5
+    unit_of_measurement: "mm"
+    icon: mdi:weather-rainy
+    initial: 2.0
+
+  soglia_prob_pioggia:
+    name: Soglia probabilità pioggia (%)
+    min: 0
+    max: 100
+    step: 5
+    unit_of_measurement: "%"
+    icon: mdi:percent
+    initial: 70
+
+  pioggia_ieri_mm:
+    name: Pioggia ieri (mm)
+    min: 0
+    max: 100
+    step: 0.1
+    unit_of_measurement: "mm"
+    icon: mdi:weather-pouring
+    initial: 0
+
+############################################################
+# Sensori meteo
+############################################################
+template:
+  - trigger:
+      - platform: time_pattern
+        minutes: "/30"
+    sensor:
+      - name: "Pioggia oggi (mm)"
+        unit_of_measurement: "mm"
+        state: >
+          {% set f = state_attr('weather.home','forecast') or [] %}
+          {% set today = now().date() %}
+          {% set tot = namespace(x=0.0) %}
+          {% for e in f if e.datetime is defined %}
+            {% set dt = as_datetime(e.datetime) %}
+            {% if dt.date() == today %}
+              {% set tot.x = tot.x + (e.precipitation | float(0)) %}
+            {% endif %}
+          {% endfor %}
+          {{ tot.x | round(1) }}
+
+      - name: "Probabilità pioggia oggi (%)"
+        unit_of_measurement: "%"
+        state: >
+          {% set f = state_attr('weather.home','forecast') or [] %}
+          {% set today = now().date() %}
+          {% set probs = [] %}
+          {% for e in f if e.datetime is defined %}
+            {% set dt = as_datetime(e.datetime) %}
+            {% if dt.date() == today %}
+              {% set probs = probs + [ e.precipitation_probability | int(0) ] %}
+            {% endif %}
+          {% endfor %}
+          {{ (probs | max(default=0)) }}
+
+  - binary_sensor:
+      - name: "Irrigazione skip meteo"
+        icon: mdi:cloud-cancel
+        state: >
+          {% set mm_today = states('sensor.pioggia_oggi_mm') | float(0) %}
+          {% set p_today  = states('sensor.probabilita_pioggia_oggi') | int(0) %}
+          {% set mm_yday  = states('input_number.pioggia_ieri_mm') | float(0) %}
+          {% set mm_thr   = states('input_number.soglia_pioggia_mm') | float(2) %}
+          {% set p_thr    = states('input_number.soglia_prob_pioggia') | int(70) %}
+          {% set force    = is_state('input_boolean.force_irrigazione_oggi','on') %}
+          {{ not force and (mm_today >= mm_thr or p_today >= p_thr or mm_yday >= mm_thr) }}
+        attributes:
+          motivo: >
+            {% set mm_today = states('sensor.pioggia_oggi_mm') | float(0) %}
+            {% set p_today  = states('sensor.probabilita_pioggia_oggi') | int(0) %}
+            {% set mm_yday  = states('input_number.pioggia_ieri_mm') | float(0) %}
+            {% set mm_thr   = states('input_number.soglia_pioggia_mm') | float(2) %}
+            {% set p_thr    = states('input_number.soglia_prob_pioggia') | int(70) %}
+            {% if mm_yday >= mm_thr and (mm_today >= mm_thr or p_today >= p_thr) %}
+              Ieri {{mm_yday}} mm + oggi {{mm_today}} mm / {{p_today}}%
+            {% elif mm_yday >= mm_thr %}
+              Pioggia ieri: {{mm_yday}} mm ≥ {{mm_thr}} mm
+            {% elif mm_today >= mm_thr %}
+              Pioggia oggi prevista: {{mm_today}} mm ≥ {{mm_thr}} mm
+            {% elif p_today >= p_thr %}
+              Probabilità oggi alta: {{p_today}}% ≥ {{p_thr}}%
+            {% else %}
+              Nessuna soglia superata
+            {% endif %}
+
+############################################################
+# Automazioni skip e log pioggia
+############################################################
+automation:
+  - alias: "Irrigazione: salva pioggia di oggi come ieri"
+    mode: single
+    trigger:
+      - platform: time
+        at: "23:55:00"
+    action:
+      - variables:
+          mm_today: "{{ states('sensor.pioggia_oggi_mm') | float(0) }}"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.pioggia_ieri_mm
+        data:
+          value: "{{ mm_today }}"
+
+  - alias: "Irrigazione: notifica skip per meteo"
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.irrigazione_skip_meteo
+        to: "on"
+    action:
+      - service: persistent_notification.create
+        data:
+          title: "Irrigazione sospesa per meteo"
+          message: >
+            Skip attivo. {{ state_attr('binary_sensor.irrigazione_skip_meteo','motivo') }}
+
+############################################################
+# Irrigation Unlimited (senza watering_delay, uso delay per-zona)
+############################################################
+irrigation_unlimited:
+  controllers:
+    - name: "Giardino Correzzana"
+      zones:
+        - name: "Prato"
+          entity_id: switch.shelly_irrigazione_prato
+        - name: "Aiuola"
+          entity_id: switch.shelly_irrigazione_aiuola
+
+      sequences:
+        # 1) Avvio prato — solo prato
+        - name: "Avvio prato (−1h alba, lun/giov/sab)"
+          schedules:
+            - time:
+                sun: sunrise
+                before: "01:00"
+              weekday: [mon, thu, sat]
+          zones:
+            - zone_id: 1
+              duration: "00:07"
+
+        # 2) Mantenimento Primavera — prato + aiuola (aiuola doppio tempo)
+        - name: "Mantenimento Primavera (−1h alba, lun/giov/sab)"
+          schedules:
+            - time:
+                sun: sunrise
+                before: "01:00"
+              month: [mar, apr, may]
+              weekday: [mon, thu, sat]
+          zones:
+            - zone_id: 1     # Prato
+              duration: "00:04"
+              delay: "00:00:03"  # 3s prima di passare all'aiuola
+            - zone_id: 2     # Aiuola
+              duration: "00:08"
+
+        # 3) Mantenimento Autunno — solo prato
+        - name: "Mantenimento Autunno (−1h alba, lun/giov/sab)"
+          schedules:
+            - time:
+                sun: sunrise
+                before: "01:00"
+              month: [sep, oct]
+              weekday: [mon, thu, sat]
+          zones:
+            - zone_id: 1
+              duration: "00:04"
+
+        # 4) Estate — prato + aiuola al tramonto
+        - name: "Estate (−5 min tramonto, lun/giov/sab)"
+          schedules:
+            - time:
+                sun: sunset
+                before: "00:05"
+              month: [jun, jul, aug]
+              weekday: [mon, thu, sat]
+          zones:
+            - zone_id: 1
+              duration: "00:05"
+              delay: "00:00:03"
+            - zone_id: 2
+              duration: "00:10"

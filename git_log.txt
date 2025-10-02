@@ -1,4 +1,4 @@
-[master 7499fbb] config files on 30-09-2025 02:00:00
+[master 23378e2] config files on 01-10-2025 02:00:00
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,22 +12,12 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 45 files changed, 185 insertions(+), 91 deletions(-)
- delete mode 100644 custom_components/xiaomi_miot/__pycache__/__init__.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/__pycache__/config_flow.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/__init__.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/const.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/converters.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/coordinator.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/device.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/device_customizes.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/hass_entity.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/hass_entry.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/miio2miot.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/miio2miot_specs.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/miot_local_devices.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/miot_spec.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/templates.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/translation_languages.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/utils.cpython-313.pyc
- delete mode 100644 custom_components/xiaomi_miot/core/__pycache__/xiaomi_cloud.cpython-313.pyc
+ 9 files changed, 219 insertions(+), 2 deletions(-)
+ create mode 100644 custom_components/irrigation_unlimited/__pycache__/__init__.cpython-313.pyc
+ create mode 100644 custom_components/irrigation_unlimited/__pycache__/const.cpython-313.pyc
+ create mode 100644 custom_components/irrigation_unlimited/__pycache__/entity.cpython-313.pyc
+ create mode 100644 custom_components/irrigation_unlimited/__pycache__/history.cpython-313.pyc
+ create mode 100644 custom_components/irrigation_unlimited/__pycache__/irrigation_unlimited.cpython-313.pyc
+ create mode 100644 custom_components/irrigation_unlimited/__pycache__/schema.cpython-313.pyc
+ create mode 100644 custom_components/irrigation_unlimited/__pycache__/service.cpython-313.pyc
+ create mode 100644 packages/irrigazione.yaml
