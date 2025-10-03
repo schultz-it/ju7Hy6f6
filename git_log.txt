@@ -19,3 +19,26 @@ After doing this, you may fix the identity used for this commit with:
  rename template.yaml => templates/template.yaml (100%)
  create mode 100644 templates/template_solar.yaml
  create mode 100644 templates/template_solar.yaml.bak
+[2025-10-03 13:57:42] Committing: HA nightly commit: 2025-10-03 13:57:42 CEST
+[master 98968e2] HA nightly commit: 2025-10-03 13:57:42 CEST
+ Committer: root <root@homeassistant.local.hass.io>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 10 files changed, 219 insertions(+), 355 deletions(-)
+ create mode 100644 automations/ha_git_automation.yaml
+ create mode 100644 examples/.gitignore-ha-example
+ create mode 100755 scripts/first_push.sh
+ create mode 100755 scripts/ha_commit.sh
+ create mode 100644 snippets/shell_command.yaml
+[2025-10-03 13:57:42] Pushing master -> origin/main
+[2025-10-03 13:57:56] Done.
