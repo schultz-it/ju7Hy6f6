@@ -1,0 +1,344 @@
+############################################################
+# PACKAGE: irrigazione.yaml — completo + selezione programma
+# - Helpers (master, forza, soglie, pioggia ieri, programma attivo)
+# - Sensori meteo (Tomorrow.io DAILY)
+# - Binary sensor skip meteo
+# - Automazioni (memorizza pioggia ieri, notifica skip, applica programma attivo)
+# - Irrigation Unlimited (4 sequence concordate)
+# - Script manuali (ignora meteo/orari)
+############################################################
+
+input_boolean:
+  irrigazione_master:
+    name: Irrigazione attiva
+    icon: mdi:valve
+  force_irrigazione_oggi:
+    name: Forza irrigazione (ignora meteo oggi)
+    icon: mdi:water-check
+
+input_number:
+  soglia_pioggia_mm:
+    name: Soglia pioggia (mm)
+    min: 0
+    max: 20
+    step: 0.5
+    unit_of_measurement: "mm"
+    icon: mdi:weather-rainy
+    initial: 2.0
+  soglia_prob_pioggia:
+    name: Soglia probabilità pioggia (%)
+    min: 0
+    max: 100
+    step: 5
+    unit_of_measurement: "%"
+    icon: mdi:umbrella-alert
+    initial: 70
+  pioggia_ieri_mm:
+    name: Pioggia ieri (mm)
+    min: 0
+    max: 100
+    step: 0.1
+    unit_of_measurement: "mm"
+    icon: mdi:weather-pouring
+    initial: 0
+
+# Selezione del programma IU attivo (abilita una sola sequence)
+input_select:
+  irrigazione_programma_attivo:
+    name: Programma IU attivo
+    icon: mdi:sprinkler
+    options:
+      - Avvio prato
+      - Primavera
+      - Autunno
+      - Estate
+    initial: Primavera
+
+############################################################
+# Sensori meteo (Tomorrow.io DAILY): weather.tomorrow_io_daily
+############################################################
+template:
+  - trigger:
+      - platform: homeassistant
+        event: start
+      - platform: time_pattern
+        hours: "/1"
+      - platform: state
+        entity_id: weather.tomorrow_io_daily
+    sensor:
+      - name: "Pioggia oggi (mm)"
+        unit_of_measurement: "mm"
+        state: >
+          {% set f = state_attr('weather.tomorrow_io_daily','forecast') or [] %}
+          {% set today = now().date() %}
+          {% set mm = 0.0 %}
+          {% for e in f if e.datetime is defined %}
+            {% set dt = as_datetime(e.datetime) %}
+            {% if dt and dt.date() == today and (e.precipitation is defined) %}
+              {% set mm = e.precipitation | float(0) %}
+            {% endif %}
+          {% endfor %}
+          {{ mm | round(1) }}
+
+      - name: "Probabilità pioggia oggi (%)"
+        unit_of_measurement: "%"
+        state: >
+          {% set f = state_attr('weather.tomorrow_io_daily','forecast') or [] %}
+          {% set today = now().date() %}
+          {% set prob = 0 %}
+          {% for e in f if e.datetime is defined %}
+            {% set dt = as_datetime(e.datetime) %}
+            {% if dt and dt.date() == today and (e.precipitation_probability is defined) %}
+              {% set prob = e.precipitation_probability | int(0) %}
+            {% endif %}
+          {% endfor %}
+          {{ prob }}
+
+  - sensor:
+      - name: "Programma IU attivo (stato)"
+        icon: mdi:sprinkler-variant
+        state: >
+          {% if is_state('binary_sensor.irrigation_unlimited_c1_s1','on') %}
+            IN ESECUZIONE: Avvio prato
+          {% elif is_state('binary_sensor.irrigation_unlimited_c1_s2','on') %}
+            IN ESECUZIONE: Primavera
+          {% elif is_state('binary_sensor.irrigation_unlimited_c1_s3','on') %}
+            IN ESECUZIONE: Autunno
+          {% elif is_state('binary_sensor.irrigation_unlimited_c1_s4','on') %}
+            IN ESECUZIONE: Estate
+          {% else %}
+            Selezionato: {{ states('input_select.irrigazione_programma_attivo') }}
+          {% endif %}
+        attributes:
+          selezionato: "{{ states('input_select.irrigazione_programma_attivo') }}"
+
+  - binary_sensor:
+      - name: "Irrigazione skip meteo"
+        icon: mdi:cloud-cancel
+        state: >
+          {% set mm_today = states('sensor.pioggia_oggi_mm') | float(0) %}
+          {% set p_today  = states('sensor.probabilita_pioggia_oggi') | int(0) %}
+          {% set mm_yday  = states('input_number.pioggia_ieri_mm') | float(0) %}
+          {% set mm_thr   = states('input_number.soglia_pioggia_mm') | float(2) %}
+          {% set p_thr    = states('input_number.soglia_prob_pioggia') | int(70) %}
+          {% set force    = is_state('input_boolean.force_irrigazione_oggi','on') %}
+          {{ not force and (mm_today >= mm_thr or p_today >= p_thr or mm_yday >= mm_thr) }}
+        attributes:
+          motivo: >
+            {% set mm_today = states('sensor.pioggia_oggi_mm') | float(0) %}
+            {% set p_today  = states('sensor.probabilita_pioggia_oggi') | int(0) %}
+            {% set mm_yday  = states('input_number.pioggia_ieri_mm') | float(0) %}
+            {% set mm_thr   = states('input_number.soglia_pioggia_mm') | float(2) %}
+            {% set p_thr    = states('input_number.soglia_prob_pioggia') | int(70) %}
+            {% if mm_yday >= mm_thr and (mm_today >= mm_thr or p_today >= p_thr) %}
+              Ieri {{mm_yday}} mm + oggi {{mm_today}} mm / {{p_today}}%
+            {% elif mm_yday >= mm_thr %}
+              Pioggia ieri: {{mm_yday}} mm ≥ {{mm_thr}} mm
+            {% elif mm_today >= mm_thr %}
+              Pioggia oggi prevista: {{mm_today}} mm ≥ {{mm_thr}} mm
+            {% elif p_today >= p_thr %}
+              Probabilità oggi alta: {{p_today}}% ≥ {{p_thr}}%
+            {% else %}
+              Nessuna soglia superata
+            {% endif %}
+
+automation:
+  - alias: "Irrigazione: salva pioggia di oggi come ieri"
+    mode: single
+    trigger:
+      - platform: time
+        at: "23:55:00"
+    action:
+      - variables:
+          mm_today: "{{ states('sensor.pioggia_oggi_mm') | float(0) }}"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.pioggia_ieri_mm
+        data:
+          value: "{{ mm_today }}"
+
+  - alias: "Irrigazione: notifica skip per meteo"
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.irrigazione_skip_meteo
+        to: "on"
+    action:
+      - service: persistent_notification.create
+        data:
+          title: "Irrigazione sospesa per meteo"
+          message: >
+            Skip attivo. {{ state_attr('binary_sensor.irrigazione_skip_meteo','motivo') }}
+
+  # Applica la selezione del programma IU: abilita solo la sequence scelta
+  - alias: "Irrigazione: applica programma IU selezionato"
+    mode: restart
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: state
+        entity_id: input_select.irrigazione_programma_attivo
+    action:
+      - variables:
+          sel: "{{ states('input_select.irrigazione_programma_attivo') }}"
+      # Disabilita tutte le sequence
+      - service: irrigation_unlimited.disable
+        target:
+          entity_id:
+            - binary_sensor.irrigation_unlimited_c1_s1
+            - binary_sensor.irrigation_unlimited_c1_s2
+            - binary_sensor.irrigation_unlimited_c1_s3
+            - binary_sensor.irrigation_unlimited_c1_s4
+      # Abilita quella scelta
+      - choose:
+          - conditions: "{{ sel == 'Avvio prato' }}"
+            sequence:
+              - service: irrigation_unlimited.enable
+                target: { entity_id: binary_sensor.irrigation_unlimited_c1_s1 }
+          - conditions: "{{ sel == 'Primavera' }}"
+            sequence:
+              - service: irrigation_unlimited.enable
+                target: { entity_id: binary_sensor.irrigation_unlimited_c1_s2 }
+          - conditions: "{{ sel == 'Autunno' }}"
+            sequence:
+              - service: irrigation_unlimited.enable
+                target: { entity_id: binary_sensor.irrigation_unlimited_c1_s3 }
+          - conditions: "{{ sel == 'Estate' }}"
+            sequence:
+              - service: irrigation_unlimited.enable
+                target: { entity_id: binary_sensor.irrigation_unlimited_c1_s4 }
+
+############################################################
+# Irrigation Unlimited — 4 programmi (come concordato)
+############################################################
+irrigation_unlimited:
+  controllers:
+    - name: "Giardino Correzzana"
+      zones:
+        - name: "Prato"
+          entity_id: switch.shelly_irrigazione_prato
+        - name: "Aiuola"
+          entity_id: switch.shelly_irrigazione_aiuola
+
+      sequences:
+        - name: "Avvio prato (−1h alba, lun/giov/sab)"
+          schedules:
+            - time:
+                sun: sunrise
+                before: "01:00"
+              weekday: [mon, thu, sat]
+          zones:
+            - zone_id: 1
+              duration: "00:07"
+
+        - name: "Mantenimento Primavera (−1h alba, lun/giov/sab)"
+          schedules:
+            - time:
+                sun: sunrise
+                before: "01:00"
+              month: [mar, apr, may]
+              weekday: [mon, thu, sat]
+          zones:
+            - zone_id: 1
+              duration: "00:04"
+              delay: "00:00:03"
+            - zone_id: 2
+              duration: "00:08"
+
+        - name: "Mantenimento Autunno (−1h alba, lun/giov/sab)"
+          schedules:
+            - time:
+                sun: sunrise
+                before: "01:00"
+              month: [sep, oct]
+              weekday: [mon, thu, sat]
+          zones:
+            - zone_id: 1
+              duration: "00:04"
+
+        - name: "Estate (−5 min tramonto, lun/giov/sab)"
+          schedules:
+            - time:
+                sun: sunset
+                before: "00:05"
+              month: [jun, jul, aug]
+              weekday: [mon, thu, sat]
+          zones:
+            - zone_id: 1
+              duration: "00:05"
+              delay: "00:00:03"
+            - zone_id: 2
+              duration: "00:10"
+
+############################################################
+# Script manuali — ignorano meteo/orari e agiscono sui relè
+############################################################
+script:
+  irrigazione_stop_immediato:
+    alias: "Irrigazione — STOP immediato"
+    sequence:
+      - service: switch.turn_off
+        target:
+          entity_id:
+            - switch.shelly_irrigazione_prato
+            - switch.shelly_irrigazione_aiuola
+
+  irrigazione_run_avvio_prato:
+    alias: "Avvio prato — MANUALE (7 min)"
+    sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.shelly_irrigazione_prato
+      - delay: "00:07:00"
+      - service: switch.turn_off
+        target:
+          entity_id: switch.shelly_irrigazione_prato
+
+  irrigazione_run_primavera:
+    alias: "Primavera — MANUALE (4'+8')"
+    sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.shelly_irrigazione_prato
+      - delay: "00:04:00"
+      - service: switch.turn_off
+        target:
+          entity_id: switch.shelly_irrigazione_prato
+      - delay: "00:00:03"
+      - service: switch.turn_on
+        target:
+          entity_id: switch.shelly_irrigazione_aiuola
+      - delay: "00:08:00"
+      - service: switch.turn_off
+        target:
+          entity_id: switch.shelly_irrigazione_aiuola
+
+  irrigazione_run_autunno:
+    alias: "Autunno — MANUALE (4')"
+    sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.shelly_irrigazione_prato
+      - delay: "00:04:00"
+      - service: switch.turn_off
+        target:
+          entity_id: switch.shelly_irrigazione_prato
+
+  irrigazione_run_estate:
+    alias: "Estate — MANUALE (5'+10')"
+    sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.shelly_irrigazione_prato
+      - delay: "00:05:00"
+      - service: switch.turn_off
+        target:
+          entity_id: switch.shelly_irrigazione_prato
+      - delay: "00:00:03"
+      - service: switch.turn_on
+        target:
+          entity_id: switch.shelly_irrigazione_aiuola
+      - delay: "00:10:00"
+      - service: switch.turn_off
+        target:
+          entity_id: switch.shelly_irrigazione_aiuola

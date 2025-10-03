@@ -1,4 +1,4 @@
-[master 23378e2] config files on 01-10-2025 02:00:00
+[master 618ee5d] config files on 02-10-2025 02:00:00
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,12 +12,20 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 9 files changed, 219 insertions(+), 2 deletions(-)
- create mode 100644 custom_components/irrigation_unlimited/__pycache__/__init__.cpython-313.pyc
- create mode 100644 custom_components/irrigation_unlimited/__pycache__/const.cpython-313.pyc
- create mode 100644 custom_components/irrigation_unlimited/__pycache__/entity.cpython-313.pyc
- create mode 100644 custom_components/irrigation_unlimited/__pycache__/history.cpython-313.pyc
- create mode 100644 custom_components/irrigation_unlimited/__pycache__/irrigation_unlimited.cpython-313.pyc
- create mode 100644 custom_components/irrigation_unlimited/__pycache__/schema.cpython-313.pyc
- create mode 100644 custom_components/irrigation_unlimited/__pycache__/service.cpython-313.pyc
- create mode 100644 packages/irrigazione.yaml
+ 19 files changed, 5438 insertions(+), 221 deletions(-)
+ create mode 100644 custom_components/irrigation_unlimited/__pycache__/binary_sensor.cpython-313.pyc
+ rename packages/{eurotherm.yaml => eurotherm.yaml.bak} (100%)
+ rename packages/{irrigazione.yaml => irrigazione.yaml.bak} (92%)
+ create mode 100644 packages/irrigazione_with_scripts.yaml
+ create mode 100644 themes/mushroom/mushroom-shadow.yaml
+ create mode 100644 themes/mushroom/mushroom-square-shadow.yaml
+ create mode 100644 themes/mushroom/mushroom-square.yaml
+ create mode 100644 themes/mushroom/mushroom.yaml
+ create mode 100644 www/community/hassio-trash-card/trashcard.js
+ create mode 100644 www/community/hassio-trash-card/trashcard.js.gz
+ create mode 100644 www/community/lovelace-mushroom-better-sliders/mushroom.js
+ create mode 100644 www/community/lovelace-mushroom-better-sliders/mushroom.js.gz
+ create mode 100644 www/community/lovelace-mushroom/mushroom.js
+ create mode 100644 www/community/lovelace-mushroom/mushroom.js.gz
+ create mode 100644 www/community/mushroom-strategy/mushroom-strategy.js
+ create mode 100644 www/community/mushroom-strategy/mushroom-strategy.js.gz
