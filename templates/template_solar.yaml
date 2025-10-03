@@ -1,0 +1,29 @@
+# -------------------------------------------------------------------
+# TEMPLATE SENSORS - Fotovoltaico SH6.0RS (WiNet) - versione per
+# `template: !include_dir_merge_list templates/`
+# Metti questo file in: /config/templates/template_solar.yaml
+# -------------------------------------------------------------------
+
+- sensor:
+    - name: "Grid Import Today"
+      unique_id: grid_import_today
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      state: "{{ states('sensor.sh60rs_a2251102546_energy_purchased_today') | float(0) }}"
+
+    - name: "Grid Export Today"
+      unique_id: grid_export_today
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      state: "{{ states('sensor.sh60rs_a2251102546_feed_in_energy_today') | float(0) }}"
+
+    - name: "Grid Power"
+      unique_id: grid_power
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      state: >-
+        {{ (states('sensor.sh60rs_a2251102546_purchased_power') | float(0))
+         - (states('sensor.sh60rs_a2251102546_total_export_active_power') | float(0)) }}

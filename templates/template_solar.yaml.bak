@@ -1,0 +1,39 @@
+# -------------------------------------------------------------------
+# TEMPLATE SENSORS - Import/Export fotovoltaico SH6.0RS (WiNet)
+# File: template_solar.yaml
+# ISTRUZIONI:
+# - Salva in /config/template_solar.yaml e includilo in configuration.yaml:
+#     template: !include template_solar.yaml
+# - Riavvia Home Assistant.
+# -------------------------------------------------------------------
+
+template:
+  - sensor:
+      # Potenza rete: positivo = import, negativo = export
+      - name: "Grid Power"
+        unique_id: grid_power_sh6rs
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >-
+          {% set import = states('sensor.sh60rs_a2251102546_purchased_power') | float(0) %}
+          {% set export = states('sensor.sh60rs_a2251102546_total_export_active_power') | float(0) %}
+          {{ import - export }}
+
+      # Energia import oggi (kWh)
+      - name: "Grid Import Today"
+        unique_id: grid_import_today_sh6rs
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        state: >-
+          {{ states('sensor.sh60rs_a2251102546_energy_purchased_today') | float(0) }}
+
+      # Energia export oggi (kWh)
+      - name: "Grid Export Today"
+        unique_id: grid_export_today_sh6rs
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        state: >-
+          {{ states('sensor.sh60rs_a2251102546_feed_in_energy_today') | float(0) }}

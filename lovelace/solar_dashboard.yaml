@@ -1,0 +1,303 @@
+# -----------------------------------------------------------------------------
+# Dashboard: Fotovoltaico Casa (SH6.0RS via WiNet Extractor + Template Sensors)
+# File: solar_dashboard.yaml
+# -----------------------------------------------------------------------------
+
+# =====================
+#  SEZIONE ANCORE (collega SOLO entità che esistono nel tuo HA)
+# =====================
+anchors:
+  # Sensori TEMPLATE (normalizzati)
+  grid_power: &grid_power sensor.grid_power                      # +import / -export
+  grid_import_today: &grid_import_today sensor.grid_import_today
+  grid_export_today: &grid_export_today sensor.grid_export_today
+
+  # Potenze istantanee (W) dal WiNet
+  pv_power: &pv_power sensor.sh60rs_a2251102546_total_active_power
+  load_power: &load_power sensor.sh60rs_a2251102546_total_load_active_power
+
+  # Energie (kWh) OGGI dal WiNet
+  pv_energy_today: &pv_energy_today sensor.sh60rs_a2251102546_daily_ac_output_yield
+
+  # Energie (kWh) VITA
+  pv_energy_total: &pv_energy_total sensor.sh60rs_a2251102546_total_ac_output_energy
+
+  # Dati inverter (WiNet)
+  inverter_status: &inverter_status sensor.sh60rs_a2251102546_running_status
+  inverter_temp: &inverter_temp sensor.sh60rs_a2251102546_internal_air_temperature
+  inverter_voltage: &inverter_voltage sensor.sh60rs_a2251102546_bus_voltage
+  inverter_current: &inverter_current sensor.sh60rs_a2251102546_phase_a_current
+
+  # Batteria (se presente)
+  battery_soc: &battery_soc sensor.sh60rs_a2251102546_battery_level_soc
+  battery_power: &battery_power sensor.sh60rs_a2251102546_battery_charging_power
+  battery_energy_today: &battery_energy_today sensor.sh60rs_a2251102546_battery_charging_energy_today
+
+# =====================
+#  VIEWS
+# =====================
+views:
+  - title: Panoramica
+    icon: mdi:solar-power
+    path: solar-overview
+    type: custom:vertical-stack-in-card
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: template
+            entity: *pv_power
+            icon: mdi:white-balance-sunny
+            icon_color: amber
+            content: >-
+              **FV:** {{ (states(*pv_power) | float(0)) | round(0) }} W
+          - type: template
+            entity: *grid_power
+            icon: mdi:transmission-tower
+            icon_color: >-
+              {% set g = states(*grid_power) | float(0) %}
+              {{ 'red' if g > 0 else 'green' if g < 0 else 'grey' }}
+            content: >-
+              {% set g = states(*grid_power) | float(0) %}
+              **Rete:** {{ g | round(0) }} W
+          - type: template
+            entity: *pv_energy_today
+            icon: mdi:counter
+            icon_color: green
+            content: >-
+              **Oggi:** {{ (states(*pv_energy_today) | float(0)) | round(2) }} kWh
+          - type: template
+            entity: *pv_energy_total
+            icon: mdi:sigma
+            icon_color: blue
+            content: >-
+              **Totale:** {{ (states(*pv_energy_total) | float(0)) | round(0) }} kWh
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: *battery_soc
+                state_not: unavailable
+            chip:
+              type: template
+              entity: *battery_soc
+              icon: mdi:battery
+              icon_color: teal
+              content: >-
+                **Batt:** {{ (states(*battery_soc)|float(0)) | round(0) }} %
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Produzione FV
+            secondary: >-
+              {{ (states(*pv_power)|float(0)) | round(0) }} W adesso
+            icon: mdi:solar-power-variant
+            icon_color: amber
+            layout: vertical
+            entity: *pv_power
+          - type: custom:mushroom-template-card
+            primary: Bilancio Rete
+            secondary: >-
+              {% set g = states(*grid_power)|float(0) %}
+              {% if g > 0 %}Import: {{ g|round(0) }} W
+              {% elif g < 0 %}Export: {{ (g * -1)|round(0) }} W
+              {% else %}Equilibrio{% endif %}
+            icon: mdi:transmission-tower-export
+            icon_color: >-
+              {% set g = states(*grid_power)|float(0) %}
+              {{ 'red' if g > 0 else 'green' if g < 0 else 'grey' }}
+            layout: vertical
+            entity: *grid_power
+
+      - type: custom:apexcharts-card
+        header:
+          show: true
+          title: Potenze ultime 24 ore
+        graph_span: 24h
+        span:
+          start: hour
+        now:
+          show: true
+        apex_config:
+          legend:
+            show: true
+        series:
+          - entity: *pv_power
+            name: FV
+            type: area
+            group_by:
+              duration: 5min
+              func: avg
+          - entity: *grid_power
+            name: Rete (+Imp/-Exp)
+            type: line
+            group_by:
+              duration: 5min
+              func: avg
+          - entity: *load_power
+            name: Carichi
+            type: line
+            group_by:
+              duration: 5min
+              func: avg
+            show:
+              in_chart: true
+              legend_value: true
+
+      - type: custom:vertical-stack-in-card
+        cards:
+          - type: custom:mushroom-title-card
+            title: Oggi
+            subtitle: Produzione ed energia scambiata
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: FV Oggi
+                secondary: >-
+                  {{ (states(*pv_energy_today)|float(0)) | round(2) }} kWh
+                icon: mdi:counter
+                icon_color: green
+                layout: vertical
+                entity: *pv_energy_today
+              - type: custom:mushroom-template-card
+                primary: Import Oggi
+                secondary: >-
+                  {{ (states(*grid_import_today)|float(0)) | round(2) }} kWh
+                icon: mdi:tray-arrow-down
+                icon_color: red
+                layout: vertical
+                entity: *grid_import_today
+              - type: custom:mushroom-template-card
+                primary: Export Oggi
+                secondary: >-
+                  {{ (states(*grid_export_today)|float(0)) | round(2) }} kWh
+                icon: mdi:tray-arrow-up
+                icon_color: green
+                layout: vertical
+                entity: *grid_export_today
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: *battery_soc
+            state_not: unavailable
+        card:
+          type: custom:vertical-stack-in-card
+          cards:
+            - type: custom:mushroom-title-card
+              title: Batteria
+              subtitle: Stato e potenza
+            - type: horizontal-stack
+              cards:
+                - type: custom:mushroom-template-card
+                  primary: Stato di Carica
+                  secondary: >-
+                    {{ (states(*battery_soc)|float(0)) | round(0) }} %
+                  icon: mdi:battery
+                  icon_color: teal
+                  layout: vertical
+                  entity: *battery_soc
+                - type: custom:mushroom-template-card
+                  primary: Potenza Batteria
+                  secondary: >-
+                    {% set b = states(*battery_power)|float(0) %}
+                    {% if b > 0 %}Carica: {{ b|round(0) }} W
+                    {% elif b < 0 %}Scarica: {{ (b*-1)|round(0) }} W
+                    {% else %}Fermo{% endif %}
+                  icon: mdi:battery-charging-50
+                  icon_color: blue
+                  layout: vertical
+                  entity: *battery_power
+
+  - title: Storico
+    icon: mdi:chart-line
+    path: solar-history
+    cards:
+      - type: custom:apexcharts-card
+        header:
+          show: true
+          title: Produzione FV ultimi 7 giorni
+        graph_span: 7d
+        span:
+          start: day
+        series:
+          - entity: *pv_energy_today
+            name: FV Giornaliero
+            type: column
+            group_by:
+              duration: 1d
+              func: last
+
+      - type: custom:apexcharts-card
+        header:
+          show: true
+          title: Import/Export ultimi 7 giorni
+        graph_span: 7d
+        span:
+          start: day
+        series:
+          - entity: *grid_import_today
+            name: Import
+            type: column
+            group_by:
+              duration: 1d
+              func: last
+          - entity: *grid_export_today
+            name: Export
+            type: column
+            group_by:
+              duration: 1d
+              func: last
+
+  - title: Inverter
+    icon: mdi:server
+    path: solar-inverter
+    cards:
+      - type: custom:mushroom-entity-card
+        entity: *inverter_status
+        name: Stato Inverter
+      - type: custom:mushroom-entity-card
+        entity: *inverter_temp
+        name: Temperatura Inverter
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: *inverter_voltage
+            name: Tensione DC
+          - type: custom:mushroom-entity-card
+            entity: *inverter_current
+            name: Corrente Fase A
+      - type: entities
+        title: MPPT e misure varie
+        entities:
+          - sensor.sh60rs_a2251102546_mppt_total_power
+          - sensor.sh60rs_a2251102546_mppt1_power
+          - sensor.sh60rs_a2251102546_mppt2_power
+          - sensor.sh60rs_mppt3_energy
+          - sensor.sh60rs_mppt4_energy
+
+  - title: Diagnostica
+    icon: mdi:stethoscope
+    path: solar-diagnostics
+    cards:
+      - type: custom:mushroom-title-card
+        title: Controlli rapidi
+      - type: entities
+        entities:
+          - entity: *pv_power
+            name: Potenza FV (W)
+          - entity: *grid_power
+            name: Potenza Rete (+Imp/-Exp)
+          - entity: *load_power
+            name: Carichi (W)
+          - entity: *pv_energy_today
+            name: FV Oggi (kWh)
+          - entity: *grid_import_today
+            name: Import Oggi (kWh)
+          - entity: *grid_export_today
+            name: Export Oggi (kWh)
+          - entity: *pv_energy_total
+            name: FV Totale (kWh)
+      - type: markdown
+        content: >-
+          **Note:** Se qualche card risulta vuota, verifica gli entity_id nella sezione ANCORE.
+          Le card storiche usano i sensori giornalieri "today" (funzione 'last' per ciascun giorno).

@@ -1,4 +1,4 @@
-[master 618ee5d] config files on 02-10-2025 02:00:00
+[master 9217ad0] config files on 03-10-2025 02:00:00
  Committer: root <root@homeassistant.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
@@ -12,20 +12,10 @@ After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 19 files changed, 5438 insertions(+), 221 deletions(-)
- create mode 100644 custom_components/irrigation_unlimited/__pycache__/binary_sensor.cpython-313.pyc
- rename packages/{eurotherm.yaml => eurotherm.yaml.bak} (100%)
- rename packages/{irrigazione.yaml => irrigazione.yaml.bak} (92%)
- create mode 100644 packages/irrigazione_with_scripts.yaml
- create mode 100644 themes/mushroom/mushroom-shadow.yaml
- create mode 100644 themes/mushroom/mushroom-square-shadow.yaml
- create mode 100644 themes/mushroom/mushroom-square.yaml
- create mode 100644 themes/mushroom/mushroom.yaml
- create mode 100644 www/community/hassio-trash-card/trashcard.js
- create mode 100644 www/community/hassio-trash-card/trashcard.js.gz
- create mode 100644 www/community/lovelace-mushroom-better-sliders/mushroom.js
- create mode 100644 www/community/lovelace-mushroom-better-sliders/mushroom.js.gz
- create mode 100644 www/community/lovelace-mushroom/mushroom.js
- create mode 100644 www/community/lovelace-mushroom/mushroom.js.gz
- create mode 100644 www/community/mushroom-strategy/mushroom-strategy.js
- create mode 100644 www/community/mushroom-strategy/mushroom-strategy.js.gz
+ 71 files changed, 2585 insertions(+), 2850 deletions(-)
+ create mode 100644 .ha_run.lock
+ create mode 100644 custom_components/xiaomi_miot/core/mini_miio.py
+ create mode 100644 packages/Irri.bak
+ create mode 100644 packages/irrigazione.yaml
+ create mode 100644 packages/irrigazione.yaml.bak2
+ rename packages/{irrigazione_with_scripts.yaml => irrigazione_with_scripts.yaml.bak} (100%)

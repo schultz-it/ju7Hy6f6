@@ -14,43 +14,17 @@ homeassistant:
   time_zone: "Europe/Rome"
   #customize: !include customize.yaml
   packages: !include_dir_named packages
-
-# Templates: carica tutti i file YAML presenti nella cartella /config/templates/
 template: !include_dir_merge_list templates/
 
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-# -------------------------------
-# Lovelace in modalità YAML
-# -------------------------------
-lovelace:
-  mode: yaml
-  resources:
-    - url: /hacsfiles/mushroom-cards/mushroom.js
-      type: module
-    - url: /hacsfiles/apexcharts-card/apexcharts-card.js
-      type: module
-  dashboards:
-    solar-dashboard:
-      mode: yaml
-      title: Fotovoltaico Correzzana
-      icon: mdi:solar-power
-      show_in_sidebar: true
-      filename: lovelace/solar_dashboard.yaml
-
-    irrigazione-dashboard:
-      mode: yaml
-      title: Irrigazione Pro
-      icon: mdi:sprinkler-variant
-      show_in_sidebar: true
-      filename: lovelace/irrigazione_dashboard_pro.yamlml
 
 # Load frontend themes from the themes folder
 frontend:
-  themes: !include_dir_merge_named themes
-
+    themes: !include_dir_merge_named themes
+    
 sensor:
   - platform: integration
     unique_id: sh60rs_a2251102546_mppt1_energy
@@ -106,11 +80,12 @@ sensor:
     name: Consumo PC
     method: left
     round: 4
-
+    
 shell_command:
   pushupdates_to_github: /bin/bash pushupdates.sh
-
-# CONFIGURAZIONE MODBUS PER EUROTHERM SMARTCONTROL365 VECCHIA
+  
+  # CONFIGURAZIONE MODBUS PER EUROTHERM SMARTCONTROL365 VECCHIA
 #modbus: !include eurotherm.yaml
 
 # smart_irrigation:
+
