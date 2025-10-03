@@ -1,21 +1,21 @@
-[master 9217ad0] config files on 03-10-2025 02:00:00
- Committer: root <root@homeassistant.local.hass.io>
+[master 82484cd] config files on 03-10-2025 11:25:26
+ Committer: root <root@a0d7b954-ssh.local.hass.io>
 Your name and email address were configured automatically based
 on your username and hostname. Please check that they are accurate.
-You can suppress this message by setting them explicitly. Run the
-following command and follow the instructions in your editor to edit
-your configuration file:
+You can suppress this message by setting them explicitly:
 
-    git config --global --edit
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
 
 After doing this, you may fix the identity used for this commit with:
 
     git commit --amend --reset-author
 
- 71 files changed, 2585 insertions(+), 2850 deletions(-)
- create mode 100644 .ha_run.lock
- create mode 100644 custom_components/xiaomi_miot/core/mini_miio.py
- create mode 100644 packages/Irri.bak
- create mode 100644 packages/irrigazione.yaml
- create mode 100644 packages/irrigazione.yaml.bak2
- rename packages/{irrigazione_with_scripts.yaml => irrigazione_with_scripts.yaml.bak} (100%)
+ 10 files changed, 1070 insertions(+), 26 deletions(-)
+ create mode 100644 configuration.yaml.bak
+ create mode 100644 lovelace/irrigazione_dashboard_pro.yaml
+ create mode 100644 lovelace/solar_dashboard.yaml
+ create mode 100644 lovelace/solar_dashboard.yaml.bak
+ rename template.yaml => templates/template.yaml (100%)
+ create mode 100644 templates/template_solar.yaml
+ create mode 100644 templates/template_solar.yaml.bak

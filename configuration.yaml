@@ -108,7 +108,10 @@ sensor:
     round: 4
 
 shell_command:
-  pushupdates_to_github: /bin/bash pushupdates.sh
+  ha_git_nightly_commit: 'bash /config/scripts/ha_commit.sh'
+
+#shell_command:
+ # pushupdates_to_github: /bin/bash pushupdates.sh
 
 # CONFIGURAZIONE MODBUS PER EUROTHERM SMARTCONTROL365 VECCHIA
 #modbus: !include eurotherm.yaml
