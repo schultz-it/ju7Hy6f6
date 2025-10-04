@@ -202,7 +202,6 @@ irrigation_unlimited:
         - name: "Mantenimento Primavera (−1h alba, lun/giov/sab)"
           schedules:
             - time: { sun: sunrise, before: "01:00" }
-              month: [mar, apr, may]
               weekday: [mon, thu, sat]
           zones:
             - zone_id: 1
@@ -213,7 +212,6 @@ irrigation_unlimited:
         - name: "Mantenimento Autunno (−1h alba, lun/giov/sab)"
           schedules:
             - time: { sun: sunrise, before: "01:00" }
-              month: [sep, oct]
               weekday: [mon, thu, sat]
           zones:
             - zone_id: 1
@@ -221,7 +219,6 @@ irrigation_unlimited:
         - name: "Estate (−5 min tramonto, lun/giov/sab)"
           schedules:
             - time: { sun: sunset, before: "00:05" }
-              month: [jun, jul, aug]
               weekday: [mon, thu, sat]
           zones:
             - zone_id: 1
