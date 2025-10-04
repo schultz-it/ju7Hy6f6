@@ -71,3 +71,10 @@ After doing this, you may fix the identity used for this commit with:
  delete mode 100644 packages/irrigazione_with_scripts.yaml.bak
 [2025-10-04 12:39:45] Pushing main -> origin/main
 [2025-10-04 12:39:47] Done.
+[2025-10-04 13:18:11] Committing: HA nightly commit: 2025-10-04 13:18:11 CEST
+[main 477c4d2] HA nightly commit: 2025-10-04 13:18:11 CEST
+ 3 files changed, 129 insertions(+)
+ create mode 100644 packages/irrigazione_applica_programma.yaml
+ create mode 100644 packages/zz_irrigazione_persist.yaml
+[2025-10-04 13:18:11] Pushing main -> origin/main
+[2025-10-04 13:18:13] Done.
