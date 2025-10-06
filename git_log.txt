@@ -83,3 +83,8 @@ After doing this, you may fix the identity used for this commit with:
  2 files changed, 70 insertions(+), 25 deletions(-)
 [2025-10-04 13:31:19] Pushing main -> origin/main
 [2025-10-04 13:31:20] Done.
+[2025-10-05 03:30:00] Committing: HA nightly commit: 2025-10-05 03:30:00 CEST
+[main 4a991bb] HA nightly commit: 2025-10-05 03:30:00 CEST
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+[2025-10-05 03:30:00] Pushing main -> origin/main
+[2025-10-05 03:30:02] Done.
