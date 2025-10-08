@@ -124,3 +124,8 @@ After doing this, you may fix the identity used for this commit with:
  create mode 100755 scripts/ha_forcepush.sh
 [2025-10-08 13:35:11] Force pushing to git@github.com:schultz-it/ju7Hy6f6.git
 [2025-10-08 13:47:36] Committing changes
+[main b8a9be8] Home Assistant Nightly Commit (force push)
+ 3 files changed, 55 insertions(+)
+ create mode 100644 scripts/ha_scaricaremoto.sh
+[2025-10-08 13:47:36] Force pushing to git@github.com:schultz-it/ju7Hy6f6.git
+[2025-10-08 13:54:05] Committing local changes
