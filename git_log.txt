@@ -97,3 +97,12 @@ After doing this, you may fix the identity used for this commit with:
 [main bae0f04] HA nightly commit: 2025-10-07 03:30:00 CEST
  3 files changed, 110 insertions(+), 62 deletions(-)
 [2025-10-07 03:30:00] Pushing main -> origin/main
+[2025-10-08 03:30:00] Committing: HA nightly commit: 2025-10-08 03:30:00 CEST
+[main 6e8ecd2] HA nightly commit: 2025-10-08 03:30:00 CEST
+ 53 files changed, 2292 insertions(+), 796 deletions(-)
+ create mode 100644 custom_components/spotifyplus/samplecode/automations/voice_assist_spotifyplus.yaml
+ delete mode 100644 lovelace/irrigazione_dashboard_pro.yaml
+ delete mode 100644 packages/irrigazione.yaml
+ delete mode 100644 packages/irrigazione_applica_programma.yaml
+ delete mode 100644 packages/zz_irrigazione_persist.yaml
+[2025-10-08 03:30:00] Pushing main -> origin/main

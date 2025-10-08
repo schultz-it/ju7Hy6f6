@@ -1,0 +1,275 @@
+title: Irrigazione Pro
+views:
+  - title: Irrigazione
+    path: irrigazione
+    icon: mdi:sprinkler-variant
+    type: sections
+
+    sections:
+      - type: grid
+        cards:
+          # CHIPS BAR
+          - type: custom:mushroom-chips-card
+            alignment: justify
+            chips:
+              # Master ON/OFF
+              - type: template
+                entity: input_boolean.irrigazione_master
+                content: >
+                  {% if is_state('input_boolean.irrigazione_master','on') %}
+                    ATTIVA
+                  {% else %}
+                    NON ATTIVA
+                  {% endif %}
+                icon: mdi:valve
+                tap_action: {action: toggle}
+                icon_color: >
+                  {{ 'green' if is_state('input_boolean.irrigazione_master','on') else 'grey' }}
+
+              # Skip meteo
+              - type: template
+                entity: binary_sensor.irrigazione_skip_meteo
+                content: >
+                  {{ 'Skip meteo' if is_state('binary_sensor.irrigazione_skip_meteo','on')
+                     else 'Meteo ok' }}
+                icon: >
+                  {{ 'mdi:cloud-cancel' if is_state('binary_sensor.irrigazione_skip_meteo','on')
+                     else 'mdi:weather-sunny' }}
+                icon_color: >
+                  {{ 'blue' if is_state('binary_sensor.irrigazione_skip_meteo','on')
+                     else 'amber' }}
+
+              # Forzatura oggi
+              - type: template
+                entity: input_boolean.force_irrigazione_oggi
+                content: "Forza oggi"
+                icon: mdi:water-check
+                tap_action: {action: toggle}
+                icon_color: >
+                  {{ 'red' if is_state('input_boolean.force_irrigazione_oggi','on')
+                     else 'grey' }}
+
+              # Programma selezionato (mostra l'input_select, non un sensore fantasma)
+              - type: template
+                entity: input_select.irrigazione_programma_attivo
+                content: >
+                  Selezionato: {{ states('input_select.irrigazione_programma_attivo') }}
+                icon: mdi:sprinkler-variant
+                icon_color: teal
+
+              # Meteo (Tomorrow.io daily)
+              - type: weather
+                entity: weather.tomorrow_io_daily
+
+          # Selettore programma IU
+          - type: custom:mushroom-entity-card
+            entity: input_select.irrigazione_programma_attivo
+            name: Programma IU selezionato
+            icon: mdi:playlist-check
+
+          # Dati meteo rapidi
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.pioggia_oggi_mm
+                icon: mdi:weather-rainy
+                name: Pioggia oggi (mm)
+                layout: vertical
+              - type: custom:mushroom-entity-card
+                entity: sensor.probabilita_pioggia_oggi
+                icon: mdi:percent
+                name: Probabilità oggi (%)
+                layout: vertical
+              - type: custom:mushroom-entity-card
+                entity: input_number.pioggia_ieri_mm
+                icon: mdi:weather-pouring
+                name: Pioggia ieri (mm)
+                layout: vertical
+
+          # Soglie skip meteo
+          - type: custom:mushroom-entity-card
+            entity: input_number.soglia_pioggia_mm
+            name: Soglia pioggia per skip (mm)
+            icon: mdi:weather-rainy
+          - type: custom:mushroom-entity-card
+            entity: input_number.soglia_prob_pioggia
+            name: Soglia probabilità pioggia (%)
+            icon: mdi:umbrella-alert
+
+          # Shelly manuali
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.shelly_irrigazione_prato
+                name: Prato
+                icon: mdi:sprinkler-variant
+                tap_action: {action: toggle}
+                layout: vertical
+              - type: custom:mushroom-entity-card
+                entity: switch.shelly_irrigazione_aiuola
+                name: Aiuola
+                icon: mdi:pipe-valve
+                tap_action: {action: toggle}
+                layout: vertical
+
+      # SEZIONE COMANDI PROGRAMMI IU
+      - type: grid
+        cards:
+          - type: grid
+            title: Avvia programmi IU (ora)
+            columns: 2
+            square: false
+            cards:
+              # S1 Avvio prato
+              - type: custom:mushroom-template-card
+                entity: binary_sensor.irrigation_unlimited_c1_s1
+                primary: "Avvio prato — RUN"
+                secondary: >
+                  {% if is_state(entity, 'on') %}IN ESECUZIONE (tap=STOP){% else %}Pronto (tap=RUN){% endif %}
+                icon: >
+                  {{ 'mdi:pause-circle' if is_state(entity,'on') else 'mdi:play-circle' }}
+                icon_color: >
+                  {{ 'red' if is_state(entity,'on') else 'green' }}
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    entity_id: script.iu_toggle_s1
+
+              # S2 Primavera
+              - type: custom:mushroom-template-card
+                entity: binary_sensor.irrigation_unlimited_c1_s2
+                primary: "Primavera — RUN"
+                secondary: >
+                  {% if is_state(entity, 'on') %}IN ESECUZIONE (tap=STOP){% else %}Pronto (tap=RUN){% endif %}
+                icon: >
+                  {{ 'mdi:pause-circle' if is_state(entity,'on') else 'mdi:play-circle' }}
+                icon_color: >
+                  {{ 'red' if is_state(entity,'on') else 'teal' }}
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    entity_id: script.iu_toggle_s2
+
+              # S3 Autunno
+              - type: custom:mushroom-template-card
+                entity: binary_sensor.irrigation_unlimited_c1_s3
+                primary: "Autunno — RUN"
+                secondary: >
+                  {% if is_state(entity, 'on') %}IN ESECUZIONE (tap=STOP){% else %}Pronto (tap=RUN){% endif %}
+                icon: >
+                  {{ 'mdi:pause-circle' if is_state(entity,'on') else 'mdi:play-circle' }}
+                icon_color: >
+                  {{ 'red' if is_state(entity,'on') else 'orange' }}
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    entity_id: script.iu_toggle_s3
+
+              # S4 Estate
+              - type: custom:mushroom-template-card
+                entity: binary_sensor.irrigation_unlimited_c1_s4
+                primary: "Estate — RUN"
+                secondary: >
+                  {% if is_state(entity, 'on') %}IN ESECUZIONE (tap=STOP){% else %}Pronto (tap=RUN){% endif %}
+                icon: >
+                  {{ 'mdi:pause-circle' if is_state(entity,'on') else 'mdi:play-circle' }}
+                icon_color: >
+                  {{ 'red' if is_state(entity,'on') else 'blue' }}
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    entity_id: script.iu_toggle_s4
+
+          # STOP totale
+          - type: custom:mushroom-template-card
+            primary: "STOP (IU + Shelly)"
+            icon: mdi:stop-circle
+            icon_color: red
+            fill_container: true
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                entity_id: script.irrigazione_stop_vero
+
+      # SEZIONE GRAFICI
+      - type: grid
+        cards:
+          # Stato irrigazione ultime 24h — usa i binary_sensor delle ZONE IU (niente più "Loading")
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Stato irrigazione (ultime 24h)
+            graph_span: 24h
+            now: { show: true }
+            apex_config:
+              chart:
+                type: bar
+              yaxis:
+                - id: stato
+                  min: 0
+                  max: 1
+                  tickAmount: 1
+                  labels:
+                    formatter: "function(v){return v === 1 ? 'ON' : ''}"
+            series:
+              - entity: binary_sensor.irrigation_unlimited_c1_z1
+                name: Prato
+                type: column
+                yaxis_id: stato
+                transform: "return x === 'on' ? 1 : 0;"
+                group_by:
+                  duration: 5min
+                  func: max
+              - entity: binary_sensor.irrigation_unlimited_c1_z2
+                name: Aiuola
+                type: column
+                yaxis_id: stato
+                transform: "return x === 'on' ? 1 : 0;"
+                group_by:
+                  duration: 5min
+                  func: max
+
+          # Meteo del giorno
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Pioggia e probabilità (oggi)
+            graph_span: 1d
+            span: { start: day }
+            series:
+              - entity: sensor.pioggia_oggi_mm
+                name: Pioggia (mm)
+                type: column
+                yaxis_id: mm
+              - entity: sensor.probabilita_pioggia_oggi
+                name: Probabilità (%)
+                type: line
+                yaxis_id: perc
+            apex_config:
+              yaxis:
+                - id: mm
+                  title: { text: "mm" }
+                - id: perc
+                  max: 100
+                  min: 0
+                  title: { text: "%" }
+
+      # PROMEMORIA PROGRAMMI
+      - type: grid
+        cards:
+          - type: markdown
+            content: |
+              ### Programmi
+              • **Avvio prato** — lun/giov/sab, 1h prima dell'alba → *solo prato* 7'  
+              • **Mantenimento Primavera** — mar-apr-mag, lun/giov/sab, 1h prima dell'alba → prato 4', aiuola 8'  
+              • **Mantenimento Autunno** — set-ott, lun/giov/sab, 1h prima dell'alba → *solo prato* 4'  
+              • **Estate** — giu-lug-ago, lun/giov/sab, 5' prima del tramonto → prato 5', aiuola 10'
