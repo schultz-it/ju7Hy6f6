@@ -5,21 +5,18 @@
 # It does NOT redefine your input_select; it only remembers its value and restores it at startup.
 #
 # Entities used:
-#   input_select.irrigazione_programma   (must already exist in your setup)
+#   input_select.irrigazione_programma_attivo   (must already exist in your setup)
 #
 # What it adds:
-#   input_text.irrigazione_programma_last
+#   input_text.irrigazione_programma_attivo_last
 #   two automations to save/restore the selected program
-
 homeassistant:
   customize: {}
-
 input_text:
-  irrigazione_programma_last:
+  irrigazione_programma_attivo_last:
     name: Last selected irrigation program
     max: 50
     # do NOT set 'initial' so HA restores the last state automatically
-
 automation:
   - alias: "Irrigation: remember selected program on change"
     id: irrigation_remember_selected_program
@@ -27,15 +24,14 @@ automation:
     max: 10
     trigger:
       - platform: state
-        entity_id: input_select.irrigazione_programma
+        entity_id: input_select.irrigazione_programma_attivo
     condition: []
     action:
       - service: input_text.set_value
         target:
-          entity_id: input_text.irrigazione_programma_last
+          entity_id: input_text.irrigazione_programma_attivo_last
         data:
           value: "{{ trigger.to_state.state }}"
-
   - alias: "Irrigation: restore selected program at startup"
     id: irrigation_restore_selected_program_on_start
     mode: restart
@@ -49,11 +45,11 @@ automation:
           - conditions:
               - condition: template
                 value_template: >-
-                  {{ states('input_text.irrigazione_programma_last') | lower not in ['unknown','unavailable','', none] }}
+                  {{ states('input_text.irrigazione_programma_attivo_last') | lower not in ['unknown','unavailable','', none] }}
             sequence:
               - service: input_select.select_option
                 target:
-                  entity_id: input_select.irrigazione_programma
+                  entity_id: input_select.irrigazione_programma_attivo
                 data:
-                  option: "{{ states('input_text.irrigazione_programma_last') }}"
+                  option: "{{ states('input_text.irrigazione_programma_attivo_last') }}"
         default: []
