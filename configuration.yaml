@@ -40,12 +40,12 @@ lovelace:
       show_in_sidebar: true
       filename: lovelace/solar_dashboard.yaml
 
-    irrigazione-dashboard:
-      mode: yaml
-      title: Irrigazione Pro
-      icon: mdi:sprinkler-variant
-      show_in_sidebar: true
-      filename: lovelace/irrigazione_dashboard_pro.yaml
+ #   irrigazione-dashboard:
+  #    mode: yaml
+   #   title: Irrigazione Pro
+    #  icon: mdi:sprinkler-variant
+     # show_in_sidebar: true
+      #filename: lovelace/irrigazione_dashboard_pro.yaml
 
 # Load frontend themes from the themes folder
 frontend:
