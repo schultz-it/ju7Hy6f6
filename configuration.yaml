@@ -112,6 +112,9 @@ shell_command:
 
 shell_command:
   ha_git_force_push: 'bash /config/scripts/ha_forcepush.sh'
+  
+shell_command:
+  ha_git_scarica_remoto: 'bash /config/scripts/ha_scaricaremoto.sh'
 
 #shell_command:
  # pushupdates_to_github: /bin/bash pushupdates.sh
