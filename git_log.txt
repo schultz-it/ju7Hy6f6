@@ -133,3 +133,7 @@ After doing this, you may fix the identity used for this commit with:
 [2025-10-08 13:54:07] Merge completed without conflicts, now local is in sync!
 [2025-10-08 13:54:07] Pushing local state to remote for final sync
 [2025-10-08 13:58:02] Committing local changes
+[2025-10-08 13:58:02] Pulling latest changes from remote and merging
+[2025-10-08 13:58:03] !!! CI SONO CONFLITTI DA RISOLVERE !!!
+[2025-10-08 13:58:03] Apri il terminale e risolvi i conflitti manualmente: git status
+[2025-10-08 14:13:54] Committing changes
