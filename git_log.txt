@@ -137,3 +137,7 @@ After doing this, you may fix the identity used for this commit with:
 [2025-10-08 13:58:03] !!! CI SONO CONFLITTI DA RISOLVERE !!!
 [2025-10-08 13:58:03] Apri il terminale e risolvi i conflitti manualmente: git status
 [2025-10-08 14:13:54] Committing changes
+[main 9687da7] Home Assistant Nightly Commit (force push)
+ 1 file changed, 4 insertions(+)
+[2025-10-08 14:13:54] Force pushing to git@github.com:schultz-it/ju7Hy6f6.git
+[2025-10-08 14:16:14] Backup delle modifiche locali sulla branch Backup_Locale
