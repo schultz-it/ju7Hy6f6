@@ -114,3 +114,8 @@ After doing this, you may fix the identity used for this commit with:
  create mode 100644 packages/irrigazione_applica_programma.yaml
  create mode 100644 packages/zz_irrigazione_persist.yaml
 [2025-10-08 13:18:56] Pushing main -> origin/main
+[2025-10-08 13:23:21] Committing: HA nightly commit: 2025-10-08 13:23:21 CEST
+[main 4cfae6b] HA nightly commit: 2025-10-08 13:23:21 CEST
+ 1 file changed, 8 insertions(+)
+[2025-10-08 13:23:21] Pushing main -> origin/main
+[2025-10-08 13:35:10] Committing changes

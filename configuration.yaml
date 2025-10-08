@@ -110,6 +110,9 @@ sensor:
 shell_command:
   ha_git_nightly_commit: 'bash /config/scripts/ha_commit.sh'
 
+shell_command:
+  ha_git_force_push: 'bash /config/scripts/ha_forcepush.sh'
+
 #shell_command:
  # pushupdates_to_github: /bin/bash pushupdates.sh
 
