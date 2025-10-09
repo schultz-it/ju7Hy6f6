@@ -24,7 +24,7 @@ if [ ! -d .git ]; then
   git checkout -B "$GIT_DEFAULT_BRANCH" | tee -a "$LOG_FILE" || true
 fi
 
-# Se ci sono modifiche locali, salvale su Backup_Locale
+# (1) Se ci sono modifiche locali, salvale su Backup_Locale
 if [ -n "$(git status --porcelain)" ]; then
   log "Backup delle modifiche locali sulla branch $BACKUP_BRANCH"
   git checkout -B "$BACKUP_BRANCH"
@@ -33,13 +33,15 @@ if [ -n "$(git status --porcelain)" ]; then
   git push origin "$BACKUP_BRANCH" | tee -a "$LOG_FILE"
 fi
 
-# Torna sulla branch principale
+# (2) Torna sulla branch principale
+log "Switching to main branch: $GIT_DEFAULT_BRANCH"
 git checkout "$GIT_DEFAULT_BRANCH"
 
-# Scarica aggiornamenti da remoto e sovrascrivi tutto
+# (3) Scarica aggiornamenti da remoto
 log "Fetching remote changes"
 git fetch origin "$GIT_DEFAULT_BRANCH" | tee -a "$LOG_FILE"
 
+# (4) Esegui reset hard per sovrascrivere locale col remoto
 log "Resetting local branch to remote (OVERRIDE LOCAL CHANGES!)"
 git reset --hard origin/"$GIT_DEFAULT_BRANCH" | tee -a "$LOG_FILE"
 
