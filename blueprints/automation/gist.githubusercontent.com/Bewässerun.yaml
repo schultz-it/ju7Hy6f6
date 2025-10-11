@@ -1,0 +1,461 @@
+blueprint:
+  name: Smarte Gartenbewässerung V1.0 beta
+  description: 'Steuerung der Gartenbewässerung mit optionaler Pumpe, Füllstandskontrolle,
+    Bodenfeuchte- und Regenprüfung, Zonensteuerung für Rasen, Hochbeet, Gemüse und
+    Sträucher sowie manuelle Steuerung über Input Selects. Automatische oder manuelle
+    Dauer möglich. Flexible Startzeit (fest, nachts, Sonnenuntergang/-aufgang mit
+    Offset) oder manuell über Input Select.
+
+    '
+  domain: automation
+  input:
+    zonen_rasen:
+      name: Rasen-Zonen (Ventil oder Schalter)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          filter:
+          - domain:
+            - switch
+          - domain:
+            - valve
+          reorder: false
+    manuell_rasen_select:
+      name: Manuelle Rasensteuerung (Input Select)
+      selector:
+        entity:
+          domain:
+          - input_select
+          reorder: false
+          multiple: false
+    manuelle_dauer_rasen:
+      name: Manuelle Dauer Rasen (Minuten, 0 = automatisch)
+      default: 0
+      selector:
+        number:
+          min: 0.0
+          max: 120.0
+          step: 1.0
+          mode: slider
+    zonen_hochbeet:
+      name: Hochbeet-Zonen (Ventil oder Schalter)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          filter:
+          - domain:
+            - switch
+          - domain:
+            - valve
+          reorder: false
+    manuell_hochbeet_select:
+      name: Manuelle Hochbeetsteuerung (Input Select)
+      selector:
+        entity:
+          domain:
+          - input_select
+          reorder: false
+          multiple: false
+    manuelle_dauer_hochbeet:
+      name: Manuelle Dauer Hochbeet (Minuten, 0 = automatisch)
+      default: 0
+      selector:
+        number:
+          min: 0.0
+          max: 120.0
+          step: 1.0
+          mode: slider
+    zonen_gemuese:
+      name: Gemüse-Zonen (Ventil oder Schalter)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          filter:
+          - domain:
+            - switch
+          - domain:
+            - valve
+          reorder: false
+    manuell_gemuese_select:
+      name: Manuelle Gemüsesteuerung (Input Select)
+      selector:
+        entity:
+          domain:
+          - input_select
+          reorder: false
+          multiple: false
+    manuelle_dauer_gemuese:
+      name: Manuelle Dauer Gemüse (Minuten, 0 = automatisch)
+      default: 0
+      selector:
+        number:
+          min: 0.0
+          max: 120.0
+          step: 1.0
+          mode: slider
+    zonen_straeucher:
+      name: Sträucher-Zonen (Ventil oder Schalter)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          filter:
+          - domain:
+            - switch
+          - domain:
+            - valve
+          reorder: false
+    manuell_straeucher_select:
+      name: Manuelle Sträuchersteuerung (Input Select)
+      selector:
+        entity:
+          domain:
+          - input_select
+          reorder: false
+          multiple: false
+    manuelle_dauer_straeucher:
+      name: Manuelle Dauer Sträucher (Minuten, 0 = automatisch)
+      default: 0
+      selector:
+        number:
+          min: 0.0
+          max: 120.0
+          step: 1.0
+          mode: slider
+    wasserquelle:
+      name: Wasserquelle auswählen
+      default: leitungswasser
+      selector:
+        select:
+          options:
+          - label: Leitungswasser
+            value: leitungswasser
+          - label: Regenwasser / Zisterne
+            value: regenwasser
+          multiple: false
+          custom_value: false
+          sort: false
+    min_fuellstand:
+      name: Mindestfüllstand für Pumpenstart (nur bei Regenwasser relevant)
+      default: 100
+      selector:
+        number:
+          min: 0.0
+          max: 50000.0
+          step: 1.0
+          mode: slider
+    pumpe:
+      name: Pumpe (optional)
+      default:
+      selector:
+        entity:
+          domain:
+          - switch
+          reorder: false
+          multiple: false
+    pumpenverzoegerung:
+      name: Pumpenverzögerung (Sekunden)
+      default: 5
+      selector:
+        number:
+          min: 1.0
+          max: 60.0
+          step: 1.0
+          mode: slider
+    fuellstand:
+      name: Füllstand Sensor (optional, nur bei Regenwasser auswählen)
+      default:
+      selector:
+        entity:
+          domain:
+          - sensor
+          reorder: false
+          multiple: false
+    bodenfeuchte_sensor:
+      name: Bodenfeuchte Sensor (optional)
+      default:
+      selector:
+        entity:
+          domain:
+          - sensor
+          reorder: false
+          multiple: false
+    bodenfeuchte_verwenden:
+      name: Bodenfeuchte verwenden?
+      default: false
+      selector:
+        boolean: {}
+    bodenfeuchte_schwelle:
+      name: Bodenfeuchte Schwellenwert (%)
+      default: 30
+      selector:
+        number:
+          min: 0.0
+          max: 100.0
+          step: 1.0
+          mode: slider
+    regen_grenze:
+      name: Regenmenge Schwelle (mm)
+      default: 10
+      selector:
+        number:
+          min: 0.0
+          max: 100.0
+          step: 1.0
+          mode: slider
+    regen_sensor:
+      name: Regenmenge Sensor (optional)
+      default:
+      selector:
+        entity:
+          domain:
+          - sensor
+          reorder: false
+          multiple: false
+    regen_live_sensor:
+      name: Regensensor (optional, aktiv = Regen erkannt)
+      default:
+      selector:
+        entity:
+          domain:
+          - binary_sensor
+          reorder: false
+          multiple: false
+    wasserverbrauch_pro_minute:
+      name: Wasserverbrauch pro Minute (Liter)
+      default: 0
+      description: 'Optional: Verbrauch in Litern pro Minute für Berechnung Gesamtverbrauch.'
+      selector:
+        number:
+          min: 0.0
+          max: 100.0
+          step: 0.1
+          mode: slider
+    wasserverbrauch_aktivieren:
+      name: Wasserverbrauch Berechnung aktivieren?
+      default: false
+      selector:
+        boolean: {}
+    startzeit_option:
+      name: Startzeit Option wählen
+      default: feste_zeit
+      selector:
+        select:
+          options:
+          - label: Feste Zeit (manuelle Eingabe)
+            value: feste_zeit
+          - label: Nachts (02:00 Uhr)
+            value: nachts
+          - label: Sonnenuntergang mit Offset
+            value: sonnenuntergang
+          - label: Sonnenaufgang mit Offset
+            value: sonnenaufgang
+          multiple: false
+          custom_value: false
+          sort: false
+    startzeit_fest:
+      name: Feste Startzeit (wenn 'Feste Zeit' gewählt)
+      default:
+      selector:
+        time: {}
+    startzeit_offset:
+      name: Offset für Sonnenaufgang/-untergang (Minuten, positiv = später, negativ
+        = früher)
+      default: 0
+      selector:
+        number:
+          min: -120.0
+          max: 120.0
+          step: 1.0
+          mode: slider
+    bewasserung_parallel:
+      name: Bewässerung parallel oder sequentiell? (aktiv = alle Zonen gleichzeitig)
+      default: true
+      selector:
+        boolean: {}
+  source_url: https://gist.githubusercontent.com/AbleMonster/612e524d8d53737581b9a24362c5f359/raw/d48e462bc9b303fa78d75b271c29ef0a4d3e9cae/Bew%C3%A4sserung%201.1
+trigger:
+- platform: state
+  entity_id:
+  - !input manuell_rasen_select
+  - !input manuell_hochbeet_select
+  - !input manuell_gemuese_select
+  - !input manuell_straeucher_select
+  to: Start
+- platform: time
+  at: !input startzeit_fest
+- platform: time
+  at: 02:00:00
+- platform: sun
+  event: sunset
+  offset: '{{ states(''input_number.startzeit_offset'')|default(0)|int }}m'
+  condition:
+    condition: template
+    value_template: '{{ is_state(input_select.startzeit_option, ''sonnenuntergang'')
+      }}'
+- platform: sun
+  event: sunrise
+  offset: '{{ states(''input_number.startzeit_offset'')|default(0)|int }}m'
+  condition:
+    condition: template
+    value_template: '{{ is_state(input_select.startzeit_option, ''sonnenaufgang'')
+      }}'
+variables:
+  pumpe_entity: !input pumpe
+  fuellstand_entity: !input fuellstand
+  min_fuellstand_val: !input min_fuellstand
+  bodenfeuchte_entity: !input bodenfeuchte_sensor
+  bodenfeuchte_nutzen: !input bodenfeuchte_verwenden
+  bodenfeuchte_grenze: !input bodenfeuchte_schwelle
+  regen_entity: !input regen_sensor
+  regen_limit: !input regen_grenze
+  regen_live_entity: !input regen_live_sensor
+  wasserquelle_typ: !input wasserquelle
+  bewasserung_parallel_val: !input bewasserung_parallel
+  wasserverbrauch_pro_minute_val: !input wasserverbrauch_pro_minute
+  wasserverbrauch_aktivieren_val: !input wasserverbrauch_aktivieren
+  zonen:
+  - name: Rasen
+    liste: !input zonen_rasen
+    dauer: !input manuelle_dauer_rasen
+  - name: Hochbeet
+    liste: !input zonen_hochbeet
+    dauer: !input manuelle_dauer_hochbeet
+  - name: Gemüse
+    liste: !input zonen_gemuese
+    dauer: !input manuelle_dauer_gemuese
+  - name: Sträucher
+    liste: !input zonen_straeucher
+    dauer: !input manuelle_dauer_straeucher
+action:
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ wasserquelle_typ == "regenwasser" and fuellstand_entity
+        != none and (states(fuellstand_entity)|float(0)) < min_fuellstand_val }}
+
+        '
+    sequence:
+    - service: notify.notify
+      data:
+        message: 'Bewässerung abgebrochen: Füllstand zu niedrig ({{ states(fuellstand_entity)
+          }} < {{ min_fuellstand_val }}).'
+    - stop: Füllstand zu niedrig
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ bodenfeuchte_nutzen and bodenfeuchte_entity != none and
+        (states(bodenfeuchte_entity)|float(100)) >= bodenfeuchte_grenze }}
+
+        '
+    sequence:
+    - service: notify.notify
+      data:
+        message: 'Bewässerung abgebrochen: Bodenfeuchte ausreichend ({{ states(bodenfeuchte_entity)
+          }}%).'
+    - stop: Bodenfeuchte ausreichend
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ regen_entity != none and (states(regen_entity)|float(0))
+        >= regen_limit }}
+
+        '
+    sequence:
+    - service: notify.notify
+      data:
+        message: 'Bewässerung abgebrochen: Zu viel Regen in den letzten Tagen ({{
+          states(regen_entity) }} mm).'
+    - stop: Regenmenge überschritten
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ regen_live_entity != none and is_state(regen_live_entity,
+        ''on'') }}
+
+        '
+    sequence:
+    - service: notify.notify
+      data:
+        message: 'Bewässerung abgebrochen: Es regnet aktuell ({{ regen_live_entity
+          }}).'
+    - stop: Aktueller Regen erkannt
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ pumpe_entity != none }}'
+    sequence:
+    - service: switch.turn_on
+      target:
+        entity_id: '{{ pumpe_entity }}'
+    - delay:
+        seconds: !input pumpenverzoegerung
+- variables:
+    dauer_liste: "{% set result = [] %} {% for z in zonen %}\n  {% set dauer = z.dauer
+      %}\n  {% if dauer == 0 %}\n    {% if bodenfeuchte_nutzen and bodenfeuchte_entity
+      != none %}\n      {% set feuchte = states(bodenfeuchte_entity)|float(0) %}\n
+      \     {% set adj_dauer = (10 * (1 - (feuchte/100)*0.7))|round(0,'ceil') %}\n
+      \   {% else %}\n      {% set adj_dauer = 10 %}\n    {% endif %}\n  {% else %}\n
+      \   {% set adj_dauer = dauer %}\n  {% endif %}\n  {% set _ = result.append(adj_dauer)
+      %}\n{% endfor %} {{ result }}\n"
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ bewasserung_parallel_val }}'
+    sequence:
+    - service: homeassistant.turn_on
+      target:
+        entity_id: "{% set list=[] %} {% for z in zonen %}\n  {% for e in z.liste
+          %}\n    {% set _ = list.append(e) %}\n  {% endfor %}\n{% endfor %} {{ list|join(',')
+          }}\n"
+    - delay:
+        minutes: '{{ dauer_liste|max }}'
+    - service: homeassistant.turn_off
+      target:
+        entity_id: "{% set list=[] %} {% for z in zonen %}\n  {% for e in z.liste
+          %}\n    {% set _ = list.append(e) %}\n  {% endfor %}\n{% endfor %} {{ list|join(',')
+          }}\n"
+  - conditions:
+    - condition: template
+      value_template: '{{ not bewasserung_parallel_val }}'
+    sequence:
+    - repeat:
+        count: '{{ zonen|length }}'
+        sequence:
+        - service: homeassistant.turn_on
+          target:
+            entity_id: '{{ zonen[repeat.index-1].liste|join('','') }}'
+        - delay:
+            minutes: '{{ dauer_liste[repeat.index-1] }}'
+        - service: homeassistant.turn_off
+          target:
+            entity_id: '{{ zonen[repeat.index-1].liste|join('','') }}'
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ pumpe_entity != none }}'
+    sequence:
+    - service: switch.turn_off
+      target:
+        entity_id: '{{ pumpe_entity }}'
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ wasserverbrauch_aktivieren_val and wasserverbrauch_pro_minute_val>0
+        }}
+
+        '
+    sequence:
+    - variables:
+        gesamt_dauer: '{{ dauer_liste|sum }}'
+        gesamt_verbrauch: '{{ (gesamt_dauer*wasserverbrauch_pro_minute_val)|round(1)
+          }}'
+    - service: notify.notify
+      data:
+        message: 'Bewässerung beendet. Gesamtverbrauch: {{ gesamt_verbrauch }} Liter.
+
+          '
+mode: single
