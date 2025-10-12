@@ -151,3 +151,62 @@ After doing this, you may fix the identity used for this commit with:
 [Backup_Locale 8c721eb] HA nightly commit: 2025-10-10 03:30:00 CEST
  1 file changed, 4 insertions(+)
 [2025-10-10 03:30:00] Pushing Backup_Locale -> origin/main
+[2025-10-11 03:30:00] Committing: HA nightly commit: 2025-10-11 03:30:00 CEST
+[Backup_Locale e13b1c7] HA nightly commit: 2025-10-11 03:30:00 CEST
+ 133 files changed, 14518 insertions(+), 2429 deletions(-)
+ create mode 100644 "blueprints/automation/gist.githubusercontent.com/Bew\303\244sserun.yaml"
+ create mode 100644 custom_components/irrigationprogram/__init__.py
+ create mode 100644 custom_components/irrigationprogram/__pycache__/__init__.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/config_flow.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/const.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/diagnostics.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/number.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/program.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/pump.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/select.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/sensor.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/switch.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/text.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/time.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/utils.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/__pycache__/zone.cpython-313.pyc
+ create mode 100644 custom_components/irrigationprogram/config_flow.py
+ create mode 100644 custom_components/irrigationprogram/const.py
+ create mode 100644 custom_components/irrigationprogram/diagnostics.py
+ create mode 100644 custom_components/irrigationprogram/icons.json
+ create mode 100644 custom_components/irrigationprogram/manifest.json
+ create mode 100644 custom_components/irrigationprogram/number.py
+ create mode 100644 custom_components/irrigationprogram/program.py
+ create mode 100644 custom_components/irrigationprogram/pump.py
+ create mode 100644 custom_components/irrigationprogram/select.py
+ create mode 100644 custom_components/irrigationprogram/sensor.py
+ create mode 100644 custom_components/irrigationprogram/strings.json
+ create mode 100644 custom_components/irrigationprogram/switch.py
+ create mode 100644 custom_components/irrigationprogram/text.py
+ create mode 100644 custom_components/irrigationprogram/time.py
+ create mode 100644 custom_components/irrigationprogram/translations/de.json
+ create mode 100644 custom_components/irrigationprogram/translations/en.json
+ create mode 100644 custom_components/irrigationprogram/translations/es.json
+ create mode 100644 custom_components/irrigationprogram/translations/fr.json
+ create mode 100644 custom_components/irrigationprogram/translations/it.json
+ create mode 100644 custom_components/irrigationprogram/translations/nl.json
+ create mode 100644 custom_components/irrigationprogram/translations/no.json
+ create mode 100644 custom_components/irrigationprogram/translations/pl.json
+ create mode 100644 custom_components/irrigationprogram/translations/pt.json
+ create mode 100644 custom_components/irrigationprogram/utils.py
+ create mode 100644 custom_components/irrigationprogram/www/irrigation-card.js
+ create mode 100644 custom_components/irrigationprogram/zone.py
+ create mode 100644 custom_components/spotifyplus/__pycache__/intent.cpython-313.pyc
+ create mode 100644 custom_components/spotifyplus/intent.py
+ create mode 100644 custom_components/spotifyplus/intent_handlers/__init__.py
+ create mode 100644 custom_components/spotifyplus/intent_handlers/__pycache__/__init__.cpython-313.pyc
+ create mode 100644 custom_components/spotifyplus/intent_handlers/__pycache__/spotifyplusintenthandler.cpython-313.pyc
+ create mode 100644 custom_components/spotifyplus/intent_handlers/__pycache__/spotifyplusplayermediaskipnext_handler.cpython-313.pyc
+ create mode 100644 custom_components/spotifyplus/intent_handlers/__pycache__/spotifyplusplayermediaskipprevious_handler.cpython-313.pyc
+ create mode 100644 custom_components/spotifyplus/intent_handlers/spotifyplusintenthandler.py
+ create mode 100644 custom_components/spotifyplus/intent_handlers/spotifyplusplayermediaskipnext_handler.py
+ create mode 100644 custom_components/spotifyplus/intent_handlers/spotifyplusplayermediaskipprevious_handler.py
+ create mode 100644 custom_components/spotifyplus/samplecode/intents/en/spotifyplus_PlayerMediaSkipNext_en.yaml
+ create mode 100644 custom_components/spotifyplus/samplecode/intents/en/spotifyplus_PlayerMediaSkipPrevious_en.yaml
+ create mode 100644 custom_components/spotifyplus/samplecode/intents/en/spotifyplus_common_en.yaml
+[2025-10-11 03:30:00] Pushing Backup_Locale -> origin/main

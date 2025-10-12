@@ -15,7 +15,6 @@
     target:
       device_id: e713e0826211997dce803385fc048702
   mode: single
-
 - id: '1756309742361'
   alias: TV spenta cornice
   description: ''
@@ -33,14 +32,41 @@
     target:
       device_id: e713e0826211997dce803385fc048702
   mode: single
-
 - id: ha_git_nightly_commit
   alias: HA Git Nightly Commit
   description: Commit HA config and push to remote
   mode: single
   trigger:
-    - platform: time
-      at: "03:30:00"
+  - platform: time
+    at: 03:30:00
   condition: []
   action:
-    - service: shell_command.ha_git_nightly_commit
+  - service: shell_command.ha_git_nightly_commit
+- id: '1760187555607'
+  alias: Accensione Luci Esterne Tramonto
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: '900'
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 28c5a24fad7e3978faaea346f7a38d5f
+    entity_id: fa927b675db9469dd1c11d9e2b76bbd4
+    domain: switch
+  mode: single
+- id: '1760187595023'
+  alias: Spegnimento Luci Esterne Alba
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: 0
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 28c5a24fad7e3978faaea346f7a38d5f
+    entity_id: fa927b675db9469dd1c11d9e2b76bbd4
+    domain: switch
+  mode: single
