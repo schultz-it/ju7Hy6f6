@@ -214,3 +214,9 @@ After doing this, you may fix the identity used for this commit with:
 [Backup_Locale 18a4a3c] HA nightly commit: 2025-10-12 03:30:01 CEST
  29 files changed, 836 insertions(+), 55 deletions(-)
 [2025-10-12 03:30:01] Pushing Backup_Locale -> origin/main
+[2025-10-12 11:26:44] Committing: HA nightly commit: 2025-10-12 11:26:44 CEST
+[Backup_Locale e167803] HA nightly commit: 2025-10-12 11:26:44 CEST
+ 13 files changed, 647 insertions(+), 395 deletions(-)
+ create mode 100644 custom_components/abb_powerone_pvi_sunspec/helpers.py
+[2025-10-12 11:26:44] Pushing Backup_Locale -> origin/main
+[2025-10-12 11:27:06] Committing changes
