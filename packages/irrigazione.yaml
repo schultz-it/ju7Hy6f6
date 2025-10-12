@@ -48,7 +48,7 @@ input_select:
       - Primavera
       - Autunno
       - Estate
-    initial: Primavera
+   # initial: Primavera
 
 template:
   - trigger:
