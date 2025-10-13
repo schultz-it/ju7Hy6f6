@@ -220,3 +220,6 @@ After doing this, you may fix the identity used for this commit with:
  create mode 100644 custom_components/abb_powerone_pvi_sunspec/helpers.py
 [2025-10-12 11:26:44] Pushing Backup_Locale -> origin/main
 [2025-10-12 11:27:06] Committing changes
+[Backup_Locale f03d26e] Home Assistant Nightly Commit (force push)
+ 1 file changed, 7 insertions(+)
+[2025-10-12 11:27:06] Force pushing to git@github.com:schultz-it/ju7Hy6f6.git

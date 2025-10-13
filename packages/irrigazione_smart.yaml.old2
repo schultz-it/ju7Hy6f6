@@ -1,0 +1,135 @@
+# =================================
+# IRRIGAZIONE AVANZATA - CONFIGURATION
+# =================================
+
+irrigation_unlimited:
+  controllers:
+    - name: "Controller Shelly Pro 2"
+      enabled: true
+      zones:
+        - name: "Prato"
+          entity_id: switch.shelly_irrigazione_prato
+          enabled: true
+          zone_id: "1"      # ← STRINGA con virgolette!
+        - name: "Aiuola"
+          entity_id: switch.shelly_irrigazione_aiuola
+          enabled: true
+          zone_id: "2"      # ← STRINGA con virgolette!
+      
+      sequences:
+        - name: "Avvio Prato - Ogni 2 ore"
+          sequence_id: "1"
+          enabled: false
+          duration: "00:05"
+          delay: "00:00"
+          zones:
+            - zone_id: "1"
+          schedules:
+            - name: "Prato 01:00"
+              time: "01:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 03:00"
+              time: "03:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 05:00"
+              time: "05:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 07:00"
+              time: "07:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 09:00"
+              time: "09:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 11:00"
+              time: "11:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 13:00"
+              time: "13:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 15:00"
+              time: "15:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 17:00"
+              time: "17:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 19:00"
+              time: "19:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 21:00"
+              time: "21:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - name: "Prato 23:00"
+              time: "23:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+
+
+        - name: "Autunno - Solo Prato"
+          sequence_id: "2"  # ← STRINGA con virgolette!
+          enabled: false
+          duration: "00:05"
+          schedules:
+            - name: "Autunno un'ora prima alba"
+              time: "05:00"
+              weekday: [mon, wed, fri]
+              month: [sep, oct, nov]
+          zones:
+            - zone_id: "1"  # ← STRINGA con virgolette!
+
+        - name: "Primavera - Prato + Aiuola"
+          sequence_id: "3"  # ← STRINGA con virgolette!
+          enabled: false
+          delay: "00:02"
+          schedules:
+            - name: "Primavera un'ora prima alba"
+              time: "05:00"
+              weekday: [mon, wed, fri]
+              month: [mar, apr, may]
+          zones:
+            - zone_id: "1"  # ← STRINGA con virgolette!
+              duration: "00:05"
+            - zone_id: "2"  # ← STRINGA con virgolette!
+              duration: "00:10"
+
+        - name: "Estate - Prato + Aiuola"
+          sequence_id: "4"  # ← STRINGA con virgolette!
+          enabled: false
+          delay: "00:02"
+          schedules:
+            - name: "Estate alle 01:00"
+              time: "01:00"
+              weekday: [mon, wed, fri]
+              month: [jun, jul, aug]
+          zones:
+            - zone_id: "1"  # ← STRINGA con virgolette!
+              duration: "00:10"
+            - zone_id: "2"  # ← STRINGA con virgolette!
+              duration: "00:15"
+
+input_select:
+  irrigation_scenario:
+    name: "Scenario Irrigazione"
+    options:
+      - "Disabilitato"
+      - "Avvio Prato"
+      - "Autunno"
+      - "Primavera"
+      - "Estate"
+    initial: "Disabilitato"
+    icon: mdi:sprinkler
+
+input_button:
+  irrigazione_manuale_prato:
+    name: "Avvio Manuale Prato"
+    icon: mdi:sprinkler-variant
+    
+  irrigazione_manuale_aiuola:  
+    name: "Avvio Manuale Aiuola"
+    icon: mdi:flower
+    
+  irrigazione_stop_emergenza:
+    name: "STOP Emergenza"
+    icon: mdi:stop-circle
+
+# =================================
+# FINE CONFIGURAZIONE
+# =================================

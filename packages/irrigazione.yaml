@@ -192,33 +192,38 @@ irrigation_unlimited:
         - name: "Aiuola"
           entity_id: switch.shelly_irrigazione_aiuola
       sequences:
-        - name: "Avvio prato (−1h alba, lun/giov/sab)"
+        - name: "Avvio prato (−1h alba, sempre)"
           schedules:
-            - time: { sun: sunrise, before: "01:00" }
-              weekday: [mon, thu, sat]
+            - time: "01:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "03:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "05:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "07:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "09:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "11:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "13:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "15:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "17:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "19:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "21:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            - time: "23:00"
+              weekday: [mon, tue, wed, thu, fri, sat, sun]
           zones:
             - zone_id: 1
-              duration: "00:07"
+              duration: "00:05"
         - name: "Mantenimento Primavera (−1h alba, lun/giov/sab)"
           schedules:
             - time: { sun: sunrise, before: "01:00" }
-              weekday: [mon, thu, sat]
-          zones:
-            - zone_id: 1
-              duration: "00:04"
-              delay: "00:00:03"
-            - zone_id: 2
-              duration: "00:08"
-        - name: "Mantenimento Autunno (−1h alba, lun/giov/sab)"
-          schedules:
-            - time: { sun: sunrise, before: "01:00" }
-              weekday: [mon, thu, sat]
-          zones:
-            - zone_id: 1
-              duration: "00:04"
-        - name: "Estate (−5 min tramonto, lun/giov/sab)"
-          schedules:
-            - time: { sun: sunset, before: "00:05" }
               weekday: [mon, thu, sat]
           zones:
             - zone_id: 1
@@ -226,6 +231,23 @@ irrigation_unlimited:
               delay: "00:00:03"
             - zone_id: 2
               duration: "00:10"
+        - name: "Mantenimento Autunno (−1h alba, lun/giov/sab)"
+          schedules:
+            - time: { sun: sunrise, before: "01:00" }
+              weekday: [mon, thu, sat]
+          zones:
+            - zone_id: 1
+              duration: "00:05"
+        - name: "Estate (−5 min tramonto, lun/giov/sab)"
+          schedules:
+            - time: { sun: sunset, before: "00:05" }
+              weekday: [mon, thu, sat]
+          zones:
+            - zone_id: 1
+              duration: "00:10"
+              delay: "00:00:03"
+            - zone_id: 2
+              duration: "00:15"
 
 script:
   # STOP "vero": ferma IU e spegne i relè, e disabilita le sequence per resettare i sensori

@@ -221,26 +221,22 @@ views:
                   labels:
                     formatter: "function(v){return v === 1 ? 'ON' : ''}"
             series:
-              - entity: sensor.prato_on_ultimi_24h
+              - entity: binary_sensor.irrigation_unlimited_c1_z1
                 name: Prato
                 type: column
                 yaxis_id: stato
-              #- entity: binary_sensor.irrigation_unlimited_c1_z1
-               # name: Prato
-                #type: column
-                #yaxis_id: stato
-                #transform: "return x === 'on' ? 1 : 0;"
-                #group_by:
-                 # duration: 5min
-                  #func: max
-             # - entity: binary_sensor.irrigation_unlimited_c1_z2
-               # name: Aiuola
-               # type: column
-               # yaxis_id: stato
-                #transform: "return x === 'on' ? 1 : 0;"
-               # group_by:
-                 # duration: 5min
-                 # func: max
+                transform: "return x === 'on' ? 1 : 0;"
+                group_by:
+                  duration: 5min
+                  func: max
+              - entity: binary_sensor.irrigation_unlimited_c1_z2
+                name: Aiuola
+                type: column
+                yaxis_id: stato
+                transform: "return x === 'on' ? 1 : 0;"
+                group_by:
+                  duration: 5min
+                  func: max
 
           # Meteo del giorno
           - type: custom:apexcharts-card
@@ -277,38 +273,3 @@ views:
               • **Mantenimento Primavera** — mar-apr-mag, lun/giov/sab, 1h prima dell'alba → prato 5', aiuola 10'  
               • **Mantenimento Autunno** — set-ott, lun/giov/sab, 1h prima dell'alba → *solo prato* 5'  
               • **Estate** — giu-lug-ago, lun/giov/sab, 5' prima del tramonto → prato 10', aiuola 15'
-      # ============================
-# SEZIONE STORICO IRRIGAZIONI
-# ============================
-
-      #- type: history-graph
-       # title: Ultimi eventi irrigazione
-        #entities:
-         # - switch.shelly_irrigazione_prato
-          #- switch.shelly_irrigazione_aiuola
-        #hours_to_show: 48
-        #refresh_interval: 60
-
-      #- type: custom:logbook-card
-       # title: Ultime irrigazioni
-    #    entities:
-     #     - switch.shelly_irrigazione_prato
-       #   - switch.shelly_irrigazione_aiuola
-      #  max_items: 10
-      - type: history-graph
-        title: Ultimi eventi irrigazione
-        entities:
-          - switch.shelly_irrigazione_prato
-          - switch.shelly_irrigazione_aiuola
-        hours_to_show: 48
-
-# ============================
-# PROSSIMA IRRIGAZIONE
-# ============================
-
-      - type: custom:mushroom-template-card
-        primary: "Prossima irrigazione"
-        secondary: >
-          {{ states('sensor.irrigation_next_schedule') }}
-        icon: mdi:calendar-clock
-        icon_color: teal

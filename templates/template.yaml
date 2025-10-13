@@ -26,3 +26,19 @@
         {% set consumo = (states('sensor.consumo_istantaneo_totale') | float(0)) %}
         {% set fv = (states('sensor.produzione_istantanea_fv') | float(0)) %}
         {{ (consumo - fv) | round(0) }}
+        
+    - name: "Prossima irrigazione"
+      unique_id: irrigation_next_schedule
+      state: >
+        {% set scenario = states('input_select.irrigation_scenario') %}
+        {% if scenario == 'Avvio Prato' %}
+          Prossima alle 01:00 ogni giorno
+        {% elif scenario == 'Primavera' %}
+          Prossima alle 05:00 lun/mer/ven (mar-mag)
+        {% elif scenario == 'Autunno' %}
+          Prossima alle 05:00 lun/mer/ven (set-nov)
+        {% elif scenario == 'Estate' %}
+          Prossima alle 01:00 lun/mer/ven (giu-ago)
+        {% else %}
+          Non programmato
+        {% endif %}

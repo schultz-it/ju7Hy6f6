@@ -32,7 +32,12 @@ lovelace:
       type: module
     - url: /hacsfiles/apexcharts-card/apexcharts-card.js
       type: module
+    - url: /hacsfiles/button-card/button-card.js
+      type: module
+    - url: /hacsfiles/card-mod/card-mod.js
+      type: module
   dashboards:
+    
     solar-dashboard:
       mode: yaml
       title: Fotovoltaico Correzzana
@@ -42,7 +47,7 @@ lovelace:
 
     irrigazione-dashboard:
       mode: yaml
-      title: Irrigazione Pro
+      title: Irrigazione Correzzana
       icon: mdi:sprinkler-variant
       show_in_sidebar: true
       filename: lovelace/irrigazione_dashboard_pro.yaml
@@ -106,6 +111,13 @@ sensor:
     name: Consumo PC
     method: left
     round: 4
+  - platform: history_stats
+    name: Prato ON ultimi 24h
+    entity_id: binary_sensor.irrigation_unlimited_c1_z1
+    state: 'on'
+    type: time
+    start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+    end: "{{ now() }}"
 
 shell_command:
   ha_git_nightly_commit: 'bash /config/scripts/ha_commit.sh'
@@ -119,4 +131,4 @@ shell_command:
 # CONFIGURAZIONE MODBUS PER EUROTHERM SMARTCONTROL365 VECCHIA
 #modbus: !include eurotherm.yaml
 
-# smart_irrigation:
+

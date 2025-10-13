@@ -1,0 +1,74 @@
+template:
+  - sensor:
+      - name: "Pioggia Ieri"
+        unique_id: rain_yesterday
+        state: >
+          {% if state_attr('weather.tomorrow_io_home_daily', 'forecast') %}
+            {% set yesterday = (now() - timedelta(days=1)).date() %}
+            {% for day in state_attr('weather.tomorrow_io_home_daily', 'forecast') %}
+              {% if day.datetime[:10] == yesterday.strftime('%Y-%m-%d') %}
+                {{ day.precipitation | default(0) | float }}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            0
+          {% endif %}
+        unit_of_measurement: "mm"
+        device_class: precipitation
+        
+      - name: "Pioggia Oggi"
+        unique_id: rain_today
+        state: >
+          {% if state_attr('weather.tomorrow_io_home_daily', 'forecast') %}
+            {% set today = now().date() %}
+            {% for day in state_attr('weather.tomorrow_io_home_daily', 'forecast') %}
+              {% if day.datetime[:10] == today.strftime('%Y-%m-%d') %}
+                {{ day.precipitation | default(0) | float }}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            0
+          {% endif %}
+        unit_of_measurement: "mm"
+        device_class: precipitation
+        
+      - name: "Probabilità Pioggia Oggi"
+        unique_id: rain_probability_today
+        state: >
+          {% if state_attr('weather.tomorrow_io_home_daily', 'forecast') %}
+            {% set today = now().date() %}
+            {% for day in state_attr('weather.tomorrow_io_home_daily', 'forecast') %}
+              {% if day.datetime[:10] == today.strftime('%Y-%m-%d') %}
+                {{ day.precipitation_probability | default(0) | float }}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            0
+          {% endif %}
+        unit_of_measurement: "%"
+        
+      - name: "Irrigation Next Schedule Time"
+        unique_id: irrigation_next_schedule_time
+        state: >
+          {% set scenario = states('input_select.irrigation_scenario') %}
+          {% if scenario == 'Primavera' or scenario == 'Autunno' %}
+            Domani alle 05:00
+          {% elif scenario == 'Estate' %}
+            Domani alle 01:00
+          {% elif scenario == 'Avvio Prato' %}
+            Prossima alle {{ (now() + timedelta(hours=2)).strftime('%H:%M') }}
+          {% else %}
+            Non programmato
+          {% endif %}
+          
+      - name: "Irrigation Next Schedule Zone"
+        unique_id: irrigation_next_schedule_zone
+        state: >
+          {% set scenario = states('input_select.irrigation_scenario') %}
+          {% if scenario in ['Primavera', 'Estate'] %}
+            Prato + Aiuola
+          {% elif scenario in ['Autunno', 'Avvio Prato'] %}
+            Solo Prato
+          {% else %}
+            Nessuna zona
+          {% endif %}

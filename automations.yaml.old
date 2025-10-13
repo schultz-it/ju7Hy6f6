@@ -1,0 +1,221 @@
+- id: '1756309707631'
+  alias: 'TV accesa cornice '
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 25cfd7469f060c88f77f8721bd90ce90
+    entity_id: 8c04f8d364294d73fa2b6f0c720f1fa1
+    domain: remote
+    trigger: device
+  conditions: []
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      device_id: e713e0826211997dce803385fc048702
+  mode: single
+- id: '1756309742361'
+  alias: TV spenta cornice
+  description: ''
+  triggers:
+  - type: turned_off
+    device_id: 25cfd7469f060c88f77f8721bd90ce90
+    entity_id: 8c04f8d364294d73fa2b6f0c720f1fa1
+    domain: remote
+    trigger: device
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      device_id: e713e0826211997dce803385fc048702
+  mode: single
+- id: ha_git_nightly_commit
+  alias: HA Git Nightly Commit
+  description: Commit HA config and push to remote
+  mode: single
+  trigger:
+  - platform: time
+    at: 03:30:00
+  condition: []
+  action:
+  - service: shell_command.ha_git_nightly_commit
+- id: '1760187555607'
+  alias: Accensione Luci Esterne Tramonto
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: '900'
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 28c5a24fad7e3978faaea346f7a38d5f
+    entity_id: fa927b675db9469dd1c11d9e2b76bbd4
+    domain: switch
+  mode: single
+- id: '1760187595023'
+  alias: Spegnimento Luci Esterne Alba
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: 0
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 28c5a24fad7e3978faaea346f7a38d5f
+    entity_id: fa927b675db9469dd1c11d9e2b76bbd4
+    domain: switch
+  mode: single
+# =================================
+# IRRIGAZIONE SMART - AUTOMAZIONI
+# =================================
+
+- alias: "Irrigazione - Gestione Scenari"
+  id: irrigation_scenario_manager
+  description: "Abilita/Disabilita sequenze in base al scenario selezionato"
+  trigger:
+    - platform: state
+      entity_id: input_select.irrigation_scenario
+  action:
+    - service: irrigation_unlimited.disable
+      data:
+        entity_id: binary_sensor.irrigation_unlimited_c1_m
+        sequence_id: 1
+    - service: irrigation_unlimited.disable
+      data:
+        entity_id: binary_sensor.irrigation_unlimited_c1_m
+        sequence_id: 2
+    - service: irrigation_unlimited.disable
+      data:
+        entity_id: binary_sensor.irrigation_unlimited_c1_m
+        sequence_id: 3
+    - service: irrigation_unlimited.disable
+      data:
+        entity_id: binary_sensor.irrigation_unlimited_c1_m
+        sequence_id: 4
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: input_select.irrigation_scenario
+              state: "Avvio Prato"
+          sequence:
+            - service: irrigation_unlimited.enable
+              data:
+                entity_id: binary_sensor.irrigation_unlimited_c1_m
+                sequence_id: 1
+        - conditions:
+            - condition: state
+              entity_id: input_select.irrigation_scenario
+              state: "Autunno"
+          sequence:
+            - service: irrigation_unlimited.enable
+              data:
+                entity_id: binary_sensor.irrigation_unlimited_c1_m
+                sequence_id: 2
+        - conditions:
+            - condition: state
+              entity_id: input_select.irrigation_scenario
+              state: "Primavera"
+          sequence:
+            - service: irrigation_unlimited.enable
+              data:
+                entity_id: binary_sensor.irrigation_unlimited_c1_m
+                sequence_id: 3
+        - conditions:
+            - condition: state
+              entity_id: input_select.irrigation_scenario
+              state: "Estate"
+          sequence:
+            - service: irrigation_unlimited.enable
+              data:
+                entity_id: binary_sensor.irrigation_unlimited_c1_m
+                sequence_id: 4
+
+- alias: "Irrigazione - Controllo Condizioni Meteo"
+  id: irrigation_weather_check
+  description: "Blocca irrigazione se condizioni meteo non idonee"
+  trigger:
+    - platform: event
+      event_type: irrigation_unlimited_start
+  condition:
+    - condition: or
+      conditions:
+        - condition: template
+          value_template: "{{ state_attr('weather.tomorrow_io_home_daily', 'forecast')[0].precipitation | default(0) > 2 }}"
+        - condition: template
+          value_template: "{{ state_attr('weather.tomorrow_io_home_daily', 'forecast')[0].precipitation_probability | default(0) > 20 }}"
+  action:
+    - service: irrigation_unlimited.cancel
+      data:
+        entity_id: "{{ trigger.event.data.entity_id }}"
+    - service: persistent_notification.create
+      data:
+        title: "🌧️ Irrigazione Annullata"
+        message: "Irrigazione annullata per condizioni meteo avverse"
+
+- alias: "Irrigazione - Avvio Manuale Prato"
+  id: irrigation_manual_prato
+  trigger:
+    - platform: state
+      entity_id: input_button.irrigazione_manuale_prato
+  action:
+    - service: irrigation_unlimited.manual_run
+      data:
+        entity_id: binary_sensor.irrigation_unlimited_c1_z1
+        time: "00:05"
+
+- alias: "Irrigazione - Avvio Manuale Aiuola"
+  id: irrigation_manual_aiuola
+  trigger:
+    - platform: state
+      entity_id: input_button.irrigazione_manuale_aiuola
+  action:
+    - service: irrigation_unlimited.manual_run
+      data:
+        entity_id: binary_sensor.irrigation_unlimited_c1_z2
+        time: "00:10"
+
+- alias: "Irrigazione - Stop Emergenza"
+  id: irrigation_emergency_stop
+  trigger:
+    - platform: state
+      entity_id: input_button.irrigazione_stop_emergenza
+  action:
+    - service: irrigation_unlimited.cancel
+      data:
+        entity_id: binary_sensor.irrigation_unlimited_c1_m
+    - service: switch.turn_off
+      entity_id: 
+        - switch.shelly_irrigazione_prato
+        - switch.shelly_irrigazione_aiuola
+    - service: persistent_notification.create
+      data:
+        title: "🚨 STOP EMERGENZA IRRIGAZIONE"
+        message: "Tutte le irrigazioni sono state fermate immediatamente!"
+        
+- alias: "Aggiorna Orario Alba per Irrigazione Autunno"
+  id: aggiorna_orario_alba_irrigazione_autunno
+  trigger:
+    - platform: time
+      at: "00:10:00"       # Ogni notte dopo mezzanotte
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.irrigazione_orario_autunno
+      data:
+        time: >
+          {% set alba = state_attr('sun.sun', 'next_rising') %}
+          {% set ora_alba = as_datetime(alba) %}
+          {% set ora = ora_alba.hour %}
+          {% set minuti = ora_alba.minute %}
+          {% set orario = ora - 1 %}
+          {% if orario < 0 %}00{% else %}{{ '{:02d}'.format(orario) }}{% endif %}:{% if minuti < 10 %}0{% endif %}{{ minuti }}
+
+
+# =================================
+# FINE AUTOMAZIONI IRRIGAZIONE
+# =================================
