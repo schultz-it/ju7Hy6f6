@@ -34,7 +34,9 @@ lovelace:
       type: module
     - url: /hacsfiles/button-card/button-card.js
       type: module
-    - url: /hacsfiles/card-mod/card-mod.js
+    - url: /hacsfiles/lovelace-card-mod/card-mod.js
+      type: module
+    - url: /hacsfiles/irrigation-unlimited-card/irrigation-unlimited-card.js
       type: module
   dashboards:
     

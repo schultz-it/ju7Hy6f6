@@ -223,3 +223,17 @@ After doing this, you may fix the identity used for this commit with:
 [Backup_Locale f03d26e] Home Assistant Nightly Commit (force push)
  1 file changed, 7 insertions(+)
 [2025-10-12 11:27:06] Force pushing to git@github.com:schultz-it/ju7Hy6f6.git
+[2025-10-13 03:30:00] Committing: HA nightly commit: 2025-10-13 03:30:00 CEST
+[Backup_Locale ac926cd] HA nightly commit: 2025-10-13 03:30:00 CEST
+ 17 files changed, 1594 insertions(+), 30 deletions(-)
+ create mode 100644 automations.yaml.old
+ create mode 100644 lovelace/irrigazione_dashboard_pro.yaml.bak2
+ create mode 100644 lovelace/irrigazione_dashboard_pro.yaml.premod
+ create mode 100644 packages/irrigazione_smart.yaml.old2
+ create mode 100644 templates/irrigazione_smart.yaml.old2
+ create mode 100644 www/community/logbook-card/logbook-card.js
+ create mode 100644 www/community/logbook-card/logbook-card.js.gz
+ create mode 100644 www/community/lovelace-card-mod/card-mod.js
+ create mode 100644 www/community/lovelace-card-mod/card-mod.js.gz
+[2025-10-13 03:30:00] Pushing Backup_Locale -> origin/main
+[2025-10-13 03:30:04] Done.

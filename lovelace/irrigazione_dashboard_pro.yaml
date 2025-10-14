@@ -59,7 +59,7 @@ views:
 
               # Meteo (Tomorrow.io daily)
               - type: weather
-                entity: weather.tomorrow_io_daily
+                entity: weather.pirateweather
 
           # Selettore programma IU
           - type: custom:mushroom-entity-card

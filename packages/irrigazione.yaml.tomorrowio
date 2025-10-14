@@ -57,12 +57,12 @@ template:
       - platform: time_pattern
         hours: "/1"
       - platform: state
-        entity_id: weather.pirateweather
+        entity_id: weather.tomorrow_io_daily
     sensor:
       - name: "Pioggia oggi (mm)"
         unit_of_measurement: "mm"
         state: >
-          {% set f = state_attr('weather.pirateweather','forecast') or [] %}
+          {% set f = state_attr('weather.tomorrow_io_daily','forecast') or [] %}
           {% set today = now().date() %}
           {% set mm = 0.0 %}
           {% for e in f if e.datetime is defined %}
@@ -75,7 +75,7 @@ template:
       - name: "Probabilità pioggia oggi (%)"
         unit_of_measurement: "%"
         state: >
-          {% set f = state_attr('weather.pirateweather','forecast') or [] %}
+          {% set f = state_attr('weather.tomorrow_io_daily','forecast') or [] %}
           {% set today = now().date() %}
           {% set prob = 0 %}
           {% for e in f if e.datetime is defined %}
