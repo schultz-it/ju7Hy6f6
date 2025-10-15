@@ -237,3 +237,29 @@ After doing this, you may fix the identity used for this commit with:
  create mode 100644 www/community/lovelace-card-mod/card-mod.js.gz
 [2025-10-13 03:30:00] Pushing Backup_Locale -> origin/main
 [2025-10-13 03:30:04] Done.
+[2025-10-14 03:30:00] Committing: HA nightly commit: 2025-10-14 03:30:00 CEST
+[Backup_Locale b6190fb] HA nightly commit: 2025-10-14 03:30:00 CEST
+ 28 files changed, 3765 insertions(+), 29 deletions(-)
+ create mode 100644 custom_components/pirateweather/__init__.py
+ create mode 100644 custom_components/pirateweather/__pycache__/__init__.cpython-313.pyc
+ create mode 100644 custom_components/pirateweather/__pycache__/config_flow.cpython-313.pyc
+ create mode 100644 custom_components/pirateweather/__pycache__/const.cpython-313.pyc
+ create mode 100644 custom_components/pirateweather/__pycache__/forecast_models.cpython-313.pyc
+ create mode 100644 custom_components/pirateweather/__pycache__/weather.cpython-313.pyc
+ create mode 100644 custom_components/pirateweather/__pycache__/weather_update_coordinator.cpython-313.pyc
+ create mode 100644 custom_components/pirateweather/config_flow.py
+ create mode 100644 custom_components/pirateweather/const.py
+ create mode 100644 custom_components/pirateweather/forecast_models.py
+ create mode 100644 custom_components/pirateweather/manifest.json
+ create mode 100644 custom_components/pirateweather/sensor.py
+ create mode 100644 custom_components/pirateweather/translations/cs.json
+ create mode 100644 custom_components/pirateweather/translations/de.json
+ create mode 100644 custom_components/pirateweather/translations/en.json
+ create mode 100644 custom_components/pirateweather/translations/nl.json
+ create mode 100644 custom_components/pirateweather/translations/pl.json
+ create mode 100644 custom_components/pirateweather/translations/sk.json
+ create mode 100644 custom_components/pirateweather/weather.py
+ create mode 100644 custom_components/pirateweather/weather_update_coordinator.py
+ create mode 100644 packages/irrigazione.yaml.tomorrowio
+[2025-10-14 03:30:00] Pushing Backup_Locale -> origin/main
+[2025-10-14 03:30:02] Done.
