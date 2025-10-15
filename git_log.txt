@@ -263,3 +263,19 @@ After doing this, you may fix the identity used for this commit with:
  create mode 100644 packages/irrigazione.yaml.tomorrowio
 [2025-10-14 03:30:00] Pushing Backup_Locale -> origin/main
 [2025-10-14 03:30:02] Done.
+[2025-10-15 03:30:00] Committing: HA nightly commit: 2025-10-15 03:30:00 CEST
+[Backup_Locale b0a56a0] HA nightly commit: 2025-10-15 03:30:00 CEST
+ 59 files changed, 5006 insertions(+), 33 deletions(-)
+ create mode 100644 www/community/Bubble-Card/bubble-card.js
+ create mode 100644 www/community/Bubble-Card/bubble-card.js.LICENSE.txt
+ create mode 100644 www/community/Bubble-Card/bubble-card.js.gz
+ create mode 100644 www/community/Bubble-Card/bubble-modules-example.yaml
+ create mode 100644 www/community/Bubble-Card/bubble-pop-up-fix.js
+ create mode 100644 www/community/Bubble-Card/bubble-pop-up-fix.js.gz
+ create mode 100644 www/community/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js
+ create mode 100644 www/community/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js.gz
+ create mode 100644 www/community/mini-graph-card/mini-graph-card-bundle.js
+ create mode 100644 www/community/mini-graph-card/mini-graph-card-bundle.js.gz
+[2025-10-15 03:30:00] Pushing Backup_Locale -> origin/main
+[2025-10-15 03:30:03] Done.
+[2025-10-15 14:25:47] Committing changes

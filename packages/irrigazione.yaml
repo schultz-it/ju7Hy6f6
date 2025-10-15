@@ -61,30 +61,10 @@ template:
     sensor:
       - name: "Pioggia oggi (mm)"
         unit_of_measurement: "mm"
-        state: >
-          {% set f = state_attr('weather.pirateweather','forecast') or [] %}
-          {% set today = now().date() %}
-          {% set mm = 0.0 %}
-          {% for e in f if e.datetime is defined %}
-            {% set dt = as_datetime(e.datetime) %}
-            {% if dt and dt.date() == today and (e.precipitation is defined) %}
-              {% set mm = e.precipitation | float(0) %}
-            {% endif %}
-          {% endfor %}
-          {{ mm | round(1) }}
+        state: "{{states('sensor.pirateweather2_liquid_accumulation_0d') }}"
       - name: "Probabilità pioggia oggi (%)"
         unit_of_measurement: "%"
-        state: >
-          {% set f = state_attr('weather.pirateweather','forecast') or [] %}
-          {% set today = now().date() %}
-          {% set prob = 0 %}
-          {% for e in f if e.datetime is defined %}
-            {% set dt = as_datetime(e.datetime) %}
-            {% if dt and dt.date() == today and (e.precipitation_probability is defined) %}
-              {% set prob = e.precipitation_probability | int(0) %}
-            {% endif %}
-          {% endfor %}
-          {{ prob }}
+        state: "{{ states('sensor.pirateweather2_precip_probability_0d') }}"
   - sensor:
       - name: "Programma IU attivo (stato)"
         unique_id: programma_iu_attivo_stato
