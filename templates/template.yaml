@@ -2,12 +2,7 @@
     - name: FV Totale
       unique_id: fv_totale
       unit_of_measurement: "kWh"
-      state: >
-        {{
-          (states('sensor.sh60rs_a2251102546_mppt1_energy') | float) +
-          (states('sensor.sh60rs_a2251102546_mppt2_energy') | float) +
-          (states('sensor.sh60rs_a2251102546_mppt3_energy') | float)
-        }}
+      state: sensor.sh60rs_a2251102546_total_load_energy_consumption_from_pv
 
     - name: Percentuale Autoconsumo
       unique_id: percentuale_autoconsumo
@@ -41,4 +36,26 @@
           Prossima alle 01:00 lun/mer/ven (giu-ago)
         {% else %}
           Non programmato
+        {% endif %}
+        
+    - name: "Consumo personale da rete orario"
+      unit_of_measurement: "kWh"
+      state: >
+        {% set personale = states('sensor.consumo_personale_hourly') | float %}
+        {% set grid = states('sensor.energia_rete_hourly') | float %}
+        {% if personale <= grid %}
+          {{ personale }}
+        {% else %}
+          {{ grid }}
+        {% endif %}
+
+    - name: "Consumo personale da fotovoltaico orario"
+      unit_of_measurement: "kWh"
+      state: >
+        {% set personale = states('sensor.consumo_personale_hourly') | float %}
+        {% set grid = states('sensor.energia_rete_hourly') | float %}
+        {% if personale > grid %}
+          {{ personale - grid }}
+        {% else %}
+          0
         {% endif %}

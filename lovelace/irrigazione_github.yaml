@@ -1,0 +1,117 @@
+title: Irrigazione Pro
+views:
+  - title: Irrigazione
+    path: irrigazione
+    icon: mdi:sprinkler-variant
+    type: sections
+
+    sections:
+      - type: grid
+        cards:
+          # Header con badge e stato master
+          - type: custom:mushroom-template-card
+            primary: Irrigazione Pro
+            secondary: >
+              {% if is_state('input_boolean.irrigazione_master','on') %}
+                <ha-badge style="background: #43a047; color: white;">ATTIVA</ha-badge>
+              {% else %}
+                <ha-badge style="background: #bdbdbd; color: black;">NON ATTIVA</ha-badge>
+              {% endif %}
+            icon: mdi:sprinkler-variant
+            fill_container: true
+            style: |
+              ha-card {
+                background: rgba(240, 250, 250, 0.7);
+                box-shadow: 0 2px 8px 2px rgba(30,150,200,0.08);
+                border-radius: 16px;
+              }
+
+          # CHIPS BAR migliorata
+          - type: custom:mushroom-chips-card
+            alignment: justify
+            chips:
+              - type: template
+                entity: input_boolean.irrigazione_master
+                content: >
+                  <b>Master</b>
+                icon: mdi:valve
+                tap_action: {action: toggle}
+                icon_color: "{{ 'green' if is_state('input_boolean.irrigazione_master','on') else 'grey' }}"
+                tooltip: "Attiva o disattiva l'irrigazione"
+              - type: template
+                entity: binary_sensor.irrigazione_skip_meteo
+                content: >
+                  <b>Meteo</b>
+                icon: "{{ 'mdi:cloud-cancel' if is_state('binary_sensor.irrigazione_skip_meteo','on') else 'mdi:weather-sunny' }}"
+                icon_color: "{{ 'blue' if is_state('binary_sensor.irrigazione_skip_meteo','on') else 'amber' }}"
+                tooltip: "Indica se la pioggia blocca l'irrigazione"
+              - type: template
+                entity: input_boolean.force_irrigazione_oggi
+                content: "<b>Forza oggi</b>"
+                icon: mdi:water-check
+                tap_action: {action: toggle}
+                icon_color: "{{ 'red' if is_state('input_boolean.force_irrigazione_oggi','on') else 'grey' }}"
+                tooltip: "Forza irrigazione oggi"
+              - type: template
+                entity: input_select.irrigazione_programma_attivo
+                content: >
+                  <b>Programma</b>: {{ states('input_select.irrigazione_programma_attivo') }}
+                icon: mdi:playlist-check
+                icon_color: teal
+                tooltip: "Programma selezionato"
+              - type: weather
+                entity: weather.pirateweather
+                tooltip: "Previsioni meteo"
+
+          # Divisore grafico
+          - type: custom:divider-card
+            style: |
+              ha-card {
+                border-top: 2px solid #b2ebf2;
+                margin-top: 12px;
+                margin-bottom: 12px;
+              }
+
+          # Selettore programma IU
+          - type: custom:mushroom-entity-card
+            entity: input_select.irrigazione_programma_attivo
+            name: Programma IU selezionato
+            icon: mdi:playlist-check
+            fill_container: true
+
+          # Dati meteo rapidi con effetto glass
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.pioggia_oggi_mm
+                icon: mdi:weather-rainy
+                name: Pioggia oggi (mm)
+                layout: vertical
+                style: |
+                  ha-card { background: rgba(33,150,243,0.08); }
+              - type: custom:mushroom-entity-card
+                entity: sensor.probabilita_pioggia_oggi
+                icon: mdi:percent
+                name: Probabilità oggi (%)
+                layout: vertical
+                style: |
+                  ha-card { background: rgba(255,193,7,0.08); }
+              - type: custom:mushroom-entity-card
+                entity: input_number.pioggia_ieri_mm
+                icon: mdi:weather-pouring
+                name: Pioggia ieri (mm)
+                layout: vertical
+                style: |
+                  ha-card { background: rgba(76,175,80,0.08); }
+
+          # Soglia skip meteo con descrizione
+          - type: custom:mushroom-entity-card
+            entity: input_number.soglia_pioggia_mm
+            name: Soglia pioggia per skip (mm)
+            icon: mdi:water-off
+            fill_container: true
+            style: |
+              ha-card {
+                border-left: 3px solid #00897b;
+                background: rgba(200,255,255,0.09);
+              }

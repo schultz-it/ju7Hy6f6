@@ -38,6 +38,12 @@ lovelace:
       type: module
     - url: /hacsfiles/irrigation-unlimited-card/irrigation-unlimited-card.js
       type: module
+    - url: /hacsfiles/Bubble-Card/bubble-card.js
+      type: module
+    - url: /hacsfiles/energy-period-selector-plus/energy-period-selector-plus.js
+      type: module
+    - url: /hacsfiles/ha-energy-entity-card/ha-energy-entity-card.js
+      type: module
   dashboards:
     
     solar-dashboard:
@@ -47,12 +53,13 @@ lovelace:
       show_in_sidebar: true
       filename: lovelace/solar_dashboard.yaml
 
-    irrigazione-dashboard:
+    irrigazionecorrezzana-dashboard:
       mode: yaml
       title: Irrigazione Correzzana
       icon: mdi:sprinkler-variant
       show_in_sidebar: true
-      filename: lovelace/irrigazione_dashboard_pro.yaml
+      filename: lovelace/irrigazione_correzzana.yaml
+      
 
 # Load frontend themes from the themes folder
 frontend:
@@ -126,6 +133,8 @@ shell_command:
   ha_git_force_push: 'bash /config/scripts/ha_forcepush.sh'
   ha_git_scarica_remoto: 'bash /config/scripts/ha_scaricaremoto.sh'
   ha_git_sync: 'bash /config/scripts/ha_sync.sh'
+  
+utility_meter: !include utility_meter.yaml
 
 #shell_command:
  # pushupdates_to_github: /bin/bash pushupdates.sh

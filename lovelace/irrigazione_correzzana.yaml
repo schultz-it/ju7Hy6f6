@@ -1,0 +1,332 @@
+views:
+  - title: Controllo Irrigazione
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Controllo Irrigazione
+            heading_style: title
+            icon: mdi:sprinkler-variant
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                entity: input_boolean.irrigazione_master
+                content: |
+                  {% if is_state('input_boolean.irrigazione_master','on') %}
+                    ATTIVA
+                  {% else %}
+                    NON ATTIVA
+                  {% endif %}
+                icon: mdi:valve
+                tap_action:
+                  action: toggle
+                icon_color: >
+                  {{ 'green' if
+                  is_state('input_boolean.irrigazione_master','on') else 'grey'
+                  }}
+              - type: template
+                entity: binary_sensor.irrigazione_skip_meteo
+                content: >
+                  {{ 'Skip Causa Meteo' if
+                  is_state('binary_sensor.irrigazione_skip_meteo','on')
+                     else 'Meteo ok' }}
+                icon: >
+                  {{ 'mdi:cloud-cancel' if
+                  is_state('binary_sensor.irrigazione_skip_meteo','on')
+                     else 'mdi:weather-sunny' }}
+                icon_color: >
+                  {{ 'blue' if
+                  is_state('binary_sensor.irrigazione_skip_meteo','on')
+                     else 'amber' }}
+                tap_action:
+                  action: navigate
+                  navigation_path: /irrigazionecorrezzana-dashboard/meteo
+              - type: template
+                entity: input_boolean.force_irrigazione_oggi
+                content: Forza oggi
+                icon: mdi:water-check
+                tap_action:
+                  action: toggle
+                icon_color: >
+                  {{ 'red' if
+                  is_state('input_boolean.force_irrigazione_oggi','on')
+                     else 'grey' }}
+          - show_state: false
+            show_name: false
+            camera_view: auto
+            fit_mode: cover
+            type: picture-entity
+            camera_image: camera.tvcc_giardino_tvcc_giardino_main
+            entity: camera.tvcc_giardino_tvcc_giardino_main
+            theme: Mushroom Square Shadow
+      - type: grid
+        cards:
+          - type: heading
+            heading: Selezione Programma
+            heading_style: title
+            icon: mdi:calendar-blank
+          - type: custom:mushroom-select-card
+            entity: input_select.irrigazione_programma_attivo
+            icon_color: teal
+            fill_container: false
+            layout: horizontal
+          - type: markdown
+            content: >-
+              • **Avvio prato** — tutti i giorni, ogni quattro ore → solo prato
+              5'
+
+              • **Mantenimento Primavera** — lun/giov/sab, 1h prima dell'alba →
+              prato 5', aiuola 10'
+
+              • **Mantenimento Autunno** — lun/giov/sab, 1h prima dell'alba →
+              solo prato 5'
+
+              • **Estate** — lun/giov/sab, 5' prima del tramonto → prato 10',
+              aiuola 15'
+      - type: grid
+        cards:
+          - type: heading
+            heading: Avvio Manuale Elettrovalvole
+            heading_style: title
+            icon: mdi:water-pump
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.shelly_irrigazione_prato
+                icon: mdi:sprinkler-variant
+                tap_action:
+                  action: toggle
+                layout: vertical
+                name: Elettrovalvola Prato
+              - type: custom:mushroom-entity-card
+                entity: switch.shelly_irrigazione_aiuola
+                layout: vertical
+                name: Elettrovalvola Aiuola
+                tap_action:
+                  action: toggle
+                icon: mdi:sprinkler-fire
+                primary_info: name
+          - type: heading
+            icon: mdi:calendar-arrow-right
+            heading: Avvio Manuale Programmi
+            heading_style: title
+          - square: false
+            type: grid
+            cards:
+              - type: custom:mushroom-template-card
+                entity: binary_sensor.irrigation_unlimited_c1_s1
+                primary: Avvio prato
+                secondary: >
+                  {% if is_state(entity, 'on') %}IN ESECUZIONE (tap=STOP){% else
+                  %}Pronto (clicca per avviare){% endif %}
+                icon: >
+                  {{ 'mdi:pause-circle' if is_state(entity,'on') else
+                  'mdi:play-circle' }}
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    entity_id: script.iu_toggle_s1
+                color: |
+                  {{ 'red' if is_state(entity,'on') else 'green' }}
+                features_position: bottom
+              - type: custom:mushroom-template-card
+                entity: binary_sensor.irrigation_unlimited_c1_s2
+                primary: Primavera
+                secondary: >
+                  {% if is_state(entity, 'on') %}IN ESECUZIONE (tap=STOP){% else
+                  %}Pronto (clicca per avviare){% endif %}
+                icon: >
+                  {{ 'mdi:pause-circle' if is_state(entity,'on') else
+                  'mdi:play-circle' }}
+                icon_color: |
+                  {{ 'red' if is_state(entity,'on') else 'teal' }}
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    entity_id: script.iu_toggle_s2
+              - type: custom:mushroom-template-card
+                entity: binary_sensor.irrigation_unlimited_c1_s3
+                primary: Autunno
+                secondary: >
+                  {% if is_state(entity, 'on') %}IN ESECUZIONE (tap=STOP){% else
+                  %}Pronto (clicca per avviare){% endif %}
+                icon: >
+                  {{ 'mdi:pause-circle' if is_state(entity,'on') else
+                  'mdi:play-circle' }}
+                icon_color: |
+                  {{ 'red' if is_state(entity,'on') else 'orange' }}
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    entity_id: script.iu_toggle_s3
+              - type: custom:mushroom-template-card
+                entity: binary_sensor.irrigation_unlimited_c1_s4
+                primary: Estate
+                secondary: >
+                  {% if is_state(entity, 'on') %}IN ESECUZIONE (tap=STOP){% else
+                  %}Pronto (clicca per avviare){% endif %}
+                icon: >
+                  {{ 'mdi:pause-circle' if is_state(entity,'on') else
+                  'mdi:play-circle' }}
+                icon_color: |
+                  {{ 'red' if is_state(entity,'on') else 'yellow' }}
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    entity_id: script.iu_toggle_s4
+            columns: 2
+          - type: custom:mushroom-template-card
+            primary: Stop Immediato
+            icon: mdi:stop-circle
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                entity_id: script.irrigazione_stop_vero
+            color: red
+            features_position: bottom
+            grid_options:
+              columns: full
+    type: sections
+    max_columns: 4
+  - type: sections
+    max_columns: 4
+    title: Storico Irrigazione
+    path: storico-irrigazione
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Storico Irrigazione
+            heading_style: title
+            icon: mdi:history
+          - type: history-graph
+            entities:
+              - entity: switch.shelly_irrigazione_prato
+              - entity: switch.shelly_irrigazione_aiuola
+            hours_to_show: 24
+            grid_options:
+              columns: full
+              rows: auto
+            title: Ultime 24h
+          - type: history-graph
+            entities:
+              - entity: switch.shelly_irrigazione_prato
+              - entity: switch.shelly_irrigazione_aiuola
+            hours_to_show: 12
+            grid_options:
+              columns: full
+              rows: auto
+            title: Ultime 12h
+          - type: history-graph
+            entities:
+              - entity: switch.shelly_irrigazione_prato
+              - entity: switch.shelly_irrigazione_aiuola
+            hours_to_show: 6
+            grid_options:
+              columns: full
+              rows: auto
+            title: Ultime 6h
+          - type: history-graph
+            entities:
+              - entity: switch.shelly_irrigazione_prato
+              - entity: switch.shelly_irrigazione_aiuola
+            grid_options:
+              columns: full
+              rows: auto
+            title: Ultima ora
+            hours_to_show: 1
+          - graph: line
+            type: sensor
+            entity: sensor.prato_on_ultimi_24h
+            detail: 2
+            hours_to_show: 24
+            name: Prato ultime 24h
+      - type: grid
+        cards:
+          - type: heading
+            heading: Ultimi Eventi
+            heading_style: title
+            icon: mdi:clipboard-list-outline
+          - type: logbook
+            target:
+              entity_id:
+                - switch.sonoff_100255cf16
+                - switch.sonoff_100255c289
+                - switch.sonoff_100255c8f1
+              device_id: 6a0af23c74e2af95b59e740ec0a821c2
+            title: Eventi Irrigazione Prato
+            theme: Mushroom Shadow
+          - type: logbook
+            target:
+              entity_id:
+                - switch.sonoff_100255cf16
+                - switch.sonoff_100255c289
+                - switch.sonoff_100255c8f1
+              device_id: e1ee7c0758760c0e906ee91cfbd7c18e
+            title: Eventi Irrigazione Aiuola
+  - type: sections
+    max_columns: 4
+    title: Meteo
+    path: meteo
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Meteo (PirateWeather)
+          - show_current: true
+            show_forecast: true
+            type: weather-forecast
+            entity: weather.pirateweather2
+            forecast_type: daily
+            name: Previsioni e Meteo Attuale
+            secondary_info_attribute: wind_speed
+            forecast_slots: 7
+          - type: entities
+            entities:
+              - entity: sensor.pioggia_oggi_mm
+                secondary_info: last-changed
+              - entity: sensor.probabilita_pioggia_oggi
+                secondary_info: last-changed
+      - type: grid
+        cards:
+          - type: heading
+            heading: Controllo Skip Meteo
+            heading_style: title
+          - type: custom:mushroom-number-card
+            entity: input_number.soglia_pioggia_mm
+          - type: custom:mushroom-number-card
+            entity: input_number.soglia_prob_pioggia
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Pioggia e probabilità (oggi)
+            graph_span: 1d
+            span:
+              start: day
+            series:
+              - entity: sensor.pioggia_oggi_mm
+                name: Pioggia (mm)
+                type: column
+                yaxis_id: mm
+              - entity: sensor.probabilita_pioggia_oggi
+                name: Probabilità (%)
+                type: line
+                yaxis_id: perc
+            apex_config:
+              yaxis:
+                - id: mm
+                  title:
+                    text: mm
+                - id: perc
+                  max: 100
+                  min: 0
+                  title:
+                    text: '%'

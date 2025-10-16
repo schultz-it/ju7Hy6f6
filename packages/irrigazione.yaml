@@ -21,7 +21,7 @@ input_number:
     step: 0.5
     unit_of_measurement: "mm"
     icon: mdi:weather-rainy
-    initial: 2.0
+#    initial: 2.0
   soglia_prob_pioggia:
     name: Soglia probabilità pioggia (%)
     min: 0
@@ -29,7 +29,7 @@ input_number:
     step: 5
     unit_of_measurement: "%"
     icon: mdi:umbrella-alert
-    initial: 70
+#    initial: 70
   pioggia_ieri_mm:
     name: Pioggia ieri (mm)
     min: 0

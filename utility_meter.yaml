@@ -1,0 +1,36 @@
+consumo_personale_hourly:
+  source: sensor.3_shelly_pro_3em_app_andrea_total_active_energy
+  cycle: hourly
+consumo_rack_locale_tec_hourly:
+  source: sensor.2_shelly_pro_3em_rack_total_active_energy
+  cycle: hourly
+consumo_centrale_termica_hourly:
+  source: sensor.shelly_pro_3em_clima_total_active_energy
+  cycle: hourly
+
+energia_rete_hourly:
+  source: sensor.purchased_from_grid
+  cycle: hourly
+energia_fv_hourly:
+  source: sensor.sh60rs_a2251102546_total_load_energy_consumption_from_pv
+  cycle: hourly
+  
+consumo_personale_da_rete_giornaliero:
+  source: sensor.consumo_personale_da_rete_orario
+  cycle: daily
+consumo_personale_da_rete_mensile:
+  source: sensor.consumo_personale_da_rete_orario
+  cycle: monthly
+consumo_personale_da_rete_annuale:
+  source: sensor.consumo_personale_da_rete_orario
+  cycle: yearly
+  
+consumo_personale_da_fv_giornaliero:
+  source: sensor.consumo_personale_da_fotovoltaico_orario
+  cycle: daily
+consumo_personale_da_fv_mensile:
+  source: sensor.consumo_personale_da_fotovoltaico_orario
+  cycle: monthly
+consumo_personale_da_fv_annuale:
+  source: sensor.consumo_personale_da_fotovoltaico_orario
+  cycle: yearly
