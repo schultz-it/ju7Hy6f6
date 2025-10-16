@@ -27,7 +27,7 @@ views:
               - type: template
                 entity: binary_sensor.irrigazione_skip_meteo
                 content: >
-                  {{ 'Skip Causa Meteo' if
+                  {{ 'Skip meteo' if
                   is_state('binary_sensor.irrigazione_skip_meteo','on')
                      else 'Meteo ok' }}
                 icon: >
@@ -40,7 +40,7 @@ views:
                      else 'amber' }}
                 tap_action:
                   action: navigate
-                  navigation_path: /irrigazionecorrezzana-dashboard/meteo
+                  navigation_path: /irrigazione-correzzana-card/meteo
               - type: template
                 entity: input_boolean.force_irrigazione_oggi
                 content: Forza oggi
@@ -70,6 +70,23 @@ views:
             icon_color: teal
             fill_container: false
             layout: horizontal
+          - type: markdown
+            content: |2
+                {% set programma_attivo = states('input_select.irrigazione_programma_attivo') %}
+                {% set mapping_programmi = {
+                  'Avvio prato': 'binary_sensor.irrigation_unlimited_c1_s1',
+                  'Primavera': 'binary_sensor.irrigation_unlimited_c1_s2',
+                  'Autunno': 'binary_sensor.irrigation_unlimited_c1_s3',
+                  'Estate': 'binary_sensor.irrigation_unlimited_c1_s4'
+                } %}
+                {% set binary_sensor_attivo = mapping_programmi[programma_attivo] %}
+
+                
+                {% if state_attr(binary_sensor_attivo, 'next_start') %}
+                **Prossimo Avvio:** {{ as_timestamp(state_attr(binary_sensor_attivo, 'next_start')) | timestamp_custom('%d/%m/%Y alle %H:%M') }}
+                {% else %}
+                **Stato:** Nessun avvio programmato
+                {% endif %}
           - type: markdown
             content: >-
               • **Avvio prato** — tutti i giorni, ogni quattro ore → solo prato
@@ -196,6 +213,8 @@ views:
               columns: full
     type: sections
     max_columns: 4
+    icon: ''
+    cards: []
   - type: sections
     max_columns: 4
     title: Storico Irrigazione
@@ -280,7 +299,7 @@ views:
       - type: grid
         cards:
           - type: heading
-            heading: Meteo (PirateWeather)
+            heading: New section
           - show_current: true
             show_forecast: true
             type: weather-forecast

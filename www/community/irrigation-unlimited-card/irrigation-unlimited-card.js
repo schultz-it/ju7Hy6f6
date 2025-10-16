@@ -1512,7 +1512,7 @@ const styles = i$2 `
   }
 `;
 
-const CARD_VERSION = "2025.10.0";
+const CARD_VERSION = "2025.10.1";
 
 const loc = new localise(window.navigator.language);
 /* eslint no-console: 0 */
@@ -2281,8 +2281,8 @@ let IrrigationUnlimitedCard = class IrrigationUnlimitedCard extends s {
             this._closeAllMenus(e);
         menu === null || menu === void 0 ? void 0 : menu.classList.toggle("iu-hidden");
     }
-    _isEnterKey(e) {
-        return e instanceof KeyboardEvent && e.key === "Enter";
+    _isNotEnterKey(e) {
+        return e instanceof KeyboardEvent && e.key !== "Enter";
     }
     _get_iu_key(e) {
         var _a, _b;
@@ -2332,7 +2332,7 @@ let IrrigationUnlimitedCard = class IrrigationUnlimitedCard extends s {
     }
     _serviceSuspend(e) {
         var _a;
-        if (!this._isEnterKey(e))
+        if (this._isNotEnterKey(e))
             return;
         const data = this._build_data(e);
         if (!data)
@@ -2347,7 +2347,7 @@ let IrrigationUnlimitedCard = class IrrigationUnlimitedCard extends s {
     }
     _serviceManualRun(e) {
         var _a;
-        if (!this._isEnterKey(e))
+        if (this._isNotEnterKey(e))
             return;
         const data = this._build_data(e);
         if (!data)
@@ -2385,7 +2385,7 @@ let IrrigationUnlimitedCard = class IrrigationUnlimitedCard extends s {
     }
     _serviceAdjust(e) {
         var _a;
-        if (!this._isEnterKey(e))
+        if (this._isNotEnterKey(e))
             return;
         const data = this._build_data(e);
         if (!data)
