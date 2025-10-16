@@ -283,3 +283,72 @@ After doing this, you may fix the identity used for this commit with:
  4 files changed, 20 insertions(+), 23 deletions(-)
  create mode 100644 custom_components/pirateweather/__pycache__/sensor.cpython-313.pyc
 [2025-10-15 14:25:47] Force pushing to git@github.com:schultz-it/ju7Hy6f6.git
+[2025-10-16 03:30:00] Committing: HA nightly commit: 2025-10-16 03:30:00 CEST
+[Backup_Locale 293618a] HA nightly commit: 2025-10-16 03:30:00 CEST
+ 70 files changed, 3876 insertions(+), 14 deletions(-)
+ create mode 100644 custom_components/open_meteo_solar_forecast/__init__.py
+ create mode 100644 custom_components/open_meteo_solar_forecast/__pycache__/__init__.cpython-313.pyc
+ create mode 100644 custom_components/open_meteo_solar_forecast/__pycache__/config_flow.cpython-313.pyc
+ create mode 100644 custom_components/open_meteo_solar_forecast/__pycache__/const.cpython-313.pyc
+ create mode 100644 custom_components/open_meteo_solar_forecast/__pycache__/coordinator.cpython-313.pyc
+ create mode 100644 custom_components/open_meteo_solar_forecast/__pycache__/diagnostics.cpython-313.pyc
+ create mode 100644 custom_components/open_meteo_solar_forecast/__pycache__/energy.cpython-313.pyc
+ create mode 100644 custom_components/open_meteo_solar_forecast/__pycache__/recorder.cpython-313.pyc
+ create mode 100644 custom_components/open_meteo_solar_forecast/__pycache__/sensor.cpython-313.pyc
+ create mode 100644 custom_components/open_meteo_solar_forecast/config_flow.py
+ create mode 100644 custom_components/open_meteo_solar_forecast/const.py
+ create mode 100644 custom_components/open_meteo_solar_forecast/coordinator.py
+ create mode 100644 custom_components/open_meteo_solar_forecast/diagnostics.py
+ create mode 100644 custom_components/open_meteo_solar_forecast/energy.py
+ create mode 100644 custom_components/open_meteo_solar_forecast/manifest.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/recorder.py
+ create mode 100644 custom_components/open_meteo_solar_forecast/sensor.py
+ create mode 100644 custom_components/open_meteo_solar_forecast/strings.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/ar.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/bg.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/ca.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/cs.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/da.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/de.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/el.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/en-GB.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/en.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/es-419.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/es.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/et.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/fi.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/fr.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/gsw.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/he.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/hi.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/hu.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/id.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/it.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/ja.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/ko.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/lt.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/lv.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/nb.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/nl.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/pl.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/pt-BR.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/pt.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/ro.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/ru.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/sk.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/sl.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/sv.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/tr.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/uk.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/zh-Hans.json
+ create mode 100644 custom_components/open_meteo_solar_forecast/translations/zh-Hant.json
+ create mode 100644 lovelace/irrigazione_correzzana.yaml
+ create mode 100644 lovelace/irrigazione_github.yaml
+ create mode 100644 utility_meter.yaml
+ create mode 100644 www/community/energy-period-selector-plus/energy-period-selector-plus.js
+ create mode 100644 www/community/energy-period-selector-plus/energy-period-selector-plus.js.gz
+ create mode 100644 www/community/ha-energy-entity-card/ha-energy-entity-card.js
+ create mode 100644 www/community/ha-energy-entity-card/ha-energy-entity-card.js.gz
+[2025-10-16 03:30:00] Pushing Backup_Locale -> origin/main
+[2025-10-16 03:30:04] Done.
+[2025-10-16 10:46:13] Committing changes
