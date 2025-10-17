@@ -70,3 +70,62 @@
     entity_id: fa927b675db9469dd1c11d9e2b76bbd4
     domain: switch
   mode: single
+- id: restore_irrigazione_programma
+  alias: Ripristina programma irrigazione all'avvio
+  trigger:
+  - platform: homeassistant
+    event: start
+  action:
+  - delay: 00:00:30
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.irrigazione_programma_attivo
+    data:
+      option: '{{ states(''input_text.last_irrigation_program'') }}'
+  mode: single
+- id: aggiorna_helper_irrigazione_cambio_programma
+  alias: Aggiorna helper irrigazione ad ogni cambio programma
+  trigger:
+  - platform: state
+    entity_id: input_select.irrigazione_programma_attivo
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.prev_irrigation_program
+    data:
+      value: '{{ states(''input_text.last_irrigation_program'') }}'
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.last_irrigation_program
+    data:
+      value: '{{ states(''input_select.irrigazione_programma_attivo'') }}'
+  mode: single
+- id: '1760614649374'
+  alias: StronzoDiMerdaDopo1MinutoSettaProgrammaIrrigazione
+  description: ''
+  triggers:
+  - trigger: homeassistant
+    event: start
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - action: input_select.select_option
+    target:
+      entity_id: input_select.irrigazione_programma_attivo
+    data:
+      option: Dummy
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - action: input_select.select_option
+    target:
+      entity_id: input_select.irrigazione_programma_attivo
+    data:
+      option: '{{ states(''input_text.prev_irrigation_program'') }}'
+  mode: single

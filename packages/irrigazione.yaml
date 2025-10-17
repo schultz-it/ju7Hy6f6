@@ -48,6 +48,7 @@ input_select:
       - Primavera
       - Autunno
       - Estate
+      - Dummy
    # initial: Primavera
 
 template:
@@ -200,7 +201,7 @@ irrigation_unlimited:
              # weekday: [mon, tue, wed, thu, fri, sat, sun]
           zones:
             - zone_id: 1
-              duration: "00:05"
+              duration: "00:02"
         - name: "Mantenimento Primavera (−1h alba, lun/giov/sab)"
           schedules:
             - time: { sun: sunrise, before: "01:00" }

@@ -44,14 +44,16 @@ lovelace:
       type: module
     - url: /hacsfiles/ha-energy-entity-card/ha-energy-entity-card.js
       type: module
+    - url: /hacsfiles/lovelace-solar-card/solar-card.js
+      type: module
   dashboards:
     
-    solar-dashboard:
-      mode: yaml
-      title: Fotovoltaico Correzzana
-      icon: mdi:solar-power
-      show_in_sidebar: true
-      filename: lovelace/solar_dashboard.yaml
+    # solar-dashboard:
+    #   mode: yaml
+    #   title: Fotovoltaico Correzzana
+    #   icon: mdi:solar-power
+    #   show_in_sidebar: true
+    #   filename: lovelace/solar_dashboard.yaml
 
     irrigazionecorrezzana-dashboard:
       mode: yaml
@@ -135,6 +137,13 @@ shell_command:
   ha_git_sync: 'bash /config/scripts/ha_sync.sh'
   
 utility_meter: !include utility_meter.yaml
+
+input_text:
+  last_irrigation_program:
+    name: "Ultimo programma irrigazione"
+  prev_irrigation_program:
+    name: "Penultimo programma irrigazione"
+
 
 #shell_command:
  # pushupdates_to_github: /bin/bash pushupdates.sh
