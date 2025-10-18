@@ -360,3 +360,19 @@ After doing this, you may fix the identity used for this commit with:
  6 files changed, 122 insertions(+), 10 deletions(-)
  create mode 100644 homeassistant_start
 [2025-10-16 11:19:09] Force pushing to git@github.com:schultz-it/ju7Hy6f6.git
+[2025-10-17 03:30:00] Committing: HA nightly commit: 2025-10-17 03:30:00 CEST
+[Backup_Locale 5d6b4c9] HA nightly commit: 2025-10-17 03:30:00 CEST
+ 17 files changed, 631 insertions(+), 9 deletions(-)
+ create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/__init__.cpython-313.pyc
+ create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/api.cpython-313.pyc
+ create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/config_flow.cpython-313.pyc
+ create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/const.cpython-313.pyc
+ create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/coordinator.cpython-313.pyc
+ create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/helpers.cpython-313.pyc
+ create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/pymodbus_constants.cpython-313.pyc
+ create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/pymodbus_payload.cpython-313.pyc
+ create mode 100644 custom_components/abb_powerone_pvi_sunspec/__pycache__/sensor.cpython-313.pyc
+ create mode 100644 www/community/lovelace-solar-card/solar-card.js
+ create mode 100644 www/community/lovelace-solar-card/solar-card.js.gz
+[2025-10-17 03:30:00] Pushing Backup_Locale -> origin/main
+[2025-10-17 03:30:04] Done.

@@ -129,3 +129,22 @@
     data:
       option: '{{ states(''input_text.prev_irrigation_program'') }}'
   mode: single
+- id: '1760722610021'
+  alias: Irrigazione Prato Sync Planta
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - switch.shelly_irrigazione_prato
+    to: 'on'
+  conditions: []
+  actions:
+  - device_id: d7f57e38f1ad1a563cc800a0ef2f2b0e
+    domain: button
+    entity_id: 41c20eff3ef756e287f2e736abe9a79b
+    type: press
+  - device_id: 6ecfb73ccb631d2da249e2f3c06662f1
+    domain: button
+    entity_id: b90726447e64962722676292eb934153
+    type: press
+  mode: single
