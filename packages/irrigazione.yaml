@@ -175,12 +175,12 @@ irrigation_unlimited:
       sequences:
         - name: "Avvio prato (−1h alba, sempre)"
           schedules:
-            - time: "01:00"
-              weekday: [mon, tue, wed, thu, fri, sat, sun]
-            - time: "03:00"
-              weekday: [mon, tue, wed, thu, fri, sat, sun]
-            - time: "05:00"
-              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            # - time: "01:00"
+            #   weekday: [mon, tue, wed, thu, fri, sat, sun]
+            # - time: "03:00"
+            #   weekday: [mon, tue, wed, thu, fri, sat, sun]
+            # - time: "05:00"
+            #   weekday: [mon, tue, wed, thu, fri, sat, sun]
             - time: "07:00"
               weekday: [mon, tue, wed, thu, fri, sat, sun]
             - time: "09:00"
@@ -195,13 +195,13 @@ irrigation_unlimited:
               weekday: [mon, tue, wed, thu, fri, sat, sun]
             - time: "19:00"
               weekday: [mon, tue, wed, thu, fri, sat, sun]
-            - time: "21:00"
-              weekday: [mon, tue, wed, thu, fri, sat, sun]
-            - time: "23:00"
-              weekday: [mon, tue, wed, thu, fri, sat, sun]
+            # - time: "21:00"
+            #   weekday: [mon, tue, wed, thu, fri, sat, sun]
+            # - time: "23:00"
+            #   weekday: [mon, tue, wed, thu, fri, sat, sun]
           zones:
             - zone_id: 1
-              duration: "00:04"
+              duration: "00:03"
         - name: "Mantenimento Primavera (−1h alba, lun/giov/sab)"
           schedules:
             - time: { sun: sunrise, before: "01:00" }

@@ -376,3 +376,34 @@ After doing this, you may fix the identity used for this commit with:
  create mode 100644 www/community/lovelace-solar-card/solar-card.js.gz
 [2025-10-17 03:30:00] Pushing Backup_Locale -> origin/main
 [2025-10-17 03:30:04] Done.
+[2025-10-18 03:30:00] Committing: HA nightly commit: 2025-10-18 03:30:00 CEST
+[Backup_Locale bbb6426] HA nightly commit: 2025-10-18 03:30:00 CEST
+ 30 files changed, 1387 insertions(+), 14 deletions(-)
+ create mode 100644 custom_components/planta/__init__.py
+ create mode 100644 custom_components/planta/__pycache__/__init__.cpython-313.pyc
+ create mode 100644 custom_components/planta/__pycache__/button.cpython-313.pyc
+ create mode 100644 custom_components/planta/__pycache__/config_flow.cpython-313.pyc
+ create mode 100644 custom_components/planta/__pycache__/const.cpython-313.pyc
+ create mode 100644 custom_components/planta/__pycache__/coordinator.cpython-313.pyc
+ create mode 100644 custom_components/planta/__pycache__/diagnostics.cpython-313.pyc
+ create mode 100644 custom_components/planta/__pycache__/entity.cpython-313.pyc
+ create mode 100644 custom_components/planta/__pycache__/image.cpython-313.pyc
+ create mode 100644 custom_components/planta/__pycache__/sensor.cpython-313.pyc
+ create mode 100644 custom_components/planta/button.py
+ create mode 100644 custom_components/planta/config_flow.py
+ create mode 100644 custom_components/planta/const.py
+ create mode 100644 custom_components/planta/coordinator.py
+ create mode 100644 custom_components/planta/diagnostics.py
+ create mode 100644 custom_components/planta/entity.py
+ create mode 100644 custom_components/planta/image.py
+ create mode 100644 custom_components/planta/manifest.json
+ create mode 100644 custom_components/planta/pyplanta/__init__.py
+ create mode 100644 custom_components/planta/pyplanta/__pycache__/__init__.cpython-313.pyc
+ create mode 100644 custom_components/planta/pyplanta/__pycache__/exceptions.cpython-313.pyc
+ create mode 100644 custom_components/planta/pyplanta/exceptions.py
+ create mode 100644 custom_components/planta/pyplanta/utils.py
+ create mode 100644 custom_components/planta/sensor.py
+ create mode 100644 custom_components/planta/strings.json
+ create mode 100644 custom_components/planta/translations/en.json
+[2025-10-18 03:30:00] Pushing Backup_Locale -> origin/main
+[2025-10-18 03:30:02] Done.
