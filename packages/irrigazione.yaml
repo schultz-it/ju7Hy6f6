@@ -163,6 +163,20 @@ automation:
             sequence:
               - service: irrigation_unlimited.enable
                 target: { entity_id: binary_sensor.irrigation_unlimited_c1_s4 }
+  
+  - alias: 'Stop irrigazione se skip meteo'
+    description: 'Ferma l’irrigazione automatica se scatta la condizione meteo (pioggia/probabilità/forza off)'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.irrigazione_skip_meteo
+        to: 'on'
+    condition: []
+    action:
+      - service: script.turn_on
+        target:
+          entity_id: script.irrigazione_stop_vero
+    mode: single
+
 
 irrigation_unlimited:
   controllers:

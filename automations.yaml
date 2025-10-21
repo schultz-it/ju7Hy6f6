@@ -129,22 +129,55 @@
     data:
       option: '{{ states(''input_text.prev_irrigation_program'') }}'
   mode: single
-- id: '1760722610021'
-  alias: Irrigazione Prato Sync Planta
-  description: ''
+- id: '1760956597855'
+  alias: Planta Irrigazione Sync quando piove (per area)
+  description: Esegue il watering su tutte le piante nelle aree Giardino e Aiuola
+    quando piove
   triggers:
-  - trigger: state
-    entity_id:
-    - switch.shelly_irrigazione_prato
+  - entity_id: sensor.pirateweather2_liquid_accumulation_0d
+    above: 2
+    trigger: numeric_state
+  actions:
+  - target:
+      entity_id: "{% set aree = ['Giardino', 'Aiuola', 'Terrazzo Tetto'] %} {% set
+        all_entities = expand(aree | map('area_entities') | sum(start=[])) %} {{ all_entities\n
+        \   | selectattr('entity_id', 'search', 'complete_watering')\n    | map(attribute='entity_id')\n
+        \   | list }}\n"
+    action: button.press
+    data: {}
+  mode: single
+- id: '1760958500734'
+  alias: Planta Irrigazione Aiuola Sync
+  description: Esegue il watering su tutte le piante nell'area Aiuola quando si accende
+    lo switch Shelly
+  triggers:
+  - entity_id: switch.shelly_irrigazione_aiuola
     to: 'on'
+    trigger: state
+  actions:
+  - target:
+      entity_id: "{{ expand(area_entities('Aiuola'))\n    | selectattr('entity_id',
+        'search', 'complete_watering')\n    | map(attribute='entity_id')\n    | list
+        }}\n"
+    action: button.press
+    data: {}
+  mode: single
+- id: '1760964154108'
+  alias: Planta Prato irrigazione sync
+  description: Esegue il watering su tutte le piante nelle aree Giardino e Aiuola
+    quando piove
+  triggers:
+  - type: turned_on
+    device_id: 6a0af23c74e2af95b59e740ec0a821c2
+    entity_id: da1fdccb76e5fcced3466491021c4506
+    domain: switch
+    trigger: device
   conditions: []
   actions:
-  - device_id: d7f57e38f1ad1a563cc800a0ef2f2b0e
-    domain: button
-    entity_id: 41c20eff3ef756e287f2e736abe9a79b
-    type: press
-  - device_id: 6ecfb73ccb631d2da249e2f3c06662f1
-    domain: button
-    entity_id: b90726447e64962722676292eb934153
-    type: press
+  - target:
+      entity_id: "{{ expand(area_entities('Giardino'))\n    | selectattr('entity_id',
+        'search', 'complete_watering')\n    | map(attribute='entity_id')\n    | list
+        }}\n"
+    action: button.press
+    data: {}
   mode: single

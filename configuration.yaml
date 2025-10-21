@@ -46,6 +46,8 @@ lovelace:
       type: module
     - url: /hacsfiles/lovelace-solar-card/solar-card.js
       type: module
+    - url: /hacsfiles/config-template-card.js
+      type: module
   dashboards:
     
     # solar-dashboard:
@@ -66,6 +68,8 @@ lovelace:
 # Load frontend themes from the themes folder
 frontend:
   themes: !include_dir_merge_named themes
+  extra_module_url:
+    - /hacsfiles/custom-sidebar/custom-sidebar-yaml.js
 
 sensor:
   - platform: integration
