@@ -133,12 +133,22 @@ sensor:
     type: time
     start: "{{ now().replace(hour=0, minute=0, second=0) }}"
     end: "{{ now() }}"
+  - platform: template
+    sensors:
+      zenner_temperatura_mandata_andrea:
+        friendly_name: "Zenner Temperatura Mandata Andrea"
+        value_template: "{{ states('sensor.contabilizzatore_andrea_flow_temperature_7') | float }}"
+        unit_of_measurement: "°C"
+    
+    
+    
 
 shell_command:
   ha_git_nightly_commit: 'bash /config/scripts/ha_commit.sh'
   ha_git_force_push: 'bash /config/scripts/ha_forcepush.sh'
   ha_git_scarica_remoto: 'bash /config/scripts/ha_scaricaremoto.sh'
   ha_git_sync: 'bash /config/scripts/ha_sync.sh'
+  run_mbus2mqtt: 'bash /config/scripts/run_mbus2mqtt.sh'
   
 utility_meter: !include utility_meter.yaml
 
