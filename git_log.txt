@@ -572,3 +572,9 @@ After doing this, you may fix the identity used for this commit with:
  create mode 100644 www/community/custom-sidebar/custom-sidebar.js.gz
 [2025-10-21 03:30:06] Pushing Backup_Locale -> origin/main
 [2025-10-21 03:30:15] Done.
+[2025-10-22 03:30:00] Committing: HA nightly commit: 2025-10-22 03:30:00 CEST
+[Backup_Locale 1741f0d] HA nightly commit: 2025-10-22 03:30:00 CEST
+ 4 files changed, 190 insertions(+), 1 deletion(-)
+ create mode 100755 scripts/run_mbus2mqtt.sh
+[2025-10-22 03:30:00] Pushing Backup_Locale -> origin/main
+[2025-10-22 03:30:02] Done.

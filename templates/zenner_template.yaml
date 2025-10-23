@@ -1,0 +1,82 @@
+- sensor:
+    - name: "Zenner Temperatura Mandata Andrea"
+      unique_id: zenner_temperatura_mandata_andrea_001
+      state: "{{ states('sensor.contabilizzatore_andrea_flow_temperature_7') | float }}"
+      unit_of_measurement: "°C"
+      icon: "mdi:thermometer-chevron-up"
+
+    - name: "Zenner Temperatura Ritorno Andrea"
+      unique_id: zenner_temperatura_ritorno_andrea_001
+      state: "{{ states('sensor.contabilizzatore_andrea_return_temperature_8') | float }}"
+      unit_of_measurement: "°C"
+      icon: "mdi:thermometer-chevron-down"
+
+    - name: "Zenner Temperatura Mandata Genitori"
+      unique_id: zenner_temperatura_mandata_genitori_001
+      state: "{{ states('sensor.contabilizzatore_genitori_flow_temperature_7') | float }}"
+      unit_of_measurement: "°C"
+      icon: "mdi:thermometer-chevron-up"
+
+    - name: "Zenner Temperatura Ritorno Genitori"
+      unique_id: zenner_temperatura_ritorno_genitori_001
+      state: "{{ states('sensor.contabilizzatore_genitori_return_temperature_8') | float }}"
+      unit_of_measurement: "°C"
+      icon: "mdi:thermometer-chevron-down"
+
+    - name: "Zenner Differenza Temperatura Andrea"
+      unique_id: zenner_differenza_temperatura_andrea_001
+      state: "{{ states('sensor.contabilizzatore_andrea_temperature_difference_9') | float }}"
+      unit_of_measurement: "°C"
+      icon: "mdi:thermometer-lines"
+
+    - name: "Zenner Differenza Temperatura Genitori"
+      unique_id: zenner_differenza_temperatura_genitori_001
+      state: "{{ states('sensor.contabilizzatore_genitori_temperature_difference_9') | float }}"
+      unit_of_measurement: "°C"
+      icon: "mdi:thermometer-lines"
+
+    - name: "Zenner Energia Totale Raffrescamento Andrea"
+      unique_id: zenner_energia_totale_raffrescamento_andrea_001
+      state: "{{ states('sensor.contabilizzatore_andrea_energy_13') | float }}"
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      icon: "mdi:snowflake"
+
+    - name: "Zenner Energia Totale Raffrescamento Genitori"
+      unique_id: zenner_energia_totale_raffrescamento_genitori_001
+      state: "{{ states('sensor.contabilizzatore_genitori_energy_13') | float }}"
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      icon: "mdi:snowflake"
+
+    - name: "Zenner Energia Totale Riscaldamento Andrea"
+      unique_id: zenner_energia_totale_riscaldamento_andrea_001
+      state: "{{ states('sensor.contabilizzatore_andrea_energy_3') | float }}"
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      icon: "mdi:radiator"
+
+    - name: "Zenner Energia Totale Riscaldamento Genitori"
+      unique_id: zenner_energia_totale_riscaldamento_genitori_001
+      state: "{{ states('sensor.contabilizzatore_genitori_energy_3') | float }}"
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      icon: "mdi:radiator"
+
+    - name: "Zenner Potenza Termica Istantanea Andrea"
+      unique_id: zenner_potenza_termica_istantanea_andrea_001
+      state: "{{ states('sensor.contabilizzatore_andrea_power_11') | float }}"
+      unit_of_measurement: "kW"
+      device_class: power
+      icon: "mdi:lightning-bolt"
+
+    - name: "Zenner Potenza Termica Istantanea Genitori"
+      unique_id: zenner_potenza_termica_istantanea_genitori_001
+      state: "{{ states('sensor.contabilizzatore_genitori_power_11') | float }}"
+      unit_of_measurement: "kW"
+      device_class: power
+      icon: "mdi:lightning-bolt"

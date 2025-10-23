@@ -133,12 +133,81 @@ sensor:
     type: time
     start: "{{ now().replace(hour=0, minute=0, second=0) }}"
     end: "{{ now() }}"
-  - platform: template
-    sensors:
-      zenner_temperatura_mandata_andrea:
-        friendly_name: "Zenner Temperatura Mandata Andrea"
-        value_template: "{{ states('sensor.contabilizzatore_andrea_flow_temperature_7') | float }}"
-        unit_of_measurement: "°C"
+#   - platform: template
+#     sensors:
+#       zenner_temperatura_mandata_andrea:
+#         friendly_name: "Zenner Temperatura Mandata Andrea"
+#         value_template: "{{ states('sensor.contabilizzatore_andrea_flow_temperature_7') | float }}"
+#         unit_of_measurement: "°C"
+#   - platform: template
+#     sensors:
+#       zenner_temperatura_ritorno_andrea:
+#         friendly_name: "Zenner Temperatura Ritorno Andrea"
+#         value_template: "{{ states('sensor.contabilizzatore_andrea_return_temperature_8') | float }}"
+#         unit_of_measurement: "°C"
+#   - platform: template
+#     sensors:
+#       zenner_temperatura_mandata_genitori:
+#         friendly_name: "Zenner Temperatura Mandata Genitori"
+#         value_template: "{{ states('sensor.contabilizzatore_genitori_flow_temperature_7') | float }}"
+#         unit_of_measurement: "°C"
+#   - platform: template
+#     sensors:
+#       zenner_temperatura_ritorno_andrea:
+#         friendly_name: "Zenner Temperatura Ritorno Genitori"
+#         value_template: "{{ states('sensor.contabilizzatore_genitori_return_temperature_8') | float }}"
+#         unit_of_measurement: "°C"
+#   - platform: template
+#     sensors:
+#       zenner_differenza_temperatura_andrea:
+#         friendly_name: "Zenner Differenza Temperatura Andrea"
+#         value_template: "{{ states('sensor.contabilizzatore_andrea_temperature_difference_9') | float }}"
+#         unit_of_measurement: "°C"
+#   - platform: template
+#     sensors:
+#       zenner_differenza_temperatura_genitori:
+#         friendly_name: "Zenner Differenza Temperatura Genitori"
+#         value_template: "{{ states('sensor.contabilizzatore_genitori_temperature_difference_9') | float }}"
+#         unit_of_measurement: "°C"
+#   - platform: template
+#     sensors:
+#       zenner_energia_totale_raffrescamento_andrea:
+#         friendly_name: "Zenner Energia Totale Raffrescamento Andrea"
+#         value_template: "{{ states('sensor.contabilizzatore_andrea_energy_13') | float }}"
+#         unit_of_measurement: "kWh"
+#   - platform: template
+#     sensors:
+#       zenner_energia_totale_raffrescamento_genitori:
+#         friendly_name: "Zenner Energia Totale Raffrescamento Genitori"
+#         value_template: "{{ states('sensor.contabilizzatore_genitori_energy_13') | float }}"
+#         unit_of_measurement: "kWh"
+#   - platform: template
+#     sensors:
+#       zenner_energia_totale_riscaldamento_andrea:
+#         friendly_name: "Zenner Energia Totale Riscaldamento Andrea"
+#         value_template: "{{ states('sensor.contabilizzatore_andrea_energy_3') | float }}"
+#         unit_of_measurement: "kWh"
+#   - platform: template
+#     sensors:
+#       zenner_energia_totale_riscaldamento_genitori:
+#         friendly_name: "Zenner Energia Totale Riscaldamento Genitori"
+#         value_template: "{{ states('sensor.contabilizzatore_genitori_energy_3') | float }}"
+#         unit_of_measurement: "kWh"
+#   - platform: template
+#     sensors:
+#       zenner_potenza_termica_istantanea_andrea:
+#         friendly_name: "Zenner Potenza Termica Istantanea Andrea"
+#         value_template: "{{ states('sensor.contabilizzatore_andrea_power_11') | float }}"
+#         unit_of_measurement: "kWh"
+#   - platform: template
+#     sensors:
+#       zenner_potenza_termica_istantanea_genitori:
+#         friendly_name: "Zenner Potenza Termica Istantanea Genitori"
+#         value_template: "{{ states('sensor.contabilizzatore_genitori_power_11') | float }}"
+#         unit_of_measurement: "kWh"
+
+
+
     
     
     
@@ -157,6 +226,20 @@ input_text:
     name: "Ultimo programma irrigazione"
   prev_irrigation_program:
     name: "Penultimo programma irrigazione"
+    
+notify:
+  - name: "gmail_notify"
+    platform: smtp
+    server: smtp.gmail.com
+    port: 587
+    timeout: 15
+    sender: andrea@imballaggibrunelli.it
+    encryption: starttls
+    username: andrea@imballaggibrunelli.it
+    password: "aqwzrhtscjwbimhc"
+    recipient:
+      - info@imballaggibrunelli.it
+    sender_name: "Home Assistant"
 
 
 #shell_command:

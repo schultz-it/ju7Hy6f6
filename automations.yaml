@@ -181,3 +181,27 @@
     action: button.press
     data: {}
   mode: single
+- id: '1761126192357'
+  alias: Allarme Blocco Fotovoltaico Paderno
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.abb_powerone_pvi_sunspec_106823_3p74_0724_ac_power
+    to: unavailable
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  conditions:
+  - condition: sun
+    before: sunset
+    after: sunrise
+  actions:
+  - action: notify.gmail_notify
+    metadata: {}
+    data:
+      title: Attenzione! Blocco Fotovoltaico Paderno
+      message: Ciao Andrea e Luca, il fotovoltaico a Paderno sembra essere in blocco.
+        Controllo immediato!
+  mode: single
